@@ -1,8 +1,10 @@
-TEAM SESO!!
+#TEAM SESO
+![Alt text](MyFridge_Logo.jpg?raw=true "Title")
+#Project: MyFridge
+#Course: CSE110 Software Engineering Spring 2020
 
-Project: MyFridge
-Course: CSE110 Software Engineering Spring 2020
-People: 
+
+##People: 
 Xiaochen Li - PM
 Qiyu Chen
 Bobby Deng
