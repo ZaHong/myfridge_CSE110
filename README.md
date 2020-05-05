@@ -17,3 +17,21 @@
 - Guanyi Su
 - Yicun Wu
 - Guoguo Zhu
+
+
+### Tech Stack
+
+#### Front End
+- React
+- Material-UI
+
+#### Back End
+- Express.js
+
+#### Database
+- MongoDB
+
+#### Testing
+- Python
+- Selenium with Python
+
