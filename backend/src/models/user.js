@@ -2,42 +2,36 @@
  * Filename: user.js
  * Author: Zhanchong Deng
  * 
- * Description: This file defines a User data schema, which contains relevant information about a user such as email and passwords.
+ * Description: Basically connect MyFridge database with User class.
  * 
  */
-
-var db = require('./db.js')
-
+var mongoose = require('mongoose')
+var userSchema = require('./userSchema.js')
 /*
- * A User model represent a user data entry in database. Similar to class.
+ * This model is unique to our db (MyFridge). Any operation directly acts onto our database.
+ * 
  * Note: 
  *      - Creation: var user_one = new User({ email: "...", password: "..."})
  *      - Fail to fill in one field may result in errors. Consider adding catch after creation.
  *      - A model connects to our database collection by "searching the plural, lowercased collection."
  *      - More info: https://mongoosejs.com/docs/models.html
  */
-var User = db.model('User', {
-    email: {
-        type: String,
-        required: true
-    },
+const User = new mongoose.model('User', userSchema)
 
-    password: {
-        type: String,
-        required: true
+module.exports.addUser = async(user_info) => {
+    if(!user_info) {
+        throw new Error("No user info entered.")
     }
-    // nickname: String,
-    // fridge: [Schema.Types.ObjectId],
-    // friend_list: {
-    //     type: [Schema.Types.ObjectId],
-    //     ref: User
-    // }
-    // waste_food: [Schema.Types.ObjectId],
-    // waste_food_weekly: [Schema.Types.ObjectId],
-    // food_waste_score: [Schema.Types.ObjectId],
-    // custom_recipe: [Schema.Types.ObjectId],
-    // allow_email_notification: Boolean,
-    // grocery_list: [Schema.Types.ObjectId]
-})
+    var new_user = new User(user_info)
+    await new_user.save()
+    console.log("Created new User!")
+}
 
-module.exports = User
+module.exports.findUser = async(email) => {
+    var query = await User.findOne({email: email})
+    if (query == null) {
+        console.log("User does not exist")
+    } else {
+        console.log(query)
+    }
+}
