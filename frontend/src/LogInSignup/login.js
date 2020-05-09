@@ -17,29 +17,30 @@ class Login extends Component{
     super(props);
     
     this.state = {
-      username: '',
+      email: '',
       password: ''
     }
   }
 
   handleClick(event){
-    const { email, password } = this.state;
 
     const user = {
-      email,
-      password,
+      email : this.state.email,
+      password : this.state.password,
     };
+    alert(JSON.stringify(user))
 
-    axios
-      .post('http://localhost:8000/', user)
-      .then(() => console.log('User Login Successfully'))
-      .catch(err => {
-        console.error(err);
-      });
+    fetch("http://localhost:8000/user/register",{
+      method: "POST",
+      data: JSON.stringify(user)
+    })
+  }
+
+  handleChange = name => event => {
+    this.setState({[name]: event.target.value})
   }
 
   render(){
-    const { classes } = this.props;
     const root = {
       height: '100vh',
     };
@@ -88,9 +89,9 @@ class Login extends Component{
                 id="email"
                 label="Email Address"
                 name="email"
-                autoComplete="email"
                 autoFocus
-                onChange = {(event, newValue) => this.setState({username:newValue})}
+                defaultValue={this.state.email}
+                onChange={this.handleChange('email')}
               />
               <TextField
                 variant="outlined"
@@ -101,8 +102,8 @@ class Login extends Component{
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="current-password"
-                onChange = {(event,newValue) => this.setState({password:newValue})}
+                defaultValue={this.state.password}
+                onChange={this.handleChange('password')}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
@@ -114,7 +115,7 @@ class Login extends Component{
                 variant="contained"
                 color="primary"
                 style={submit}
-                onClick={(event) => this.handleClick(event)}
+                onClick={event => this.handleClick(event)}
               >
                 Sign In
               </Button>
