@@ -23,7 +23,19 @@ class Login extends Component{
   }
 
   handleClick(event){
+    const { email, password } = this.state;
 
+    const user = {
+      email,
+      password,
+    };
+
+    axios
+      .post('http://localhost:8000/', user)
+      .then(() => console.log('User Login Successfully'))
+      .catch(err => {
+        console.error(err);
+      });
   }
 
   render(){
