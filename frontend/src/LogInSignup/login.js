@@ -29,10 +29,14 @@ class Login extends Component{
       password : this.state.password,
     };
     alert(JSON.stringify(user))
-
+    
+    //For create new user
     fetch("http://localhost:8000/user/register",{
       method: "POST",
-      data: JSON.stringify(user)
+      headers: {
+        'Content-Type': "application/json"
+      },
+      body: JSON.stringify(user)
     })
   }
 
