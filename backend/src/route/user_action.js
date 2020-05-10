@@ -8,6 +8,9 @@ const db = require('../models/db')
 const user = require('../models/user')
 
 user_router.post('/register', async (req, res) => {
+    console.log('-------------')
+    console.log(req.body)
+    console.log('---------------')
     const user_info = {
         email: req.body.email,
         password: req.body.password
