@@ -46,7 +46,7 @@ const styles = theme => ({
     border: 'solid 25px white',
     borderRadius: '20px',
     padding: '5 2vw',
-    minHeight: '67vh',
+    minHeight: '80vh',
     boxSizing: 'border-box',
     //boxShadow: '0px 20px 4px rgba(0, 0, 0, 0.25)',
   },
