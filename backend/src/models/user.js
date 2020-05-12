@@ -6,7 +6,39 @@
  * 
  */
 var mongoose = require('mongoose')
-var userSchema = require('./userSchema.js')
+const {Food, findFood} = require('./food.js')
+
+/*
+ * A User schema is a "database-less" class. It only structures data.
+ */
+var userSchema = mongoose.Schema({
+    email: {
+        type: String,
+        required: true
+    },
+
+    password: {
+        type: String,
+        required: true
+    },
+    // nickname: String,
+    fridge: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: Food
+    }
+    // friend_list: {
+    //     type: [Schema.Types.ObjectId],
+    //     ref: User
+    // }
+    // waste_food: [Schema.Types.ObjectId],
+    // waste_food_weekly: [Schema.Types.ObjectId],
+    // food_waste_score: [Schema.Types.ObjectId],
+    // custom_recipe: [Schema.Types.ObjectId],
+    // allow_email_notification: Boolean,
+    // grocery_list: [Schema.Types.ObjectId]
+})
+
+
 /*
  * This model is unique to our db (MyFridge). Any operation directly acts onto our database.
  * 
@@ -18,20 +50,39 @@ var userSchema = require('./userSchema.js')
  */
 const User = new mongoose.model('User', userSchema)
 
-module.exports.addUser = async(user_info) => {
+async function addUser(user_info) {
     if(!user_info) {
         throw new Error("No user info entered.")
     }
     var new_user = new User(user_info)
-    await new_user.save()
-    console.log("Created new User!")
+    var new_user_info = await new_user.save()
+    return new_user_info
 }
 
-module.exports.findUser = async(email) => {
+async function verifyUser(email, password) {
+    var query = await User.findOne({email: email})
+
+    if (query == null) {
+        console.log("User does not exist")
+        return null
+    } else {
+        if (query.password != password) {
+            console.log("Wrong password")
+            return null
+        } else {
+            return query
+        }
+    }
+}
+
+async function findUser(email) {
     var query = await User.findOne({email: email})
     if (query == null) {
         console.log("User does not exist")
+        return
     } else {
-        console.log(query)
+        return query
     }
 }
+
+module.exports = {User, addUser, verifyUser, findUser}
