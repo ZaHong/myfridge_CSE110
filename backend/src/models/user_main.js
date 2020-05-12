@@ -8,8 +8,8 @@ test_functions[0] = async function test_add_one() {
 }
 
 test_functions[1] = async function test_show_db() {
-    await user.findUser("test1@ucsd.edu")
-    console.log("Test 1: Displayed one user.")
+    await user.findUser("example@ucsd.edu")
+    console.log("Test 1: Find one user.")
 }
 
 async function test(tests) {
