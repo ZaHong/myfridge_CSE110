@@ -15,7 +15,8 @@ import background_color from './res/background_color.png';
 
 const styles = theme => ({
   background:{
-    backgroundImage: 'url('+ background_color +')',
+    //backgroundImage: 'url('+ background_color +')',
+    backgroundColor: '#cacbbc',
     backgroundSize: 'cover',
     padding: '1vh',
     height: '100%',
@@ -27,6 +28,7 @@ const styles = theme => ({
   },
   image: {
     backgroundImage: 'url('+ logo +')',
+    //height: "20px",
     //backgroundRepeat: 'no-repeat',
     //backgroundPosition: 'center',
     //backgroundSize: 'cover',
@@ -110,7 +112,7 @@ class Login extends Component {
     return (
       <Grid container xs={12} className={classes.background}
       >
-      <img src={logo} marginTop='20px'/>
+      <img src={logo} marginTop='20px' height='100vh'/>
       <Grid container xs={10} sm={6} md={4} className={classes.outerpaper}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
