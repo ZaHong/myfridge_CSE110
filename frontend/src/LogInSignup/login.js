@@ -17,7 +17,7 @@ const styles = theme => ({
   background:{
     backgroundImage: 'url('+ background_color +')',
     backgroundSize: 'cover',
-    padding: '0 6px',
+    padding: '1vh',
     height: '100%',
     position: 'fixed',
     overflow: 'auto',
@@ -46,7 +46,7 @@ const styles = theme => ({
     border: 'solid 25px white',
     borderRadius: '20px',
     padding: '5 2vw',
-    minHeight: '80vh',
+    minHeight: '67vh',
     boxSizing: 'border-box',
     //boxShadow: '0px 20px 4px rgba(0, 0, 0, 0.25)',
   },
