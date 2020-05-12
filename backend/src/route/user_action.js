@@ -5,32 +5,44 @@ const db = require('../models/db')
 //const user = require('../models/userSchema')
 
 //const User = new mongoose.model('User', userSchema)
-const user = require('../models/user')
+const {User, addUser, verifyUser, findUser} = require('../models/user')
 
 user_router.post('/register', async (req, res) => {
-<<<<<<< HEAD
-    console.log('-------------')
-    console.log(req.body)
-    console.log('---------------')
-=======
     console.log("-----------------")
     console.log(req.body)
->>>>>>> 0f86e10fe4f13361552fb138ef6fea8c93cd415f
     const user_info = {
         email: req.body.email,
         password: req.body.password
     }
     try{
-       db.connectDB()
-       const id = await user.addUser(user_info)
-       db.disconnectDB()
+       await db.connectDB()
+       await addUser(user_info)
+       await db.disconnectDB()
        res.send(id)
 
     }
     catch(e) {
         console.log(e)
     }
-    
+})
+
+user_router.get(`/id/:id`, async (req, res) => {
+    await db.connectDB()
+    var user = await User.findById(req.params.id)
+    await db.disconnectDB()
+    res.send(user.fridge)
+})
+
+user_router.post('/login', async(req, res) => {
+    await db.connectDB()
+    var query = await verifyUser(req.body.email, req.body.password)
+    if(query === null) {
+        res.status(404).send()
+    }
+    else{
+        res.redirect(`/user/id/${query._id}`)
+    }
+    await db.disconnectDB()
 })
 
 module.exports = user_router;

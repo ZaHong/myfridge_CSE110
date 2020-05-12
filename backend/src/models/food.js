@@ -55,7 +55,7 @@ var foodSchema = mongoose.Schema({
 const Food = new mongoose.model('Food', foodSchema)
 
 async function findFood(food_id) {
-    var query = await Food.findOneById(food_id)
+    var query = await Food.findById(food_id)
     if (query == null) {
         console.log("Food does not exist")
         return null
