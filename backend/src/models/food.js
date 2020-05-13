@@ -64,4 +64,9 @@ async function findFood(food_id) {
     }
 }
 
-module.exports = {Food, findFood}
+async function addFood(food_info) {
+    var new_food = new Food(food_info)
+    return await new_food.save()
+}
+
+module.exports = {Food, findFood, addFood}
