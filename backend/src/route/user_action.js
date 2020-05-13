@@ -14,7 +14,7 @@ user_router.post('/register', async (req, res) => {
        await db.connectDB()
        await addUser(user_info)
        await db.disconnectDB()
-       res.send(id)
+       res.send()
     }
     catch(e) {
         console.log(e)
@@ -62,6 +62,7 @@ user_router.get(`/:id`, async (req, res) => {
 user_router.post('/login', async(req, res) => {
     await db.connectDB()
     var query = await verifyUser(req.body.email, req.body.password)
+    console.log(query)
     if(query === null) {
         res.status(404).send()
     }
