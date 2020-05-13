@@ -1,7 +1,6 @@
 // tests/product.test.js
 const mongoose = require('mongoose');
-const userSchema = require('../src/models/userSchema.js')
-const user = require('../src/models/user.js')
+const {User, addUser} = require('../src/models/user.js')
 const mock_db = require('./mock_db.js')
 
 /**
@@ -28,7 +27,7 @@ describe('User ', () => {
      * Tests that a valid product can be created through the productService without throwing any errors.
      */
     it('can be created correctly', async () => {
-        expect(async () => await user.addUser(user1_info))
+        expect(async () => await addUser(user1_info))
             .not
             .toThrow();
     });
