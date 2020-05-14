@@ -16,6 +16,6 @@ app.get('/', async (req, res) => {
     res.send('Hello From the Backend!')
 })
 
-app.use('/user', user_router)
+app.use('/user', user_router)  
 
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`))

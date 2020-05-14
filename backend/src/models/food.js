@@ -7,6 +7,7 @@
  */
 var mongoose = require('mongoose')
 
+
 /*
  * A Food schema is a "database-less" class. It only structures data.
  */
@@ -14,20 +15,20 @@ var foodSchema = mongoose.Schema({
     name: {
         type: String,
         required: true
-    }
-    // date_purchased: {
-    //     type: Date,
-    //     required: true,
-    //     default: Date.now
-    // },
+    },
+    date_purchased: {                   // store the milliseconds since 1970
+        type: Number,
+        required: true,
+        default: Date.now()
+    },
     // expiration_date: {
     //     type: Date,
     //     required: true
     // },
-    // duration: {
-    //     type: Number,
-    //     required: true
-    // },
+    duration: {
+        type: Number,
+        required: true
+    }
     // quantity: {
     //     type: String,
     //     required: true,
