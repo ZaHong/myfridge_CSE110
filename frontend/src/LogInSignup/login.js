@@ -95,7 +95,7 @@ class Login extends Component {
     //alert(JSON.stringify(user))
     
     //For create new user
-    fetch("http://localhost:8000/user/register",{
+    fetch("http://localhost:8000/user/login",{
       method: "POST",
       headers: {
         'Content-Type': "application/json"
