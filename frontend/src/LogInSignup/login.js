@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDom from 'react-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +13,7 @@ import Container from '@material-ui/core/Container';
 import Background_Image from './res/background_img.png';
 import logo from './res/MyFridge_Logo_Small.png';
 import background_color from './res/background_color.png';
+import SignUp from "./signup";
 
 const styles = theme => ({
   background:{
@@ -76,7 +78,7 @@ const styles = theme => ({
 class Login extends Component {
   constructor(props) {
     super(props);
-    document.title = "Sign In"
+    document.title = "Sign In";
 
     this.state = {
       email:"",
@@ -104,14 +106,13 @@ class Login extends Component {
 
   handleChange = name => event => {
     this.setState({[name]: event.target.value})
-  }
+  };
 
   render() {
 
     const { classes } = this.props;
     return (
-      <Grid container xs={12} className={classes.background}
-      >
+      <Grid container xs={12} className={classes.background}>
       <img src={logo} marginTop='20px' height='100vh'/>
       <Grid container xs={10} sm={6} md={4} className={classes.outerpaper}>
       <Container component="main" maxWidth="xs">
@@ -176,7 +177,9 @@ class Login extends Component {
             <Link href="#" variant="body2" className={classes.link}>
                   Forgot password?
             </Link>
-            <Link href="#" variant="body2" className={classes.link}>
+            <Link variant="body2" className={classes.link} onClick={event => {
+                ReactDom.render(<SignUp />, document.getElementById("root"));
+            }}>
                   {"Don't have an account? Sign Up"}
             </Link>
             </Grid>
