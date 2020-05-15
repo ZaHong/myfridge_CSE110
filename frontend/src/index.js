@@ -8,7 +8,7 @@ import Login from "./LogInSignup/login.js";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Login />
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -174,12 +174,10 @@ class Login extends Component {
               alignItems="center"
               justify="center"
             >
-            <Link href="#" variant="body2" className={classes.link}>
+            <Link href="/resetpassword" variant="body2" className={classes.link}>
                   Forgot password?
             </Link>
-            <Link variant="body2" className={classes.link} onClick={event => {
-                ReactDom.render(<SignUp />, document.getElementById("root"));
-            }}>
+            <Link href="/signup" variant="body2" className={classes.link}>
                   {"Don't have an account? Sign Up"}
             </Link>
             </Grid>

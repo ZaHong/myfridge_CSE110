@@ -176,9 +176,8 @@ class SignUp extends Component {
                                       alignItems="center"
                                       justify="center"
                                 >
-                                    <Link variant="body2" className={classes.link} onClick={event =>{
-                                        ReactDom.render(<Login />, document.getElementById("root"));
-                                    }}>
+                                    
+                                    <Link href="/" variant="body2"    className={classes.link}>
                                         {"Already have an account? Sign In"}
                                     </Link>
                                 </Grid>
