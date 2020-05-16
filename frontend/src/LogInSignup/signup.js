@@ -161,6 +161,23 @@ class SignUp extends Component {
                                     defaultValue={this.state.password}
                                     onChange={this.handleChange('password')}
                                 />
+                                <TextField
+                                    variant="outlined"
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    name="re-enter password"
+                                    label="Re-enter Password"
+                                    type="password"
+                                    id="password"
+                                    InputProps={{
+                                        classes: {
+                                            notchedOutline: classes.notchedOutline
+                                        }
+                                    }}
+                                    defaultValue={this.state.password}
+                                    onChange={this.handleChange('password')}
+                                />
                                 <Button
                                     type="submit"
                                     fullWidth
