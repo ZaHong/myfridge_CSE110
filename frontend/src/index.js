@@ -4,10 +4,12 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Login from './LogInSignup/login.js';
+import Tabs from './fridge/tabs';
+import Fridge from './fridge/fridge'
 
 ReactDOM.render(
   <React.StrictMode>
-    <Login />
+    <Fridge />
   </React.StrictMode>,
   document.getElementById('root')
 );
