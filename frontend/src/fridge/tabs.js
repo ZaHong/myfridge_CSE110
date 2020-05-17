@@ -10,30 +10,6 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import logo from "../../src/LogInSignup/res/MyFridge_Logo_Small.png";
 import { Grid } from '@material-ui/core';
- 
-
-function ComboBox(props) {
-  //var value = props.value;
-  var foodList = []
-  var list = props.list;
-  var hashMap = new Map()
-  for (var key = 0; key < list.length; key++){
-    foodList.push({ title: list[key].foodName, ExpirationDate: list[key].ExpirationDate})
-    hashMap.set(list[key].foodName, key+1)
-  }
-  return (
-    <Autocomplete
-      id="combo-box-demo"
-      options={foodList}
-      //onInputChange={(event, newInputValue) => {
-        //value = hashMap.get(newInputValue);
-      //}}
-      getOptionLabel={(option) => option.title}
-      style={{ width: 300 }}
-      renderInput={(params) => <TextField {...params} label="Choose Food Item" variant="outlined" />}
-    />
-  );
-}
 
 const AntTabs = withStyles({
   root: {
@@ -132,7 +108,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function VerticalTabs(props) {
-
+  const [activeTabIndex, setIndex] = React.useState(0);
   const style = {
     //display: 'flex',
     height: 450,
@@ -143,33 +119,45 @@ export default function VerticalTabs(props) {
     width: '625px',
     }
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  
   var list = props.foodInfos;
 
   const handleChange = (event, newValue) => {
-    //alert(newValue)
-    setValue(newValue);
+    if(typeof(newValue) == 'number'){
+      setIndex(newValue);
+    }else if(newValue != null){
+      setIndex(parseInt(comboBoxhashMap.get(newValue.title), 10))
+    }
   };
+
+  
+
   var resultTab = [];
   var resultInfo = [];
 
+  var comboBoxFoodList = []
+  var comboBoxhashMap = new Map()
+  for (var key = 0; key < list.length; key++){
+    comboBoxFoodList.push({ title: list[key].foodName, ExpirationDate: list[key].ExpirationDate})
+    comboBoxhashMap.set(list[key].foodName, key+1)
+  }
+
   for (var i = -1; i < list.length; i++){
     if (i < 0){
-      resultTab.push(
-        <ComboBox list={list} />)
-      resultInfo.push(<TabPanel value={value} index={0}>
-        <Grid style={style}>
-          <br></br>
-          <br></br>
-          <h1 >Welcome to </h1>
-          <img src={logo} height='150vh' style={{ marginTop: '2rem' }}/>
-        </Grid>
-      </TabPanel>)
+      resultTab.push()
+        resultInfo.push(<TabPanel value={activeTabIndex} index={0}>
+                        <Grid style={style}>
+                          <br></br>
+                          <br></br>
+                          <h1 >Welcome to </h1>
+                          <img src={logo} height='150vh' style={{ marginTop: '2rem' }}/>
+                        </Grid>
+                      </TabPanel>)
     }
     else{
     var name = list[i].foodName +'  '+list[i].ExpirationDate
     resultTab.push( <AntTab label={name}  className={classes.tab} {...a11yProps(i)} />)
-    resultInfo.push(<TabPanel value={value} index={i+1}>
+    resultInfo.push(<TabPanel value={activeTabIndex} index={i+1}>
       <Grid>
       <FoodInfos information={list[i]} /> 
       </Grid>
@@ -183,12 +171,20 @@ export default function VerticalTabs(props) {
         contentContainerStyle={{background: '#FF0'}}
         orientation="vertical"
         variant="scrollable"
-        value={value}
+        value={activeTabIndex}
         onChange={handleChange}
         //onInputChange={handleInputChange}
         aria-label="Vertical tabs example"
         className={classes.tabs}
       >
+        <Autocomplete
+                  id="combo-box-demo"
+                  options={comboBoxFoodList}
+                  onChange={handleChange}
+                  getOptionLabel={(option) => option.title}
+                  style={{ width: 300 }}
+                  renderInput={(params) => <TextField {...params} label="Choose Food Item" variant="outlined" />}
+                />
         {
         resultTab
         /*
