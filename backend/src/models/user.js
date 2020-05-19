@@ -16,7 +16,6 @@ var userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-
     password: {
         type: String,
         required: true
@@ -26,10 +25,9 @@ var userSchema = mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: Food
     },
-    // friend_list: {
-    //     type: [mongoose.Schema.Types.ObjectId],
-    //     ref: this
-    // }
+    friend_list: {
+        type: [mongoose.Schema.Types.ObjectId],
+    }
     // waste_food: [Schema.Types.ObjectId],
     // waste_food_weekly: [Schema.Types.ObjectId],
     // food_waste_score: [Schema.Types.ObjectId],
@@ -79,7 +77,7 @@ async function findUser(email) {
     var query = await User.findOne({email: email})
     if (query == null) {
         console.log("User does not exist")
-        return
+        return null
     } else {
         return query
     }

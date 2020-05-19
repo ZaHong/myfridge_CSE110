@@ -4,25 +4,97 @@ const db = require('../models/db')
 const {User, addUser, verifyUser, findUser} = require('../models/user')
 const {Food, findFood, addFood} = require('../models/food')
 const ONE_DAY = 86400000
-const WEEK = 7 * ONE_DAY
-const THREE_DAYS = 3 * ONE_DAY
 
 user_router.post('/register', async (req, res) => {         // need user email and user password
-    console.log(req.body)
     const user_info = {
         email: req.body.email,
         password: req.body.password
     }
-    try{
-       await db.connectDB()
-       await addUser(user_info)
-       await db.disconnectDB()
-       res.send()
+    await db.connectDB()
+    if (await User.findOne({email: user_info.email})) {
+        res.send({
+            status: false,
+            message: "email has been used before"
+        })
     }
-    catch(e) {
-        console.log(e)
+    else{
+        var new_user = new User(user_info)
+        await new_user.save()
+        res.send({
+            status: true,
+            message: "registrate successfully"
+        })
     }
+    await db.disconnectDB()
 })
+
+user_router.post('/:id/addFriend', async(req, res) => {
+    const email = req.body.email
+    const id = req.params.id
+    await db.connectDB()
+    var friend = await findUser(email)
+    var user = await User.findOne({_id: id})
+    if (friend == null) {
+        res.send({
+            status: false,
+            message: "user does not exist"
+        })
+    }
+    else if(friend.id == user.id) {
+        res.send({
+            status: false,
+            message: "you cannot add yourself as a friend"
+        })
+    }
+    else if(user.friend_list.includes(friend.id)){
+        res.send({
+            status: false,
+            message: "this is already your friend"
+        })
+    }
+    else{
+        var friend_list = user.friend_list
+        friend_list.push(friend.id)
+        await User.updateOne({_id:(id)}, {$set:{"friend_list": friend_list}})
+        console.log(friend_list)
+        res.send({
+            status: true,
+            message: "add friend successfully!"
+        })
+    }
+    await db.disconnectDB()
+})
+
+user_router.get("/:id/friends", async (req, res) => {
+    await db.connectDB()
+    user = await User.findOne({_id:(req.params.id)})
+    var friend_list = user.friend_list
+    for(let i = 0; i < friend_list.length; i++){
+        friend = await User.findOne(friend_list[i])
+        friend_list[i] = {
+            id: friend.id,
+            email: friend.email
+        }
+    }
+    await db.disconnectDB()
+    res.send(friend_list)
+})
+
+user_router.post("/:id/deleteFriend", async (req, res) => {
+    await db.connectDB()
+    id = req.body.friend_id
+    user = await User.findOne({_id:(req.params.id)})
+    var friend_list = user.friend_list
+    var idx = friend_list.indexOf(req.body.id)
+    friend_list.splice(idx, 1)
+    await User.updateOne({_id:(req.params.id)}, {$set: {"friend_list": friend_list}})
+    await db.disconnectDB()
+    res.send({
+        status: true,
+        mesasge: "remove friend successfully"
+    })
+})
+
 
 user_router.post('/:id/addFood', async(req, res) => {  
     input_date = new Date(req.body.date_purchased)
@@ -34,8 +106,6 @@ user_router.post('/:id/addFood', async(req, res) => {
         tag: req.body.tag,
         quantity: req.body.quantity
     }
-    console.log(food_info.date_purchased)
-    console.log(food_info.expiration_date)
     await db.connectDB()
     food_id = await addFood(food_info)
     var user = await User.findById(req.params.id)
@@ -51,7 +121,7 @@ user_router.post('/:id/deleteFood', async (req, res) => {         // need the fo
     await db.connectDB()
     const user = await User.findById(req.params.id)
     var fridge = user.fridge
-    var idx = fridge.indexOf(food_id);
+    var idx = fridge.indexOf(food_id)
     fridge.splice(idx, 1)
     await User.updateOne({_id:(req.params.id)}, {$set: {"fridge": fridge}})
     try{
