@@ -25,10 +25,10 @@ var userSchema = mongoose.Schema({
     fridge: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: Food
-    }
+    },
     // friend_list: {
-    //     type: [Schema.Types.ObjectId],
-    //     ref: User
+    //     type: [mongoose.Schema.Types.ObjectId],
+    //     ref: this
     // }
     // waste_food: [Schema.Types.ObjectId],
     // waste_food_weekly: [Schema.Types.ObjectId],

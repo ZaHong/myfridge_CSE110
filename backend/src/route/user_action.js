@@ -24,24 +24,26 @@ user_router.post('/register', async (req, res) => {         // need user email a
     }
 })
 
-user_router.post('/:id/addFood', async(req, res) => {       // need all information of a food
+user_router.post('/:id/addFood', async(req, res) => {  
+    input_date = new Date(req.body.date_purchased)
     const food_info = {
         name: req.body.name,
-        date_purchased: req.body.date_purchased,
-        duration: req.body.duration
+        date_purchased: input_date,
+        duration: req.body.duration,
+        expiration_date: new Date(input_date.getTime() + req.body.duration * ONE_DAY),
+        tag: req.body.tag,
+        quantity: req.body.quantity
     }
+    console.log(food_info.date_purchased)
+    console.log(food_info.expiration_date)
     await db.connectDB()
     food_id = await addFood(food_info)
     var user = await User.findById(req.params.id)
     fridge = user.fridge
     fridge.push(food_id)
     await User.updateOne({_id:(req.params.id)}, {$set: {"fridge": user.fridge}})
-    for( var i = 0; i < fridge.length; i++) {
-        food = await Food.findById(fridge[i])
-        fridge[i] = food
-    }
     await db.disconnectDB()
-    res.redirect(`/user/${req.params.id}`)
+    res.send()
 })
 
 user_router.post('/:id/deleteFood', async (req, res) => {         // need the food_id that will be deleted
@@ -49,15 +51,8 @@ user_router.post('/:id/deleteFood', async (req, res) => {         // need the fo
     await db.connectDB()
     const user = await User.findById(req.params.id)
     var fridge = user.fridge
-    //console.log(food_id)
-    //console.log("******************")
     var idx = fridge.indexOf(food_id);
-    //console.log(fridge)
     fridge.splice(idx, 1)
-    //console.log(idx)
-    //console.log('-------------')
-    //console.log(fridge)
-    //console.log('--------------')
     await User.updateOne({_id:(req.params.id)}, {$set: {"fridge": fridge}})
     try{
         await Food.deleteOne({ "_id" : food_id });
@@ -66,41 +61,23 @@ user_router.post('/:id/deleteFood', async (req, res) => {         // need the fo
         console.log(e)
     }
     await db.disconnectDB()
-    res.redirect(`/user/${req.params.id}`)
+    res.send()
 })
 
 user_router.get(`/:id`, async (req, res) => {
-    var high = []
-    var medium = []
-    var low = []
-    const curr_date = Date.now()       
     await db.connectDB()
     var user = await User.findById(req.params.id)
     var fridge = user.fridge
     const len = fridge.length
-    console.log(fridge)
     for(let i = 0; i < len; i++) {                      
        var food = await Food.findById(fridge[i])
-       console.log(food)
-       var time_left = food.date_purchased + food.duration * ONE_DAY - curr_date
-       if(time_left <= THREE_DAYS) {
-            high.push(food)
-       }
-       else if(time_left > THREE_DAYS && time_left <= WEEK) {
-           medium.push(food)
-       }
-       else{
-           low.push(food)
-       }
+       fridge[i] = food
     }
     await db.disconnectDB()
+    fridge.sort((a, b) => a.expiration_date - b.expiration_date)
     res.send({
         user_id: req.params.id,
-        fridge: [
-            high,
-            medium,
-            low
-        ]
+        fridge: fridge
     })
 })
 

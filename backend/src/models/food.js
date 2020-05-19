@@ -17,26 +17,25 @@ var foodSchema = mongoose.Schema({
         required: true
     },
     date_purchased: {                   // store the milliseconds since 1970
-        type: Number,
+        type: Date,
         required: true,
-        default: Date.now()
     },
-    // expiration_date: {
-    //     type: Date,
-    //     required: true
-    // },
+    expiration_date: {
+         type: Date,
+         required: true
+     },
     duration: {
         type: Number,
         required: true
+    },
+    quantity: {
+         type: String,
+         required: true,
+         default: ""
+    },
+    tag: {
+         type: String
     }
-    // quantity: {
-    //     type: String,
-    //     required: true,
-    //     default: ""
-    // },
-    // tags: {
-    //     type: [String]
-    // },
     // price: {
     //     type: mongoose.Decimal128,
     //     required: true
