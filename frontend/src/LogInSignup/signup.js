@@ -4,7 +4,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
+import { BrowserRouter as Router, Link } from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -161,6 +161,23 @@ class SignUp extends Component {
                                     defaultValue={this.state.password}
                                     onChange={this.handleChange('password')}
                                 />
+                                <TextField
+                                    variant="outlined"
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    name="re-enter password"
+                                    label="Re-enter Password"
+                                    type="password"
+                                    id="password"
+                                    InputProps={{
+                                        classes: {
+                                            notchedOutline: classes.notchedOutline
+                                        }
+                                    }}
+                                    defaultValue={this.state.password}
+                                    onChange={this.handleChange('password')}
+                                />
                                 <Button
                                     type="submit"
                                     fullWidth
@@ -176,9 +193,8 @@ class SignUp extends Component {
                                       alignItems="center"
                                       justify="center"
                                 >
-                                    <Link variant="body2" className={classes.link} onClick={event =>{
-                                        ReactDom.render(<Login />, document.getElementById("root"));
-                                    }}>
+                                    
+                                    <Link to="/" variant="body2"    className={classes.link}>
                                         {"Already have an account? Sign In"}
                                     </Link>
                                 </Grid>

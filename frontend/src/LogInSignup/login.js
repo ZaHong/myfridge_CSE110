@@ -4,7 +4,8 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
+import { BrowserRouter as Router, Link } from "react-router-dom";
+//import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -174,12 +175,13 @@ class Login extends Component {
               alignItems="center"
               justify="center"
             >
-            <Link href="#" variant="body2" className={classes.link}>
+            {/*Pass props to other pages like this */}
+            {/*to={{ pathname: '/resetpassword', state: { foo: 'bar'}}}*/}
+            {/*props.location.state.xxxxxx*/}
+            <Link to="/resetpassword" className={classes.link}>
                   Forgot password?
             </Link>
-            <Link variant="body2" className={classes.link} onClick={event => {
-                ReactDom.render(<SignUp />, document.getElementById("root"));
-            }}>
+            <Link to="/signup" variant="body2" className={classes.link}>
                   {"Don't have an account? Sign Up"}
             </Link>
             </Grid>

@@ -84,7 +84,6 @@ user_router.get(`/:id`, async (req, res) => {
 user_router.post('/login', async(req, res) => {         // need the user email and user password
     await db.connectDB()
     var query = await verifyUser(req.body.email, req.body.password)
-    //console.log(query)
     if(query === null) {
         res.status(404).send()
     }

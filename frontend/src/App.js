@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import './App.css';
+import login from './LogInSignup/login';
+import signup from './LogInSignup/signup';
+import resetpassword from './LogInSignup/resetPassword';
 
 class App extends Component {
   constructor(props){
     super(props);
-    this.state = {response : ""};
+    //this.state = {response : ""};
   }
 
-  callBackend(){
+  /*callBackend(){
     fetch("http://localhost:8000")
     .then(res => res.text())
     .then(res => this.setState({response : res}))
@@ -17,17 +21,19 @@ class App extends Component {
 
   componentDidMount(){
     this.callBackend();
-  }
+  }*/
 
   render(){
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1>My Fridge</h1>
-          <p className="App-intro">{this.state.response}</p>
-        </header>
-      </div>
+      <Router>
+        <div>
+          <Switch>
+              <Route exact path='/' component={login} />
+              <Route path='/signup' component={signup} />
+              <Route path='/resetpassword' component={resetpassword} />
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
