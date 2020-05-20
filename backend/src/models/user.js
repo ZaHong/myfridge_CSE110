@@ -7,6 +7,7 @@
  */
 var mongoose = require('mongoose')
 const {Food, findFood} = require('./food.js')
+const db = require('./db')
 
 /*
  * A User schema is a "database-less" class. It only structures data.
@@ -83,4 +84,147 @@ async function findUser(email) {
     }
 }
 
-module.exports = {User, addUser, verifyUser, findUser}
+async function registerUser(user_info) {
+    var result = {}
+    await db.connectDB()
+    if (await User.findOne({email: user_info.email})) {
+        result = {
+            status: false,
+            message: "email has been used before"
+        }
+    }
+    else{
+        var new_user = new User(user_info)
+        await new_user.save()
+        result = {
+            status: true,
+            message: "registrate successfully"
+        }
+    }
+    await db.disconnectDB()
+    return result
+}
+
+async function addFriend(email, id) {
+    await db.connectDB()
+    var friend = await findUser(email)
+    var result = {}
+    var user = await User.findOne({_id: id})
+    if (friend == null) {
+        result = {
+            status: false,
+            message: "user does not exist"
+        }
+    }
+    else if(friend.id == user.id) {
+        result = {
+            status: false,
+            message: "you cannot add yourself as a friend"
+        }
+    }
+    else if(user.friend_list.includes(friend.id)){
+        result = {
+            status: false,
+            message: "this is already your friend"
+        }
+    }
+    else{
+        var friend_list = user.friend_list
+        friend_list.push(friend.id)
+        await User.updateOne({_id:(id)}, {$set:{"friend_list": friend_list}})
+        result = {
+            status: true,
+            message: "add friend successfully!"
+        }
+    }
+    await db.disconnectDB()
+    return result
+    
+}
+
+async function getFriends(id) {
+    await db.connectDB()
+    user = await User.findOne({_id: id})
+    var friend_list = user.friend_list
+    for(let i = 0; i < friend_list.length; i++){
+        friend = await User.findOne(friend_list[i])
+        friend_list[i] = {
+            id: friend.id,
+            email: friend.email
+        }
+    }
+    await db.disconnectDB()
+    return friend_list
+}
+
+async function deleteFriend(friend_id, user_id) {
+    await db.connectDB()
+    user = await User.findOne({_id: user_id})
+    var friend_list = user.friend_list
+    var idx = friend_list.indexOf(friend_id)
+    friend_list.splice(idx, 1)
+    await User.updateOne({_id:(user_id)}, {$set: {"friend_list": friend_list}})
+    await db.disconnectDB()
+    return {
+        status: true,
+        mesasge: "remove friend successfully"
+    }
+}
+
+async function addFood(food_info, user_id) {
+    await db.connectDB()
+    var new_food = new Food(food_info)
+    await new_food.save()
+    var user = await User.findById(user_id)
+    fridge = user.fridge
+    fridge.push(new_food)
+    await User.updateOne({_id: user_id}, {$set: {"fridge": user.fridge}})
+    await db.disconnectDB()
+    return {
+        status: true,
+        message: "add food successfully"
+    }
+}
+
+async function deleteFood(food_id, user_id) {
+    await db.connectDB()
+    const user = await User.findById(user_id)
+    var fridge = user.fridge
+    var idx = fridge.indexOf(food_id)
+    fridge.splice(idx, 1)
+    await User.updateOne({_id: user_id}, {$set: {"fridge": fridge}})
+    await Food.deleteOne({ "_id" : food_id });
+    await db.disconnectDB()
+    return {
+        status: true,
+        message: "delete food successfully"
+    }
+}
+
+async function showUser(user_id) {
+    result = {}
+    await db.connectDB()
+    var user = await User.findById(user_id)
+    var fridge = user.fridge
+    const len = fridge.length
+    for(let i = 0; i < len; i++) {                      
+       var food = await Food.findById(fridge[i])
+       fridge[i] = food
+    }
+    await db.disconnectDB()
+    fridge.sort((a, b) => a.expiration_date - b.expiration_date)
+    result = {
+        user_id: user_id,
+        fridge: fridge
+    }
+    return result
+}
+
+async function login(email, password) {
+    await db.connectDB()
+    var query = await verifyUser(email, password)
+    await db.disconnectDB()
+    return query
+}
+module.exports = {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, 
+    addFood, deleteFood, showUser, login}

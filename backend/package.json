@@ -13,9 +13,9 @@
     "mongoose": "^5.9.12"
   },
   "scripts": {
-    "start": "node ./src/index.js",
+    "start": "node ./src/server/index.js",
     "test": "jest --runInBand",
-    "dev": "cross-env NODE_ENV=dev nodemon ./src/index.js "
+    "dev": "cross-env NODE_ENV=dev nodemon ./src/server/index.js "
   },
   "devDependencies": {
     "cross-env": "^7.0.2",
