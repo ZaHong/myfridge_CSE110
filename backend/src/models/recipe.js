@@ -11,12 +11,20 @@ var mongoose = require('mongoose')
  * A recipe schema is a "database-less" class. It only structures data.
  */
 var recipeSchema = mongoose.Schema({
+    idx: {
+        type: Number,
+        required: true
+    },
     name: {
         type: String,
         required: true
     },
     ingredients: {
         type: [String],
+        required: true
+    },
+    steps: {
+        type: String,
         required: true
     }
 })
@@ -31,20 +39,27 @@ var recipeSchema = mongoose.Schema({
  */
 const Recipe = new mongoose.model('Recipe', recipeSchema)
 
-/*
- * This function will find recipe by compare recipe ingredient w/ user food items.
- *
- */
 
-async function findRecipe(ingredient) {
-    var query = await Recipe.find({ingredients: ingredient})
-    if (query == null) {
-        console.log("No recipe matches")
-        return null
-    } else {
-        return query
+async function findIngredient(idx, [fridge]) {
+    var query = await Recipe.findOne({idx: idx})
+    let num = 0
+    for (var i = 0; i < fridge.length; i++) {
+            var cur= fridge[i];
+            await query.find({ingredients: { $elemMatch: cur}}, function(err, query) {
+                if(err){
+                    return console.error(err.stack)
+                }
+                if(!query)
+                    return console.error("no match found!")
+                //create a pair map in recipe name and match food
+                else
+                    num++
+            })
+    }
+    return {
+        recipe_id: query.idx,
+        miss_item_num: query.ingredients.length - num
     }
 }
 
-
-module.exports = {Recipe, findRecipe}
+module.exports = {Recipe, findIngredient}

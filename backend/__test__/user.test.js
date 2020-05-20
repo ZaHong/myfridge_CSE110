@@ -1,4 +1,6 @@
 // tests/product.test.js
+import {addFood} from "../src/models/food";
+
 const mongoose = require('mongoose');
 const {User, addUser} = require('../src/models/user.js')
 const mock_db = require('./mock_db.js')
@@ -26,12 +28,14 @@ describe('User ', () => {
     /**
      * Tests that a valid product can be created through the productService without throwing any errors.
      */
-    it('can be created correctly', async () => {
+    it('user can be created correctly', async () => {
         expect(async () => await addUser(user1_info))
             .not
             .toThrow();
     });
 });
+
+
 
 /**
  * Complete product example.
@@ -39,4 +43,12 @@ describe('User ', () => {
 const user1_info = {
     email: 'sample@ucsd.edu',
     password: 'helloworld'
+};
+
+/**
+ * food info
+ */
+const food1_info = {
+    name: 'Apple',
+    duration: 5
 };

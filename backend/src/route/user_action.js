@@ -3,6 +3,9 @@ const user_router = express.Router()
 const db = require('../models/db')
 const {User, addUser, verifyUser, findUser} = require('../models/user')
 const {Food, findFood, addFood} = require('../models/food')
+
+const {Recipe, findIngredient} = require('../models/recipe')
+
 const ONE_DAY = 86400000
 
 user_router.post('/register', async (req, res) => {         // need user email and user password
@@ -162,5 +165,27 @@ user_router.post('/login', async(req, res) => {         // need the user email a
     }
     await db.disconnectDB()
 })
+
+/*
+ * find recipe
+ */
+user_router.get(`/:id/recipe`, async (req, res) => {
+    await db.connectDB()
+    var user = await User.findById(req.params.id)
+    var fridge = user.fridge
+    const len = fridge.length
+    for(let i = 0; i < len; i++) {
+        var food = await Food.findById(fridge[i])
+        fridge[i] = food
+    }
+
+    const lenx = Recipe.length
+    var pairs = []
+    for (var i = 1; i < lenx; i++) {
+        pairs.push(await findIngredient(i, fridge))
+    }
+    await db.disconnectDB()
+    res.send(pairs)
+});
 
 module.exports = user_router;
