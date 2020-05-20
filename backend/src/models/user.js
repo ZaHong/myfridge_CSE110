@@ -226,5 +226,41 @@ async function login(email, password) {
     await db.disconnectDB()
     return query
 }
+
+async function modify_food(food_info, food_id) {
+    await db.connectDB()
+    await Food.updateOne({_id: food_id}, {$set: {
+        "name": food_info.name,
+        "date_purchased": food_info.date_purchased,
+        "duration": food_info.duration,
+        "expiration_date": food_info.expiration_date,
+        "tag": food_info.tag,
+        "quantity": food_info.quantity
+    }})
+    await db.disconnectDB()
+    return {
+        status: true,
+        message: "successfully modify food"
+    }
+}
+
+async function displayByTag(user_id) {
+    await db.connectDB()
+    var user = await User.findById(user_id)
+    var fridge = user.fridge
+    for (let i = 0; i < fridge.length; i++) {
+        fridge[i] = await Food.findById(fridge[i])
+    }
+    map = {}
+    for (let i = 0; i < fridge.length; i++) {
+        map[fridge[i].tag] = []
+    }
+    for (let i = 0; i < fridge.length; i++) {
+        map[fridge[i].tag].push(fridge[i])
+    }
+    await db.disconnectDB()
+    return map
+}
+
 module.exports = {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, 
-    addFood, deleteFood, showUser, login}
+    addFood, deleteFood, showUser, login, modify_food, displayByTag}

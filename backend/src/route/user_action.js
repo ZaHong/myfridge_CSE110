@@ -2,7 +2,7 @@ const express = require('express')
 const user_router = express.Router()
 const db = require('../models/db')
 const {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, addFood,
-       deleteFood, showUser, login} = require('../models/user')
+       deleteFood, showUser, login, modify_food, displayByTag} = require('../models/user')
 const {Food, findFood} = require('../models/food')
 
 const {Recipe, findIngredient} = require('../models/recipe')
@@ -34,7 +34,6 @@ user_router.post("/:id/deleteFriend", async (req, res) => {
     result = await deleteFriend(req.body.friend_id, req.params.id)
     res.send(result)
 })
-
 
 user_router.post('/:id/addFood', async (req, res) => {  
     input_date = new Date(req.body.date_purchased)
@@ -71,6 +70,25 @@ user_router.post('/login', async(req, res) => {         // need the user email a
             message: "fail to login"
         })
     }
+})
+
+user_router.post('/:id/modifyFood', async (req, res) => {
+    input_date = new Date(req.body.date_purchased)
+    const food_info = {
+        name: req.body.name,
+        date_purchased: input_date,
+        duration: req.body.duration,
+        expiration_date: new Date(input_date.getTime() + req.body.duration * ONE_DAY),
+        tag: req.body.tag,
+        quantity: req.body.quantity
+    }
+    var result = await modify_food(food_info, req.body.food_id)
+    res.send(result)
+})
+
+user_router.get('/:id/byTag', async (req, res) => {
+    result = await displayByTag(req.params.id)
+    res.send(result)
 })
 
 /*
