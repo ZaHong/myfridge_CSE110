@@ -11,10 +11,6 @@ var mongoose = require('mongoose')
  * A recipe schema is a "database-less" class. It only structures data.
  */
 var recipeSchema = mongoose.Schema({
-    idx: {
-        type: Number,
-        required: true
-    },
     name: {
         type: String,
         required: true
@@ -24,6 +20,10 @@ var recipeSchema = mongoose.Schema({
         required: true
     },
     steps: {
+        type: String,
+        required: true
+    },
+    url: {
         type: String,
         required: true
     }
@@ -62,4 +62,14 @@ async function findIngredient(idx, [fridge]) {
     }
 }
 
-module.exports = {Recipe, findIngredient}
+async function addRecipe(name, ingredients, steps, url) {
+    var new_recipe = new Recipe({
+        name: name,
+        ingredients: ingredients,
+        steps: steps,
+        url: url
+    })
+    return new_recipe.save()
+}
+
+module.exports = {Recipe, findIngredient, addRecipe}
