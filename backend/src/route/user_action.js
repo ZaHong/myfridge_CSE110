@@ -2,10 +2,10 @@ const express = require('express')
 const user_router = express.Router()
 const db = require('../models/db')
 const {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, addFood,
-       deleteFood, showUser, login, modify_food, displayByTag} = require('../models/user')
+       deleteFood, showUser, login, modify_food, displayByTag, getFoodNames} = require('../models/user')
 const {Food, findFood} = require('../models/food')
 
-const {Recipe, findIngredient} = require('../models/recipe')
+const {Recipe, suggestRecipe} = require('../models/recipe')
 
 const ONE_DAY = 86400000
 
@@ -92,25 +92,12 @@ user_router.get('/:id/byTag', async (req, res) => {
 })
 
 /*
- * find recipe
+ * Suggest Recipe
  */
 user_router.get(`/:id/recipe`, async (req, res) => {
-    await db.connectDB()
-    var user = await User.findById(req.params.id)
-    var fridge = user.fridge
-    const len = fridge.length
-    for(let i = 0; i < len; i++) {
-        var food = await Food.findById(fridge[i])
-        fridge[i] = food
-    }
-
-    const lenx = Recipe.length
-    var pairs = []
-    for (var i = 1; i < lenx; i++) {
-        pairs.push(await findIngredient(i, fridge))
-    }
-    await db.disconnectDB()
-    res.send(pairs)
+    fridge = await getFoodNames(req.params.id)
+    var result = await suggestRecipe(fridge)
+    res.send(result)
 });
 
 module.exports = user_router;
