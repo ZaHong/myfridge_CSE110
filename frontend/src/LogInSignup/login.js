@@ -87,7 +87,7 @@ class Login extends Component {
     };
   }
 
-  handleClick(event){
+  async handleClick(event){
 
     const user = {
       email : this.state.email,
@@ -97,7 +97,7 @@ class Login extends Component {
     
     //alert(JSON.stringify(user));
     //For create new user
-    fetch("http://localhost:8000/user/login",{
+    await fetch("http://localhost:8000/user/login",{
       method: "POST",
       headers: {
         'Content-Type': "application/json"
