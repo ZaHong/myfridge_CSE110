@@ -95,6 +95,7 @@ class Login extends Component {
     };
     //alert(JSON.stringify(user))
     
+    //alert(JSON.stringify(user));
     //For create new user
     fetch("http://localhost:8000/user/login",{
       method: "POST",
@@ -102,7 +103,9 @@ class Login extends Component {
         'Content-Type': "application/json"
       },
       body: JSON.stringify(user)
-    })
+    }).then(response => response.json()).then(json => {
+      alert(json.status)
+    }).catch(error => console.log(error))
   }
 
   handleChange = name => event => {
