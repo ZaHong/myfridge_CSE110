@@ -262,5 +262,21 @@ async function displayByTag(user_id) {
     return map
 }
 
+// This method is for recipe, take id and a list of food names in user's fridge
+async function getFoodNames() {
+    await db.connectDB()
+    var user = await User.findById(req.params.id)
+    var fridge_id = user.fridge
+    var fridge = []
+    for(let food_id in fridge_id) {
+        var food_name = await Food.findById(food_id)
+        fridge.append(food_name)
+    }
+    // Extract unique food names from fridge
+    let unique = [...new Set(fridge)]
+    await db.disconnectDB()
+    return unique
+}
+
 module.exports = {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, 
-    addFood, deleteFood, showUser, login, modify_food, displayByTag}
+    addFood, deleteFood, showUser, login, modify_food, displayByTag, getFoodNames}

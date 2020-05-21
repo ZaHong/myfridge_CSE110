@@ -72,4 +72,37 @@ async function addRecipe(name, ingredients, steps, url) {
     return new_recipe.save()
 }
 
-module.exports = {Recipe, findIngredient, addRecipe}
+
+// Adds missing num and recipe's info to suggests if missing num > 0
+function countIngredient(cur_recipe, fridge, suggests) {
+    let missing_num = total_num
+    let total_num = cur_recipe.ingredients.length
+    // Iterate cur_recipe    
+    for(var ingredient in cur_recipe.ingredients) {
+        for(var food in fridge) {
+            if(ingredient == food) {
+                missing_num--
+            }
+        }
+    }
+    // Only add recipe if we have at least 1 ingredient
+    if(missing_num < total_num) {
+        suggests.append({
+            missing_num: missing_num,
+            recipe_info: cur_recipe
+        })
+    }
+}
+
+// Takes in fridge list, return list recipe and missing number
+async function suggestRecipe(fridge) {
+    var suggests = []
+    Recipe.find().then( function(allRecipes) {
+        for(let cur_recipe in allRecipes) {
+            countIngredient(cur_recipe, unique, suggests)
+        }
+        return suggests
+    })
+}
+
+module.exports = {Recipe, addRecipe, suggestRecipe}
