@@ -72,4 +72,34 @@ async function addRecipe(name, ingredients, steps, url) {
     return new_recipe.save()
 }
 
+
+// Adds missing num and recipe's info to suggests if missing num > 0
+function countIngredient(cur_recipe, fridge, suggests) {
+    let missing_num = 0
+    let total_num = cur_recipe.ingredients.length
+    // Iterate cur_recipe    
+    for(var food_item in cur_recipe.ingredients) {
+
+    }
+}
+
+// Takes in fridge list, return list recipe and missing number
+async function suggestRecipe(fridge) {
+    var suggests = []
+    Recipe.find().then( function(allRecipes) {
+        for(let cur_recipe in allRecipes) {
+            countIngredient(cur_recipe, fridge, suggests)
+        }
+        return suggests
+    })
+}
+
+// Testing
+var {connectDB, disconnectDB} = require('./db.js')
+async function testSuggest() {
+    await connectDB()
+    await suggestRecipe()
+    await disconnectDB()
+}
+testSuggest()
 module.exports = {Recipe, findIngredient, addRecipe}
