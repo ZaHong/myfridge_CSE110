@@ -5,6 +5,7 @@ import './App.css';
 import login from './LogInSignup/login';
 import signup from './LogInSignup/signup';
 import resetpassword from './LogInSignup/resetPassword';
+import index from './fridge/fridge';
 
 class App extends Component {
   constructor(props){
@@ -31,6 +32,7 @@ class App extends Component {
               <Route exact path='/' component={login} />
               <Route path='/signup' component={signup} />
               <Route path='/resetpassword' component={resetpassword} />
+              <Route path='/index' component={index} />
           </Switch>
         </div>
       </Router>
