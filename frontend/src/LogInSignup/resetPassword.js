@@ -250,10 +250,11 @@ class ResetPassword extends Component {
                   {(this.state.consistentPassword ||
                     this.state.userNotExist) && (
                     <Alert severity="error">
+                      <strong>
                       {this.state.consistentPassword
-                        ? "The password does not match — "
-                        : "The user does not exist — "}
-                      <strong>check it out!</strong>
+                        ? "The password does not match"
+                        : "The user does not exist"}
+                      </strong>
                     </Alert>
                   )}
                 </div>
