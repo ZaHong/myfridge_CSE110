@@ -204,10 +204,11 @@ class Login extends Component {
                   {(this.state.emptyPassword ||
                     this.state.userNotExist) && (
                     <Alert severity="error">
+                      <strong>
                       {this.state.emptyPassword
-                        ? "Please Enter Valid Password — "
-                        : "User Does No Exist — "}
-                      <strong>check it out!</strong>
+                        ? "Please Enter Valid Password"
+                        : "User Does No Exist"}
+                      </strong>
                     </Alert>
                   )}
                 </div>
