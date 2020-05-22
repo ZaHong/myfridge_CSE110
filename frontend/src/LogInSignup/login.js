@@ -104,7 +104,7 @@ class Login extends Component {
       },
       body: JSON.stringify(user)
     }).then(response => response.json()).then(json => {
-      alert(json.status)
+      alert(json.user_id)
     }).catch(error => console.log(error))
   }
 
@@ -164,7 +164,7 @@ class Login extends Component {
               onChange={this.handleChange('password')}
             />
             <Button
-              type="submit"
+              type='button'
               fullWidth
               variant="contained"
               color="#5f5f5d"
