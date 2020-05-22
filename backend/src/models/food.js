@@ -30,7 +30,6 @@ var foodSchema = mongoose.Schema({
     },
     quantity: {
          type: String,
-         required: true,
          default: ""
     },
     tag: {

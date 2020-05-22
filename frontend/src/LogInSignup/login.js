@@ -13,6 +13,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Background_Image from './res/background_img.png';
 import logo from './res/MyFridge_Logo_Small.png';
+import Alert from "@material-ui/lab/Alert";
 import background_color from './res/background_color.png';
 import SignUp from "./signup";
 
@@ -83,7 +84,9 @@ class Login extends Component {
 
     this.state = {
       email:"",
-      password:""
+      password:"",
+      userNotExist: false,
+      emptyPassword: false,
     };
   }
 
@@ -97,15 +100,24 @@ class Login extends Component {
     
     //alert(JSON.stringify(user));
     //For create new user
-    fetch("http://localhost:8000/user/login",{
-      method: "POST",
-      headers: {
-        'Content-Type': "application/json"
-      },
-      body: JSON.stringify(user)
-    }).then(response => response.json()).then(json => {
-      alert(json.status)
-    }).catch(error => console.log(error))
+    if(user.password != null && user.password!= ''){
+      fetch("http://localhost:8000/user/login",{
+        method: "POST",
+        headers: {
+          'Content-Type': "application/json"
+        },
+        body: JSON.stringify(user)
+      }).then(response => response.json()).then(json => {
+        if(json.status!=null && json.status==true){
+
+        }else{
+          //alert('Wrong Password')
+          this.setState({ userNotExist: true, emptyPassword: false })
+        }
+      }).catch(this.setState({ userNotExist: true, emptyPassword: false }))
+    }else{
+      this.setState({ userNotExist: false, emptyPassword: true })
+    }
   }
 
   handleChange = name => event => {
@@ -164,7 +176,7 @@ class Login extends Component {
               onChange={this.handleChange('password')}
             />
             <Button
-              type="submit"
+              type='button'
               fullWidth
               variant="contained"
               color="#5f5f5d"
@@ -188,6 +200,18 @@ class Login extends Component {
                   {"Don't have an account? Sign Up"}
             </Link>
             </Grid>
+              <div>
+                  {(this.state.emptyPassword ||
+                    this.state.userNotExist) && (
+                    <Alert severity="error">
+                      <strong>
+                      {this.state.emptyPassword
+                        ? "Please Enter Valid Password"
+                        : "User Does No Exist"}
+                      </strong>
+                    </Alert>
+                  )}
+                </div>
           </form>
         </div>
       </Container>
