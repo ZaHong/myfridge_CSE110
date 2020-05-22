@@ -2,10 +2,9 @@ const express = require('express')
 const user_router = express.Router()
 const db = require('../models/db')
 const {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, addFood,
-       deleteFood, showUser, login, modify_food, displayByTag, getFoodNames} = require('../models/user')
+       deleteFood, showUser, login, modify_food, displayByTag, getFoodNames, suggestRecipe} = require('../models/user')
 const {Food, findFood} = require('../models/food')
 
-const {Recipe, suggestRecipe} = require('../models/recipe')
 
 const ONE_DAY = 86400000
 
@@ -87,7 +86,7 @@ user_router.post('/:id/modifyFood', async (req, res) => {
 })
 
 user_router.get('/:id/byTag', async (req, res) => {
-    result = await displayByTag(req.params.id)
+    var result = await displayByTag(req.params.id)
     res.send(result)
 })
 
@@ -95,9 +94,10 @@ user_router.get('/:id/byTag', async (req, res) => {
  * Suggest Recipe
  */
 user_router.get(`/:id/recipe`, async (req, res) => {
-    fridge = await getFoodNames(req.params.id)
-    var result = await suggestRecipe(fridge)
+    await db.connectDB()
+    var result = await suggestRecipe(req.params.id)
     res.send(result)
+    await db.disconnectDB()
 });
 
 module.exports = user_router;

@@ -7,6 +7,7 @@
  */
 var mongoose = require('mongoose')
 const {Food, findFood} = require('./food.js')
+const {suggest} = require('./recipe.js')
 const db = require('./db')
 
 /*
@@ -262,21 +263,24 @@ async function displayByTag(user_id) {
     return map
 }
 
-// This method is for recipe, take id and a list of food names in user's fridge
-async function getFoodNames() {
-    await db.connectDB()
-    var user = await User.findById(req.params.id)
+// This method is for recipe, take id and a list of unique food names in user's fridge
+async function getFoodNames(user_id) {
+    var user = await User.findById(user_id)
     var fridge_id = user.fridge
     var fridge = []
-    for(let food_id in fridge_id) {
+    for(let food_id of fridge_id) {
         var food_name = await Food.findById(food_id)
-        fridge.append(food_name)
+        fridge.push(food_name.name)
     }
     // Extract unique food names from fridge
     let unique = [...new Set(fridge)]
-    await db.disconnectDB()
     return unique
 }
 
+async function suggestRecipe(user_id) {
+    var fridge = await getFoodNames(user_id)
+    return await suggest(fridge)
+}
+
 module.exports = {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, 
-    addFood, deleteFood, showUser, login, modify_food, displayByTag, getFoodNames}
+    addFood, deleteFood, showUser, login, modify_food, displayByTag, getFoodNames, suggestRecipe}

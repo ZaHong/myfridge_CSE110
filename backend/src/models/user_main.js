@@ -1,5 +1,6 @@
 var db = require('./db.js')
-var {User, addUser, verifyUser, findUser} = require('./user.js')
+var {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, addFood, deleteFood, showUser, login, modify_food, displayByTag, getFoodNames, suggestRecipe} = require('./user.js')
+
 
 test_functions = []
 test_functions[0] = async function test_add_one() {
@@ -15,11 +16,17 @@ test_functions[1] = async function test_show_db() {
 
 async function test(tests) {
     await db.connectDB()
-    // await tests[0]()
-    await tests[1]()
-    console.log("aslkefjsalkdfjsfsafd")
+    list = ["chicken", "salt", "mongo", "orange", "onion", "pepper"]
+    var user1 = await User.findOne({
+        email: "chief@ucsd.edu"
+    })
+    var suggests = await suggestRecipe(user1._id)
+    console.log(suggests.length)
+    // For the first 
+    for(let i of suggests) {
+        console.log(i.missing_num)
+    }
     await db.disconnectDB()
-    console.log("All test cleared.")
 }
 
 test(test_functions)
