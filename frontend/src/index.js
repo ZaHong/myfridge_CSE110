@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import ResetPassword from "./LogInSignup/resetPassword.js";
 import * as serviceWorker from "./serviceWorker";
+import Fridge from "./fridge/fridge"
 import Login from "./LogInSignup/login.js";
 
 ReactDOM.render(
