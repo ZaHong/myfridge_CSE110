@@ -13,7 +13,8 @@ import Container from '@material-ui/core/Container';
 // import Background_Image from './res/background_img.png';
 import logo from './res/MyFridge_Logo_Small.png';
 // import background_color from './res/background_color.png';
-import Login from "./login";
+import  { Redirect } from 'react-router-dom'
+import Alert from "@material-ui/lab/Alert";
 
 const styles = theme => ({
     background:{
@@ -83,7 +84,12 @@ class SignUp extends Component {
 
         this.state = {
             email:"",
-            password:""
+            password:"",
+            reenter:"",
+            diffPassword: false,
+            emptyPassword: false,
+            invalidEmail:false,
+            successSignUp: false,
         };
     }
 
@@ -94,17 +100,26 @@ class SignUp extends Component {
             password : this.state.password,
         };
         //alert(JSON.stringify(user))
-
-        //For create new user
-        fetch("http://localhost:8000/user/register",{
-            method: "POST",
-            headers: {
-                'Content-Type': "application/json"
-            },
-            body: JSON.stringify(user)
-        }).then(
-            // check condition, then go to the main page
-        )
+        if(this.state.password != this.state.reenter){
+            this.setState({diffPassword: true, emptyPassword: false, invalidEmail: false})
+        }else if(this.state.password == ''){
+            this.setState({diffPassword: false, emptyPassword: true, invalidEmail: false})
+        }else if(/.+@.+\.[A-Za-z]+$/.test(this.state.email) != true){
+            //regex for testing email format
+            this.setState({diffPassword: false, emptyPassword: false, invalidEmail: true})
+        }else{
+            //For create new user
+            fetch("http://localhost:8000/user/register",{
+                method: "POST",
+                headers: {
+                    'Content-Type': "application/json"
+                },
+                body: JSON.stringify(user)
+            }).then(
+                // check condition, then redirect to the signin page
+                this.setState({successSignUp: true})
+            )
+        }   
     }
 
     handleChange = name => event => {
@@ -115,6 +130,7 @@ class SignUp extends Component {
         const { classes } = this.props;
         return (
             <Grid container xs={12} className={classes.background}>
+                {(this.state.successSignUp) && (<Redirect to='/'/>)}
                 <img src={logo} marginTop='20px' height='100vh'/>
                 <Grid container xs={10} sm={6} md={4} className={classes.outerpaper}>
                     <Container component="main" maxWidth="xs">
@@ -176,10 +192,10 @@ class SignUp extends Component {
                                         }
                                     }}
                                     defaultValue={this.state.password}
-                                    onChange={this.handleChange('password')}
+                                    onChange={this.handleChange('reenter')}
                                 />
                                 <Button
-                                    type="submit"
+                                    type="button"
                                     fullWidth
                                     variant="contained"
                                     color="#5f5f5d"
@@ -198,6 +214,16 @@ class SignUp extends Component {
                                         {"Already have an account? Sign In"}
                                     </Link>
                                 </Grid>
+                                <div>
+                                {(this.state.emptyPassword ||
+                                    this.state.invalidEmail || this.state.diffPassword) && (
+                                    <Alert severity="error">
+                                    <strong>{this.state.emptyPassword
+                                        ? 'Please Enter Valid Password' : this.state.diffPassword ? 'Re-entered Password does not match' : 'Please Enter Valid Email'}
+                                    </strong>
+                                    </Alert>
+                                )}
+                                </div>
                             </form>
                         </div>
                     </Container>

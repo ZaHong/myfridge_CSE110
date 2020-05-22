@@ -90,7 +90,7 @@ class Login extends Component {
     };
   }
 
-  async handleClick(event){
+  handleClick(event){
 
     const user = {
       email : this.state.email,
@@ -101,7 +101,7 @@ class Login extends Component {
     //alert(JSON.stringify(user));
     //For create new user
     if(user.password != null && user.password!= ''){
-      await fetch("http://localhost:8000/user/login",{
+      fetch("http://localhost:8000/user/login",{
         method: "POST",
         headers: {
           'Content-Type': "application/json"
@@ -200,12 +200,12 @@ class Login extends Component {
                   {"Don't have an account? Sign Up"}
             </Link>
             </Grid>
-            <div>
+              <div>
                   {(this.state.emptyPassword ||
                     this.state.userNotExist) && (
                     <Alert severity="error">
                       {this.state.emptyPassword
-                        ? "Please Enter Valid Email And Password — "
+                        ? "Please Enter Valid Password — "
                         : "User Does No Exist — "}
                       <strong>check it out!</strong>
                     </Alert>
