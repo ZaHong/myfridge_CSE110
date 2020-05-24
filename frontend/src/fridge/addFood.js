@@ -21,7 +21,7 @@ export default function MaterialUIPickers() {
     const [foodInfos, setFoodInfos] = React.useState({})
 
     React.useEffect(() =>{
-        fetch("http://localhost:8000/foodvocab",{
+        fetch("http://localhost:8000/user/foodvocab",{
             method: "GET",
             headers: {
               'Content-Type': "application/json"
