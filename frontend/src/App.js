@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import './App.css';
-import login from './LogInSignup/login';
-import signup from './LogInSignup/signup';
-import resetpassword from './LogInSignup/resetPassword';
-import index from './fridge/fridge';
-import wasteboard from './Wasteboard/wasteboard';
+import React, { Component } from "react";
+import logo from "./logo.svg";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import "./App.css";
+import login from "./LogInSignup/login";
+import signup from "./LogInSignup/signup";
+import resetpassword from "./LogInSignup/resetPassword";
+import index from "./fridge/fridge";
+import profile from "./Profile/profile";
+import wasteboard from "./Wasteboard/wasteboard";
 
 class App extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     //this.state = {response : ""};
   }
@@ -25,16 +26,17 @@ class App extends Component {
     this.callBackend();
   }*/
 
-  render(){
+  render() {
     return (
       <Router>
         <div>
           <Switch>
-              <Route exact path='/' component={login} />
-              <Route path='/signup' component={signup} />
-              <Route path='/resetpassword' component={resetpassword} />
-              <Route path='/index' component={index} />
-              <Route path='/wasteboard' component={wasteboard} />
+            <Route exact path="/" component={login} />
+            <Route path="/signup" component={signup} />
+            <Route path="/resetpassword" component={resetpassword} />
+            <Route path="/index" component={index} />
+            <Route path="/wasteboard" component={wasteboard} />
+            <Route path="/profile" component={profile} />
           </Switch>
         </div>
       </Router>
