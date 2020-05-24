@@ -83,7 +83,6 @@ const style = theme => ({
 class Profile extends Component {
   constructor(props) {
     super(props);
-    //this.handleCheck = this.handleCheck.bind(this);
     this.state = {
       userid: "123456",
       email: "random@ucsd.edu",
@@ -123,14 +122,13 @@ class Profile extends Component {
 
     for (var key in this.state.grocery) {
       this.state.grocerylist.push(
-        <div>
+        <div key={key}>
           <ListItem>
             <ListItemText primary={key + ": "} />
 
             <ListItemText primary=" " />
             <Checkbox
               checked={this.state.grocery[key]}
-              //onChange={handleChange}
               color="default"
               id="{key}"
               // onChange={(event, key) => {

@@ -4,9 +4,21 @@ const db = require('../models/db')
 const {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, addFood,
        deleteFood, showUser, login, modify_food, displayByTag, getFoodNames, suggestRecipe} = require('../models/user')
 const {Food, findFood} = require('../models/food')
+const {getVocabs} = require('../models/food_vocab')
 
 
 const ONE_DAY = 86400000
+
+
+/*
+ * Return Foodvocab.
+ */
+user_router.get(`/foodvocab`, async (req, res) => {
+    await db.connectDB()
+    var allVocabs = await getVocabs()
+    await db.disconnectDB()
+    res.send(allVocabs)
+})
 
 user_router.post('/register', async (req, res) => {         // need user email and user password
     const user_info = {
@@ -61,7 +73,9 @@ user_router.get(`/:id`, async (req, res) => {
 user_router.post('/login', async(req, res) => {         // need the user email and user password
     query = await login(req.body.email, req.body.password)
     if (query != null) {
-        res.redirect(`/user/${query._id}`)
+        //res.redirect(`/user/${query._id}`)
+        res.send({
+            status:true,body: query})
     }
     else {
         res.send({
@@ -96,8 +110,8 @@ user_router.get('/:id/byTag', async (req, res) => {
 user_router.get(`/:id/recipe`, async (req, res) => {
     await db.connectDB()
     var result = await suggestRecipe(req.params.id)
-    res.send(result)
     await db.disconnectDB()
+    res.send(result)
 });
 
 module.exports = user_router;

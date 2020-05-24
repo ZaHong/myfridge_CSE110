@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import { BrowserRouter as Router, Link } from "react-router-dom";
+import  { Redirect } from 'react-router-dom'
 //import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -87,6 +88,8 @@ class Login extends Component {
       password:"",
       userNotExist: false,
       emptyPassword: false,
+      userID: "",
+      successLogin: false,
     };
   }
 
@@ -109,12 +112,14 @@ class Login extends Component {
         body: JSON.stringify(user)
       }).then(response => response.json()).then(json => {
         if(json.status!=null && json.status==true){
-
+         this.setState({userID: json.body._id, successLogin:true})
         }else{
           //alert('Wrong Password')
           this.setState({ userNotExist: true, emptyPassword: false })
         }
-      }).catch(this.setState({ userNotExist: true, emptyPassword: false }))
+      }).catch(
+        //this.setState({ userNotExist: true, emptyPassword: false })
+        )
     }else{
       this.setState({ userNotExist: false, emptyPassword: true })
     }
@@ -129,6 +134,7 @@ class Login extends Component {
     const { classes } = this.props;
     return (
       <Grid container xs={12} className={classes.background}>
+        {(this.state.successLogin) && (<Redirect to={{pathname: '/index', state: { userID: this.state.userID}}}/>)}
       <img src={logo} marginTop='20px' height='100vh'/>
       <Grid container xs={10} sm={6} md={4} className={classes.outerpaper}>
       <Container component="main" maxWidth="xs">
@@ -207,7 +213,7 @@ class Login extends Component {
                       <strong>
                       {this.state.emptyPassword
                         ? "Please Enter Valid Password"
-                        : "User Does No Exist"}
+                        : "User Does Not Exist"}
                       </strong>
                     </Alert>
                   )}
