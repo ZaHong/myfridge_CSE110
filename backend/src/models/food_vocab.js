@@ -43,4 +43,18 @@ async function addFoodVocab(food_info) {
     return await new_food.save()
 }
 
-module.exports = {FoodVocab, addFoodVocab}
+async function getVocabs() {
+    var all = await FoodVocab.find()
+    var namelist = []
+    var infos = {}
+    for(var vocab of all) {
+        namelist.push(vocab.name)
+        infos[vocab.name] = vocab
+    }
+    return {
+        namelist: namelist,
+        infos: infos
+    }
+}
+
+module.exports = {FoodVocab, addFoodVocab, getVocabs}
