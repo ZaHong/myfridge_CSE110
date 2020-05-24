@@ -22,7 +22,8 @@ class FoodInfo extends Component{
                 marginLeft: '20px',
                 marginTop: '20px',
                 background: '#cacbbc',
-                width: '625px'
+                //width: '625px'
+                width: '45vw'
             }}>
                 <ul>
                 <h3>
