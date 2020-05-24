@@ -51,7 +51,7 @@ const style = theme => ({
     alignItems: "baseline",
     spacing: 3
   },
-  scoreList: {
+  profile: {
     backgroundColor: "#e5e8df",
     backgroundSize: "cover",
     border: "3px solid rgb(212, 212, 212)",
@@ -59,7 +59,7 @@ const style = theme => ({
     marginLeft: "5vw",
     marginRight: "5vw"
   },
-  wasteList: {
+  grocery: {
     backgroundColor: "#e5e8df",
     border: "3px solid rgb(212, 212, 212)",
     borderRadius: "10px",
@@ -102,23 +102,8 @@ class Profile extends Component {
         chicken: false,
         onion: false
       },
-      scores: {
-        Dad: 1000,
-        Spongebob: 500,
-        "Gary(Me)": 200
-      },
-      grocerylist: [],
-      scoreboardlist: [],
-      wastefoodlist: []
+      grocerylist: []
     };
-
-    // handleCheck = key => {
-    //   this.setState(prevState => {
-    //     let grocery = Object.assign({}, prevState.grocery); // creating copy of state variable jasper
-    //     grocery[key] = event.target.checked;
-    //     return { grocery };
-    //   });
-    // };
 
     for (var key in this.state.grocery) {
       this.state.grocerylist.push(
@@ -128,21 +113,23 @@ class Profile extends Component {
 
             <ListItemText primary=" " />
             <Checkbox
-              checked={this.state.grocery[key]}
+              checked={event => {
+                console.log(this.event.target.id);
+              }}
               color="default"
               id="{key}"
-              // onChange={(event, key) => {
-              //   this.setState({
-              //     grocery: {
-              //       ...this.state.grocery,
-              //       apple: false
-              //     }
-              //   });
-              //   console.log(this.props);
-              // }}
+              onChange={event => {
+                this.setState({
+                  grocery: {
+                    ...this.state.grocery,
+                    [event.target.id]: !this.state.grocery[event.target.id]
+                  }
+                });
+                event.target.checked = false;
+              }}
               inputProps={{ "aria-label": "primary checkbox" }}
             >
-              {console.log(key)}
+              {console.log([props.id])}
             </Checkbox>
           </ListItem>
           <Divider />
@@ -195,7 +182,7 @@ class Profile extends Component {
 
         <Grid container className={classes.bodyContainer}>
           <Grid item xs={4} style={{ marginLeft: "10%" }}>
-            <List className={classes.scoreList}>
+            <List className={classes.profile}>
               <ListItem>
                 <h2>Grocery list: </h2>
               </ListItem>
@@ -214,7 +201,7 @@ class Profile extends Component {
             </List>
           </Grid>
           <Grid item xs={6} style={{ marginRight: "3%" }}>
-            <List className={classes.wasteList}>
+            <List className={classes.grocery}>
               <ListItem>
                 <h2 style={{ marginLeft: "40%", marginRight: "25%" }}>
                   {" "}
@@ -280,11 +267,6 @@ class Profile extends Component {
                       id="nickname"
                       label="Nickname"
                       name="nickname"
-                      // InputProps={{
-                      //   classes: {
-                      //     notchedOutline: classes.notchedOutline
-                      //   }
-                      // }}
                       defaultValue={this.state.nickname}
                       onChange={this.handleChange("tempnickname")}
                     />
