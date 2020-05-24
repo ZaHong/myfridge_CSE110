@@ -6,7 +6,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import myfridge_logo from "../../src/LogInSignup/res/MyFridge_Logo_Small.png";
 import profile_icon from "../fridge/res/profile.png";
 import scoreboard_icon from "../fridge/res/scoreboard.png";
@@ -101,13 +101,6 @@ class Wasteboard extends Component{
                 </div>
             )
         }
-        this.state.scoreboardlist.push(
-            <div>
-            <ListItem>
-                <ListItemText primary=""/>
-            </ListItem>
-            </div>
-        )
 
         for(var key in this.state.wastes){
             this.state.wastefoodlist.push(
@@ -121,13 +114,6 @@ class Wasteboard extends Component{
                 </div>
             )
         }
-        this.state.wastefoodlist.push(
-            <div>
-            <ListItem>
-                <ListItemText primary=""/>
-            </ListItem>
-            </div>
-        )
     }
 
     render(){
@@ -135,28 +121,30 @@ class Wasteboard extends Component{
         return(
             <Grid container xs={12} className={classes.background}>
                 <div className={classes.header}>
-                    <img src={myfridge_logo} height='90vh'/>
+                    <Link to="/index">
+                        <img src={myfridge_logo} height='90vh'/>
+                    </Link>
                     <div className={classes.grow} />
-                    <IconButton size='medium'
-                            containerElement={<Link to="/listings" />}
-                            linkButton={true}>
-                                <img src={scoreboard_icon} height='90vh' />
-                    </IconButton>
-                    <IconButton size='medium'
-                            containerElement={<Link to="/listings" />}
-                            linkButton={true}>
-                                <img src={friend_icon} height='90vh' />
-                    </IconButton>
-                    <IconButton size='medium'
-                            containerElement={<Link to="/listings" />}
-                            linkButton={true}>
-                                <img src={recipe_icon} height='90vh' />
-                    </IconButton>
-                    <IconButton size='medium'
-                            containerElement={<Link to="/listings" />}
-                            linkButton={true}>
-                                <img src={profile_icon} height='90vh' />
-                    </IconButton>
+                    <Link to="/index">
+                        <IconButton size='medium'>
+                                    <img src={scoreboard_icon} height='70vh' />
+                        </IconButton>
+                    </Link>
+                    <Link to="/index">
+                        <IconButton size='medium'>
+                                    <img src={friend_icon} height='70vh' />
+                        </IconButton>
+                    </Link>
+                    <Link to="/index">
+                        <IconButton size='medium'>
+                                    <img src={recipe_icon} height='70vh' />
+                        </IconButton>
+                    </Link>
+                    <Link to="/index">
+                        <IconButton size='medium'>
+                                    <img src={profile_icon} height='70vh' />
+                        </IconButton>
+                    </Link>
                 </div>
                 
                 <Grid container className={classes.bodyContainer}>  
@@ -181,6 +169,9 @@ class Wasteboard extends Component{
                         <Divider />
                         <Divider />
                         {this.state.scoreboardlist}
+                        <ListItem>
+                            <ListItemText primary=""/>
+                        </ListItem>
                     </List>
                 </Grid>
                 <Grid item xs={5}>
@@ -196,6 +187,9 @@ class Wasteboard extends Component{
                         <Divider />
                         <Divider />
                         {this.state.wastefoodlist}
+                        <ListItem>
+                            <ListItemText primary=""/>
+                        </ListItem>
                     </List>
                 </Grid>
                 </Grid>
