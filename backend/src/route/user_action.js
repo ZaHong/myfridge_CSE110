@@ -61,7 +61,9 @@ user_router.get(`/:id`, async (req, res) => {
 user_router.post('/login', async(req, res) => {         // need the user email and user password
     query = await login(req.body.email, req.body.password)
     if (query != null) {
-        res.redirect(`/user/${query._id}`)
+        //res.redirect(`/user/${query._id}`)
+        res.send({
+            status:true,body: query})
     }
     else {
         res.send({

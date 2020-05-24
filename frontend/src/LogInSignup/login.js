@@ -213,7 +213,7 @@ class Login extends Component {
                       <strong>
                       {this.state.emptyPassword
                         ? "Please Enter Valid Password"
-                        : "User Does No Exist"}
+                        : "User Does Not Exist"}
                       </strong>
                     </Alert>
                   )}
