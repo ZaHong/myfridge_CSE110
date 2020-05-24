@@ -8,11 +8,11 @@ import scoreboard_img from "./res/scoreboard.png";
 import recipe_img from "./res/recipe.png";
 import friend_img from "./res/friend.png";
 import Tabs from "./tabs";
-import Link from '@material-ui/core/Link';
+import {Link} from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
+import  { Redirect } from 'react-router-dom'
 
-var list = []
 var contains = []
 
 const style = theme => ({
@@ -47,48 +47,71 @@ class Fridge extends Component{
 
         this.state= {
             userid: 'user123456',
-            Apple: {
+            food:[
+            /*{
                 foodName: 'Apple',
                 ExpirationDate: '05/30/2020',
                 Tag: 'fruit',
                 Quantity: '1',
                 PurchasedDate: '05/01/2020',
             }
-            ,Watermelon: {
+            ,{
                 foodName: 'Watermelon',
                 ExpirationDate: '05/30/2020',
                 Tag: 'fruit',
                 Quantity: '1',
                 PurchasedDate: '05/01/2020',
             },
-            strawberry: {
+            {
                 foodName: 'strawberry',
                 ExpirationDate: '05/30/2020',
                 Tag: 'fruit',
                 Quantity: '1',
                 PurchasedDate: '05/01/2020',
             },
-            egg: {
+            {
                 foodName: 'egg',
                 ExpirationDate: '05/30/2020',
                 Tag: 'food',
                 Quantity: '10',
                 PurchasedDate: '05/01/2020',
-            },
-            milk: {
+            },{
                 foodName: 'milk',
                 ExpirationDate: '05/30/2020',
                 Tag: 'milk',
                 Quantity: '2',
                 PurchasedDate: '05/01/2020',
+            }*/],
+            nullUserID:null,
+          }
+        if(props.location.state== null){
+            this.state.nullUserID=true
+        }else{
+            this.setState({userid: props.location.state.userID})
+            fetch("http://localhost:8000/user/"+props.location.state.userID,{
+                method: "GET",
+                headers: {
+                'Content-Type': "application/json"
+                }
+            }).then(response => response.json()).then(json => {
+            //alert(JSON.stringify(json.fridge))
+            var resFood=[]
+            for(var i = 0 ; i< json.fridge.length; i++){
+                var temp=json.fridge[i]
+                var obj={
+                    foodName: temp.name,
+                    ExpirationDate: temp.expiration_date.substring(0,10),
+                    Tag: 'IN PROGRESS',
+                    Quantity: temp.quantity,
+                    PurchasedDate: temp.date_purchased.substring(0,10),
+                }
+                resFood.push(obj)
             }
-          }     
-            for (var key in this.state){
-                if (key !== 'userid' && !contains.includes(key)){
-                list.push(this.state[key]);
-                contains.push(key);
-            }
-        }     
+            this.setState({food: resFood})
+            }).catch(
+                //this.setState({ userNotExist: true, emptyPassword: false })
+        )
+        }
     }
 
     render(){
@@ -101,22 +124,23 @@ class Fridge extends Component{
             <div padding = '100vw' display='flex'>
                 <Grid container xs={12} className={classes.background}>
                     <img src={logo} height='70vh' style={{ marginLeft: '6rem',marginRight: '34.5rem' }}/> 
-                    <Link href="http://google.com" variant="body2" className={classes.link}>
+                    {(this.state.nullUserID) && (<Redirect to='/'/>)}
+                    <Link to="http://google.com" variant="body2" className={classes.link}>
                         <IconButton edge="end" size='small' color="inherit" aria-label="scoreboard">
                         <img src={scoreboard_img} style={{ marginLeft: '1.5rem',marginRight: '1.5rem' }} height='70vh'/>
                         </IconButton>
                     </Link>
-                    <Link href="http://google.com" variant="body2" className={classes.link}>
+                    <Link to="http://google.com" variant="body2" className={classes.link}>
                         <IconButton size='small' color="inherit" aria-label="scoreboard">
                         <img src={profile_img} height='70vh' style={{ marginLeft: '1.5rem',marginRight: '1.5rem' }}/>
                         </IconButton>
                     </Link>
-                    <Link href="http://google.com" variant="body2"className={classes.link}>
+                    <Link to="http://google.com" variant="body2"className={classes.link}>
                         <IconButton size='small' color="inherit" aria-label="scoreboard">
                         <img src={recipe_img} height='70vh' style={{ marginLeft: '1.5rem',marginRight: '1.5rem' }}/>
                         </IconButton>
                     </Link>
-                    <Link href="http://google.com" variant="body2" className={classes.link}>
+                    <Link to="http://google.com" variant="body2" className={classes.link}>
                         <IconButton size='small' color="inherit" aria-label="scoreboard">
                         <img src={friend_img} height='70vh' style={{ marginLeft: '1.5rem',marginRight: '1.5rem' }}/>
                         </IconButton>
@@ -128,7 +152,7 @@ class Fridge extends Component{
                         style={{
                                 marginLeft:'375px',
                     }}>
-                    <Link href="http://google.com" variant="body2" className={classes.link}>
+                    <Link to="http://google.com" variant="body2" className={classes.link}>
                     <IconButton size='small' color="#cacbbc" aria-label="scoreboard">
                         <AddIcon style={{ fontSize: 70 }}/>
                     </IconButton>
@@ -143,7 +167,7 @@ class Fridge extends Component{
                         //justify="'flex-start'"
                         //direction="column"
                     >
-                        <Tabs foodInfos={list} />
+                        <Tabs foodInfos={this.state.food} />
                     </Grid>
                 </div>
             </div>
@@ -155,5 +179,5 @@ class Fridge extends Component{
 export default withStyles(style)(Fridge)
 
 export function getFoodInfo(){
-    return list;
+    return this.state.food;
 }
