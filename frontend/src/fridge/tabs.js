@@ -288,7 +288,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: '#f7f6f0',
     display: 'flex',
-    //height: '60vh',
+    height: '80vh',
     //marginLeft: '40px',
     background: '#cacbbc',
     //width: '300px'

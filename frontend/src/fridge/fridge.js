@@ -195,7 +195,7 @@ class Fridge extends Component{
             <Grid container xs={12} className={classes.background}>
                 <div container xs={12} className={classes.header}>
                     <Link to="/index">
-                        <img src={logo} height='90vh'/>
+                        <img src={logo} height='80vh'/>
                     </Link>
                     {(this.state.nullUserID) && (<Redirect to='/'/>)}
                     {/**
@@ -236,7 +236,7 @@ class Fridge extends Component{
                                     <img src={recipe_img} height='70vh' />
                         </IconButton>
                     </Link>
-                    <Link to="/index">
+                    <Link to="/profile">
                         <IconButton size='medium'>
                                     <img src={profile_img} height='70vh' />
                         </IconButton>
