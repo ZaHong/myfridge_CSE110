@@ -8,6 +8,7 @@ import resetpassword from "./LogInSignup/resetPassword";
 import index from "./fridge/fridge";
 import profile from "./Profile/profile";
 import wasteboard from "./Wasteboard/wasteboard";
+import addfood from './fridge/addFood';
 
 class App extends Component {
   constructor(props) {
@@ -37,6 +38,7 @@ class App extends Component {
             <Route path="/index" component={index} />
             <Route path="/wasteboard" component={wasteboard} />
             <Route path="/profile" component={profile} />
+            <Route path="/addfood" component={addfood} />
           </Switch>
         </div>
       </Router>

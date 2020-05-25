@@ -286,17 +286,18 @@ function a11yProps(index) {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: '#f7f6f0',
     display: 'flex',
-    height: 550,
+    //height: '60vh',
     //marginLeft: '40px',
     background: '#cacbbc',
     //width: '300px'
-    width: '20vw'
+    //width: '100vw'
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
     //width: '300px'
+    height: '60vh',
     width: '20vw',
     backgroundColor: '#cacbbc',
   },
@@ -311,9 +312,9 @@ export default function VerticalTabs(props) {
   const [activeTabIndex, setIndex] = React.useState(0);
   const style = {
     //display: 'flex',
-    height: 450,
-    marginLeft: '2vw',
-    marginTop: '2vh',
+    height: '55vh',
+    //marginLeft: '2vw',
+    //marginTop: '2vh',
     //backgroundColor: '#f7f6f0',
     background: '#cacbbc',
     textAlign: 'center',
@@ -322,7 +323,7 @@ export default function VerticalTabs(props) {
   const classes = useStyles();
   
   var list = props.foodInfos;
-
+  var currentUserID = props.id;
   const handleChange = (event, newValue) => {
     if(typeof(newValue) == 'number'){
       setIndex(newValue);
@@ -342,50 +343,51 @@ export default function VerticalTabs(props) {
     comboBoxFoodList.push({ title: list[key].foodName, ExpirationDate: list[key].ExpirationDate})
     comboBoxhashMap.set(list[key].foodName, key+1)
   }
-
-  for (var i = -1; i < list.length; i++){
-    if (i < 0){
-      resultTab.push(
-        <Autocomplete
-          id="combo-box-demo"
-          options={comboBoxFoodList}
-          onChange={handleChange}
-          getOptionLabel={(option) => option.title}
-          //style={{ width: 300 }}
-          renderInput={(params) => <TextField {...params} label="Choose Food Item" variant="outlined" />}
-        />)
-        resultInfo.push(<TabPanel value={activeTabIndex} index={0}>
-                        <Grid style={style}>
-                          <br></br>
-                          <br></br>
-                          <h1 >Welcome to </h1>
-                          <img src={logo} height='150vh' style={{ marginTop: '1vh' }}/>
-                        </Grid>
-                      </TabPanel>)
-    }
-    else{
-    var name = list[i].foodName +'  '+list[i].ExpirationDate
-    resultTab.push( <AntTab label={name}  className={classes.tab} {...a11yProps(i)} />)
-    resultInfo.push(<TabPanel value={activeTabIndex} index={i+1}>
-      <Grid>
-      <FoodInfos information={list[i]} /> 
+  resultTab.push(
+    <Autocomplete
+      id="combo-box-demo"
+      options={comboBoxFoodList}
+      onChange={handleChange}
+      getOptionLabel={(option) => option.title}
+      //style={{ width: 300 }}
+      renderInput={(params) => <TextField {...params} label="Choose Food Item" variant="outlined" />}
+    />)
+  resultInfo.push(
+    <TabPanel value={activeTabIndex} index={0}>
+      <Grid style={style}>
+      <br></br>
+      <br></br>
+      <h1 >Welcome to </h1>
+      <img src={logo} height='150vh' style={{ marginTop: '1vh' }}/>
       </Grid>
-      </TabPanel>)
-    }
+    </TabPanel>)
+
+  for (var i = 0; i < list.length; i++){
+    var name = list[i].foodName +'  '+list[i].ExpirationDate
+    resultTab.push( 
+    <AntTab label={name}  className={classes.tab} {...a11yProps(i)} />)
+    resultInfo.push(
+    <TabPanel value={activeTabIndex} index={i+1}>
+      <Grid>
+        <FoodInfos information={list[i]} /> 
+      </Grid>
+    </TabPanel>)
+    
   }
   resultTab.push(
     <AntTab 
-      label={<IconButton size='small' color="#cacbbc" style={{marginLeft:'1.5vw',width:'4vw' }} aria-label="scoreboard">
+      label={<IconButton size='small' color="#cacbbc" style={{marginLeft:'1.5vw',width:'4vw' }}>
         <AddIcon style={{ fontSize: 40 }}
       className={classes.tab} {...a11yProps(list.length+1)}/>
   </IconButton>} >
     </AntTab>
   )
-  resultInfo.push(<TabPanel value={activeTabIndex} index={list.length+2}>
+  resultInfo.push(
+  <TabPanel value={activeTabIndex} index={list.length+1}>
     <Grid>
-    <AddFood />
+    <AddFood id={currentUserID}/>
     </Grid>
-    </TabPanel>)
+  </TabPanel>)
 
   return (
     <div className={classes.root}>
@@ -396,7 +398,7 @@ export default function VerticalTabs(props) {
         value={activeTabIndex}
         onChange={handleChange}
         //onInputChange={handleInputChange}
-        aria-label="Vertical tabs example"
+        scrollButtons="off"
         className={classes.tabs}
       >
         {

@@ -103,8 +103,9 @@ const style = theme => ({
       },
       grow:{
         flexGrow: 0.8,
-      },tabs: {
-        marginTop: '10vw',
+      },
+      tabs: {
+        marginTop: '20vh',
         backgroundColor: '#f7f6f0',
       }
 })
@@ -115,7 +116,7 @@ class Fridge extends Component{
 
     super(props)
     this.state = {
-      userid: "user123456",
+      userid: "",
       food: [
         /*{
                 foodName: 'Apple',
@@ -157,8 +158,9 @@ class Fridge extends Component{
     if (props.location.state == null) {
       this.state.nullUserID = true;
     } else {
-      this.setState({ userid: props.location.state.userID });
-      fetch("http://localhost:8000/user/" + props.location.state.userID, {
+      //this.setState({ userid: props.location.state.userID });
+      this.state.userid= props.location.state.userID
+      fetch("http://localhost:8000/user/" + this.state.userid, {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
@@ -188,15 +190,11 @@ class Fridge extends Component{
   }
 
     render(){
-
-        const style = {
-            marginTop: ''
-        }
         const { classes } = this.props;
         return (
             <Grid container xs={12} className={classes.background}>
                 <div container xs={12} className={classes.header}>
-                <Link to="/index">
+                    <Link to="/index">
                         <img src={logo} height='90vh'/>
                     </Link>
                     {(this.state.nullUserID) && (<Redirect to='/'/>)}
@@ -245,26 +243,27 @@ class Fridge extends Component{
                     </Link>
                 </div>
                 <div className={classes.tabs} >
-                    <Grid
+                    
+                    {/*<Grid
                         container
                         style={{
                                 marginLeft:'375px',
                     }}>
                     <Link to="http://google.com" variant="body2" className={classes.link}>
-                    <IconButton size='small' color="#cacbbc" aria-label="scoreboard">
+                    <IconButton size='small' color="#cacbbc">
                         <AddIcon style={{ fontSize: 70 }}/>
                     </IconButton>
                     </Link>
-                    </Grid>
+                  </Grid>*/}
                     <Grid container 
                         style={{width:'100vw',
-                              marginLeft:'15vw',
+                               marginLeft:'15vw',
                         }}
                         //align="center"
                         //justify="'flex-start'"
                         //direction="column"
                     >
-                        <Tabs foodInfos={this.state.food} />
+                        <Tabs foodInfos={this.state.food} id={this.state.userid}/>
                     </Grid>
                 
                 </div>

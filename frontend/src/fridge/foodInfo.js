@@ -18,9 +18,9 @@ class FoodInfo extends Component{
                 flexGrow: 1,
                 //backgroundColor: theme.palette.background.paper,
                 display: 'flex',
-                height: 450,
-                marginLeft: '2vw',
-                marginTop: '2vh',
+                height: '55vh',
+                //marginLeft: '2vw',
+                //marginTop: '2vh',
                 background: '#cacbbc',
                 width: '45vw',
             }}>

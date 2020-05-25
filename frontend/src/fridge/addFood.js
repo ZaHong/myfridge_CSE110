@@ -13,15 +13,18 @@ import {
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-export default function MaterialUIPickers() {
+export default function MaterialUIPickers(props) {
     // The first commit of Material-UI
     const [selectedDate, setSelectedDate] = React.useState(new Date());
     const [foodItem, setFoodItem] = React.useState({});
     const [foodVocab, setFoodVocab] = React.useState([]);
-    const [foodInfos, setFoodInfos] = React.useState({})
+    const [foodInfos, setFoodInfos] = React.useState({});
+    const [successAdd, setSuccessAdd] = React.useState(false);
+    const [currentUserID, setUserID] = React.useState(props.id);
 
+    
     React.useEffect(() =>{
-        fetch("http://localhost:8000/user/foodvocab",{
+        /*fetch("http://localhost:8000/user/foodvocab",{
             method: "GET",
             headers: {
               'Content-Type': "application/json"
@@ -31,7 +34,7 @@ export default function MaterialUIPickers() {
            //[apple, orange, ....]
            setFoodInfos(json.body.infos)
            //{apple:{duration: 6day, ...}, orange:{...}}
-          }).catch()
+          }).catch()*/
     }, [])
 
 
@@ -48,15 +51,19 @@ export default function MaterialUIPickers() {
           tag:foodItem.foodTag,
           quantity:foodItem.foodQuantity,
         };
-        alert(JSON.stringify(food))
+        //alert(JSON.stringify(food))
         if(food.name != null && food.name!= ''){
-          fetch("http://localhost:8000/user/5ec75a293e85915190455654/addFood",{
+          fetch("http://localhost:8000/user/" + currentUserID + "/addFood",{
             method: "POST",
             headers: {
               'Content-Type': "application/json"
             },
             body: JSON.stringify(food)
-          })
+          }).finally(function(){
+            window.location.reload(false);
+          }
+          )
+
           /*.then(response => response.json()).then(json => {
             if(json.status!=null && json.status==true){
              this.setState({userID: json.body._id, successLogin:true})
@@ -76,27 +83,33 @@ export default function MaterialUIPickers() {
 
 
     return (
-        <div /*style={{paddingTop: '10px', paddingLeft: "650px", position: "relative"}}*/>
-            <table style={{width: "700px", height: "550px", border: '2px solid #666666', backgroundColor: "#ecf9f2"}}>
-                <h1 style={{color: "darkslategrey", fontFamily: "Arial", textAlign: "center"}}>New Food Item</h1>
-
+        <div style={{ position: "relative"}}>
+            <table style={{width: "45vw", height: "55vh", backgroundColor: "#cacbbc"}}>
+                <h1 style={{fontFamily: "Arial", textAlign: "center"}}>
+                  New Food Item
+                </h1>
                 <br style={{textAlign: "center"}}/>
-                <label style={{color: "darkslategrey", fontSize: "25px", marginLeft: "100px"}}>Food Item Name:</label>
-                <input style={{marginLeft: "20px", backgroundColor: "#f2f2f2", height: "27px", width: "250px"}} onChange={handleChange('foodName')}/>
+                  <label style={{fontSize: "1.17em", marginLeft: "100px"}}>
+                    Food Item Name:
+                  </label>
+                  <input 
+                  style={{marginLeft: "20px", backgroundColor: "#f2f2f2", height: "27px", width: "250px"}} 
+                  onChange={handleChange('foodName')}
+                  />
                 <br/>
 
                 <br style={{textAlign: "center"}}/>
-                <label style={{color: "darkslategrey", fontSize: "25px", marginLeft: "100px"}}>Tag:</label>
+                <label style={{fontSize: "1.17em", marginLeft: "100px"}}>Tag:</label>
                 <input style={{marginLeft: "20px", backgroundColor: "#f2f2f2", height: "27px", width: "250px"}} onChange={handleChange('foodTag')}/>
                 <br/>
 
                 <br style={{textAlign: "center"}}/>
-                <label style={{color: "darkslategrey", fontSize: "25px", marginLeft: "100px"}}>Quantity:</label>
+                <label style={{fontSize: "1.17em", marginLeft: "100px"}}>Quantity:</label>
                 <input style={{marginLeft: "20px", backgroundColor: "#f2f2f2", height: "27px", width: "250px"}} onChange={handleChange('foodQuantity')}/>
                 <br/>
 
                 <br style={{textAlign: "center"}}/>
-                <label style={{color: "darkslategrey", fontSize: "25px", marginLeft: "100px"}}>Purchase Date:</label>
+                <label style={{fontSize: "1.17em", marginLeft: "100px"}}>Purchase Date:</label>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
                             disableToolbar
@@ -113,9 +126,9 @@ export default function MaterialUIPickers() {
                 <br/>
 
                 <br style={{textAlign: "center"}}/>
-                <label style={{color: "darkslategrey", fontSize: "25px", marginLeft: "100px"}}>Duration:</label>
+                <label style={{fontSize: "1.17em", marginLeft: "100px"}}>Duration:</label>
                 <input style={{marginLeft: "20px", backgroundColor: "#f2f2f2", height: "27px", width: "200px"}} onChange={handleChange('foodDuration')}/>
-                <label style={{color: "darkslategrey", fontSize: "25px", marginLeft: "20px"}}>Days</label>
+                <label style={{fontSize: "1.17em", marginLeft: "20px"}}>Days</label>
                 <br/>
 
                 <Button
@@ -123,7 +136,7 @@ export default function MaterialUIPickers() {
                         height: "50px", width: "200px", backgroundColor: "#f2f2f2",
                         marginLeft: "250px", marginTop: "50px"
                     }}
-                    type="submit"
+                    type="button"
                     halfWidth
                     variant="contained"
                     color="#5f5f5d"
