@@ -9,7 +9,10 @@ import FoodInfos from './foodInfo';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import logo from "../../src/LogInSignup/res/MyFridge_Logo_Small.png";
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
 import { Grid } from '@material-ui/core';
+import AddFood from './addFood';
 
 /*
 const AntTabs = withStyles({
@@ -203,6 +206,9 @@ export default function VerticalTabs(props) {
 */
 
 const AntTabs = withStyles({
+  background:{
+    backgroundColor: '#f7f6f0',
+  },
   root: {
     borderBottom: '1px solid #e8e8e8',
   },
@@ -216,7 +222,7 @@ const AntTab = withStyles((theme) => ({
     textTransform: 'none',
     minWidth: 72,
     fontWeight: theme.typography.fontWeightRegular,
-    marginRight: theme.spacing(4),
+    //marginRight: theme.spacing(4),
     fontFamily: [
       '-apple-system',
       'BlinkMacSystemFont',
@@ -306,11 +312,12 @@ export default function VerticalTabs(props) {
   const style = {
     //display: 'flex',
     height: 450,
-    marginLeft: '20px',
-    marginTop: '20px',
+    marginLeft: '2vw',
+    marginTop: '2vh',
+    //backgroundColor: '#f7f6f0',
     background: '#cacbbc',
     textAlign: 'center',
-    width: '625px',
+    width: '45vw',
     }
   const classes = useStyles();
   
@@ -338,13 +345,21 @@ export default function VerticalTabs(props) {
 
   for (var i = -1; i < list.length; i++){
     if (i < 0){
-      resultTab.push()
+      resultTab.push(
+        <Autocomplete
+          id="combo-box-demo"
+          options={comboBoxFoodList}
+          onChange={handleChange}
+          getOptionLabel={(option) => option.title}
+          //style={{ width: 300 }}
+          renderInput={(params) => <TextField {...params} label="Choose Food Item" variant="outlined" />}
+        />)
         resultInfo.push(<TabPanel value={activeTabIndex} index={0}>
                         <Grid style={style}>
                           <br></br>
                           <br></br>
                           <h1 >Welcome to </h1>
-                          <img src={logo} height='150vh' style={{ marginTop: '2rem' }}/>
+                          <img src={logo} height='150vh' style={{ marginTop: '1vh' }}/>
                         </Grid>
                       </TabPanel>)
     }
@@ -358,6 +373,19 @@ export default function VerticalTabs(props) {
       </TabPanel>)
     }
   }
+  resultTab.push(
+    <AntTab 
+      label={<IconButton size='small' color="#cacbbc" style={{marginLeft:'1.5vw',width:'4vw' }} aria-label="scoreboard">
+        <AddIcon style={{ fontSize: 40 }}
+      className={classes.tab} {...a11yProps(list.length+1)}/>
+  </IconButton>} >
+    </AntTab>
+  )
+  resultInfo.push(<TabPanel value={activeTabIndex} index={list.length+2}>
+    <Grid>
+    <AddFood />
+    </Grid>
+    </TabPanel>)
 
   return (
     <div className={classes.root}>
@@ -371,14 +399,6 @@ export default function VerticalTabs(props) {
         aria-label="Vertical tabs example"
         className={classes.tabs}
       >
-        <Autocomplete
-                  id="combo-box-demo"
-                  options={comboBoxFoodList}
-                  onChange={handleChange}
-                  getOptionLabel={(option) => option.title}
-                  //style={{ width: 300 }}
-                  renderInput={(params) => <TextField {...params} label="Choose Food Item" variant="outlined" />}
-                />
         {
         resultTab
         /*

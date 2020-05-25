@@ -19,11 +19,10 @@ class FoodInfo extends Component{
                 //backgroundColor: theme.palette.background.paper,
                 display: 'flex',
                 height: 450,
-                marginLeft: '20px',
-                marginTop: '20px',
+                marginLeft: '2vw',
+                marginTop: '2vh',
                 background: '#cacbbc',
-                //width: '625px'
-                width: '45vw'
+                width: '45vw',
             }}>
                 <ul>
                 <h3>

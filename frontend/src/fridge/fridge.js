@@ -14,7 +14,7 @@ import AddIcon from '@material-ui/icons/Add';
 import  { Redirect } from 'react-router-dom'
 
 var contains = []
-
+/*
 const style = theme => ({
     background:{
         backgroundColor: '#f7f6f0',
@@ -64,13 +64,14 @@ const style = theme => ({
         marginRight: '5vw',
       }
 })
+*/
 
 
-/*
 const style = theme => ({
     background:{
-        backgroundImage: 'url('+ background_img +')',
-        backgroundColor: '#cacbbc',
+        //backgroundImage: 'url('+ background_img +')',
+        /*
+        backgroundColor: '#f7f6f0',
         backgroundSize: 'cover',
         padding: '1vh',
         height: '100%',
@@ -78,21 +79,36 @@ const style = theme => ({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
+        */
+       backgroundColor: '#f7f6f0',
+        backgroundSize: 'cover',
+        height: '100%',
+        position: 'fixed',
+        overflow: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
       },
-      image: {
-        backgroundImage: 'url('+ logo +')',
-        //height: "20px",
-        //backgroundRepeat: 'no-repeat',
-        //backgroundPosition: 'left',
-        //backgroundSize: 'cover',
-        //padding: '0 6px',
-        //height: '100%',
-        //position: 'fixed',
-        //overflow: 'auto',
-        //alignItems: 'left',
+      header:{
+        backgroundColor: '#ddddd6',
+        backgroundSize: 'cover',
+        paddingLeft: '10vw',
+        paddingTop: '1vh',
+        width: '100%',
+        position: 'fixed',
+        overflow: 'auto',
+        display: 'flex',
+        height: '6em',
+        borderBottom: "3px solid rgb(212, 212, 212)"
+      },
+      grow:{
+        flexGrow: 0.8,
+      },tabs: {
+        marginTop: '10vw',
+        backgroundColor: '#f7f6f0',
       }
 })
-*/
+
 class Fridge extends Component{
 
     constructor(props){
@@ -170,36 +186,61 @@ class Fridge extends Component{
     render(){
 
         const style = {
-            marginTop: '25px'
+            marginTop: ''
         }
         const { classes } = this.props;
         return (
-            <div padding = '100vw' display='flex'>
-                <Grid container xs={12} className={classes.background}>
-                    <img src={logo} height='70vh' style={{ marginLeft: '6rem',marginRight: '34.5rem' }}/> 
+            <Grid container xs={12} className={classes.background}>
+                <div container xs={12} className={classes.header}>
+                <Link to="/index">
+                        <img src={logo} height='90vh'/>
+                    </Link>
                     {(this.state.nullUserID) && (<Redirect to='/'/>)}
-                    <Link to="http://google.com" variant="body2" className={classes.link}>
+                    {/**
+                     <Link to="http://google.com" variant="body2" className={classes.link}>
                         <IconButton edge="end" size='small' color="inherit" aria-label="scoreboard">
-                        <img src={scoreboard_img} height='90vh'/>
+                        <img src={scoreboard_img} height='70vh'/>
                         </IconButton>
                     </Link>
                     <Link to="http://google.com" variant="body2" className={classes.link}>
                         <IconButton size='small' color="inherit" aria-label="scoreboard">
-                        <img src={friend_img} height='90vh'/>
+                        <img src={friend_img} height='70vh'/>
                         </IconButton>
                     </Link>
                     <Link to="http://google.com" variant="body2"className={classes.link}>
                         <IconButton size='small' color="inherit" aria-label="scoreboard">
-                        <img src={recipe_img} height='90vh'/>
+                        <img src={recipe_img} height='70vh'/>
                         </IconButton>
                     </Link>
                     <Link to="http://google.com" variant="body2" className={classes.link}>
                         <IconButton size='small' color="inherit" aria-label="scoreboard">
-                        <img src={profile_img} height='90vh'/>
+                        <img src={profile_img} height='70vh'/>
                         </IconButton>
                     </Link>
-                </Grid>
-                <div style = {style} >
+                     */}
+                    <div className={classes.grow} />
+                    <Link to="/index">
+                        <IconButton size='medium'>
+                                    <img src={scoreboard_img} height='70vh' />
+                        </IconButton>
+                    </Link>
+                    <Link to="/index">
+                        <IconButton size='medium'>
+                                    <img src={friend_img} height='70vh' />
+                        </IconButton>
+                    </Link>
+                    <Link to="/index">
+                        <IconButton size='medium'>
+                                    <img src={recipe_img} height='70vh' />
+                        </IconButton>
+                    </Link>
+                    <Link to="/index">
+                        <IconButton size='medium'>
+                                    <img src={profile_img} height='70vh' />
+                        </IconButton>
+                    </Link>
+                </div>
+                <div className={classes.tabs} >
                     <Grid
                         container
                         style={{
@@ -223,7 +264,7 @@ class Fridge extends Component{
                     </Grid>
                 
                 </div>
-            </div>
+            </Grid>
 
           );
     }
