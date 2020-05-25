@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import background_img from "./res/homepage_background.png";
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles";
 import logo from "../../src/LogInSignup/res/MyFridge_Logo_Small.png";
-import Grid from '@material-ui/core/Grid';
+import Grid from "@material-ui/core/Grid";
 import profile_img from "./res/profile.png";
 import scoreboard_img from "./res/scoreboard.png";
 import recipe_img from "./res/recipe.png";
 import friend_img from "./res/friend.png";
 import Tabs from "./tabs";
-import {Link} from 'react-router-dom';
-import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
-import  { Redirect } from 'react-router-dom'
+import { Link } from "react-router-dom";
+import IconButton from "@material-ui/core/IconButton";
+import AddIcon from "@material-ui/icons/Add";
+import { Redirect } from "react-router-dom";
 
 var contains = []
 /*
@@ -111,13 +111,13 @@ const style = theme => ({
 
 class Fridge extends Component{
 
-    constructor(props){
-        super(props)
+  constructor(props){
 
-        this.state= {
-            userid: 'user123456',
-            food:[
-            /*{
+    super(props)
+    this.state = {
+      userid: "user123456",
+      food: [
+        /*{
                 foodName: 'Apple',
                 ExpirationDate: '05/30/2020',
                 Tag: 'fruit',
@@ -150,38 +150,42 @@ class Fridge extends Component{
                 Tag: 'milk',
                 Quantity: '2',
                 PurchasedDate: '05/01/2020',
-            }*/],
-            nullUserID:null,
-          }
-        if(props.location.state== null){
-            this.state.nullUserID=true
-        }else{
-            this.setState({userid: props.location.state.userID})
-            fetch("http://localhost:8000/user/"+props.location.state.userID,{
-                method: "GET",
-                headers: {
-                'Content-Type': "application/json"
-                }
-            }).then(response => response.json()).then(json => {
-            //alert(JSON.stringify(json.fridge))
-            var resFood=[]
-            for(var i = 0 ; i< json.fridge.length; i++){
-                var temp=json.fridge[i]
-                var obj={
-                    foodName: temp.name,
-                    ExpirationDate: temp.expiration_date.substring(0,10),
-                    Tag: 'IN PROGRESS',
-                    Quantity: temp.quantity,
-                    PurchasedDate: temp.date_purchased.substring(0,10),
-                }
-                resFood.push(obj)
-            }
-            this.setState({food: resFood})
-            }).catch(
-                //this.setState({ userNotExist: true, emptyPassword: false })
-        )
+            }*/
+      ],
+      nullUserID: null
+    };
+    if (props.location.state == null) {
+      this.state.nullUserID = true;
+    } else {
+      this.setState({ userid: props.location.state.userID });
+      fetch("http://localhost:8000/user/" + props.location.state.userID, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
         }
+      })
+        .then(response => response.json())
+        .then(json => {
+          //alert(JSON.stringify(json.fridge))
+          var resFood = [];
+          for (var i = 0; i < json.fridge.length; i++) {
+            var temp = json.fridge[i];
+            var obj = {
+              foodName: temp.name,
+              ExpirationDate: temp.expiration_date.substring(0, 10),
+              Tag: "IN PROGRESS",
+              Quantity: temp.quantity,
+              PurchasedDate: temp.date_purchased.substring(0, 10)
+            };
+            resFood.push(obj);
+          }
+          this.setState({ food: resFood });
+        })
+        .catch
+        //this.setState({ userNotExist: true, emptyPassword: false })
+        ();
     }
+  }
 
     render(){
 
@@ -270,8 +274,8 @@ class Fridge extends Component{
     }
 }
 
-export default withStyles(style)(Fridge)
+export default withStyles(style)(Fridge);
 
-export function getFoodInfo(){
-    return this.state.food;
+export function getFoodInfo() {
+  return this.state.food;
 }
