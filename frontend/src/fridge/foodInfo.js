@@ -45,27 +45,61 @@ class FoodInfo extends Component{
                 background: '#cacbbc',
                 width: '45vw',
             }}>
+                
                 <ul>
-                <h3>
-                    Food Item:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.state.foodName}
-                </h3>
-                <h3>
-                    Tag:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.state.Tag}
-                </h3>
-                <h3>
-                    Quantity:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.state.Quantity}
-                </h3>
-                <h3>
-                    Purchased Date:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.state.PurchasedDate}
-                </h3>
-                <h3>
-                    Expected Expiration:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.state.ExpirationDate}
-                </h3>
+                <br></br>
+                <div display="flex">
+                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                        Food Item:
+                  </label>
+                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                  {this.state.foodName}
+                  </label>
+                </div>
+                <br></br>
+                <div display="flex">
+                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                  Tag:
+                  </label>
+                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                  {this.state.Tag}
+                  </label>
+                </div>
+                <br></br>
+                <div display="flex">
+                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                  Quantity:
+                  </label>
+                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                  {this.state.Quantity}
+                  </label>
+                </div>
+                <br></br>
+                <div display="flex">
+                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                  Purchased Date:
+                  </label>
+                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                  {this.state.PurchasedDate}
+                  </label>
+                </div>
+                <br></br>
+                <div display="flex">
+                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                  Expected Expiration:
+                  </label>
+                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                  {this.state.ExpirationDate}
+                  </label>
+                </div>
+                
+                <br></br>
                 <Grid style = {{
                     display: 'flex',
                     height: 50,
-                    width: '500px',
+                    width: '200vw',
                     flexDirection: 'row',
+                    marginLeft: "8vw",
                 }}>
                 <Button 
                     style={{height:'50px', width:'100px'}} 
@@ -81,7 +115,7 @@ class FoodInfo extends Component{
                     Remove
                 </Button>
                 </Grid>
-                <Button style={{ height:'50px', width:'150px', marginTop: '30px'}} variant="contained" color="white">
+                <Button style={{ height:'50px', width:'150px', marginTop: '3vh', marginLeft:"8vw"}} variant="contained" color="white">
                     Put to Waste
                 </Button>
                 </ul>

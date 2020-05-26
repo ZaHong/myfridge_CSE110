@@ -83,33 +83,36 @@ export default function MaterialUIPickers(props) {
 
 
     return (
-        <div style={{ position: "relative"}}>
+        <div style={{ position: "center"}}>
             <table style={{width: "45vw", height: "55vh", backgroundColor: "#cacbbc"}}>
-                <h1 style={{fontFamily: "Arial", textAlign: "center"}}>
-                  New Food Item
-                </h1>
-                <br style={{textAlign: "center"}}/>
-                  <label style={{fontSize: "1.17em", marginLeft: "100px"}}>
+                <br></br>
+                <div display="flex">
+                  <label style={{fontSize: "1.5em", marginLeft: "18vw"}}>
+                      New Food Item
+                  </label>
+                </div>
+                <br display="flex"/>
+                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
                     Food Item Name:
                   </label>
                   <input 
-                  style={{marginLeft: "20px", backgroundColor: "#f2f2f2", height: "27px", width: "250px"}} 
+                  style={{marginLeft: "20px", backgroundColor: "#f2f2f2", height: "27px", width: "15vw"}} 
                   onChange={handleChange('foodName')}
                   />
                 <br/>
 
                 <br style={{textAlign: "center"}}/>
-                <label style={{fontSize: "1.17em", marginLeft: "100px"}}>Tag:</label>
-                <input style={{marginLeft: "20px", backgroundColor: "#f2f2f2", height: "27px", width: "250px"}} onChange={handleChange('foodTag')}/>
+                <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>Tag:</label>
+                <input style={{marginLeft: "20px", backgroundColor: "#f2f2f2", height: "27px", width: "10vw"}} onChange={handleChange('foodTag')}/>
                 <br/>
 
                 <br style={{textAlign: "center"}}/>
-                <label style={{fontSize: "1.17em", marginLeft: "100px"}}>Quantity:</label>
-                <input style={{marginLeft: "20px", backgroundColor: "#f2f2f2", height: "27px", width: "250px"}} onChange={handleChange('foodQuantity')}/>
+                <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>Quantity:</label>
+                <input style={{marginLeft: "20px", backgroundColor: "#f2f2f2", height: "27px", width: "10vw"}} onChange={handleChange('foodQuantity')}/>
                 <br/>
 
                 <br style={{textAlign: "center"}}/>
-                <label style={{fontSize: "1.17em", marginLeft: "100px"}}>Purchase Date:</label>
+                <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>Purchase Date:</label>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
                             disableToolbar
@@ -126,8 +129,8 @@ export default function MaterialUIPickers(props) {
                 <br/>
 
                 <br style={{textAlign: "center"}}/>
-                <label style={{fontSize: "1.17em", marginLeft: "100px"}}>Duration:</label>
-                <input style={{marginLeft: "20px", backgroundColor: "#f2f2f2", height: "27px", width: "200px"}} onChange={handleChange('foodDuration')}/>
+                <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>Duration:</label>
+                <input style={{marginLeft: "20px", backgroundColor: "#f2f2f2", height: "27px", width: "10vw"}} onChange={handleChange('foodDuration')}/>
                 <label style={{fontSize: "1.17em", marginLeft: "20px"}}>Days</label>
                 <br/>
 
