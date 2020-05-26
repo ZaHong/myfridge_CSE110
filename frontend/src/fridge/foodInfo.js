@@ -29,7 +29,7 @@ class FoodInfo extends Component{
               }
             }).catch(
               //this.setState({ userNotExist: true, emptyPassword: false })
-              )
+            )
     }
     render(){
         const number = this.props.number;

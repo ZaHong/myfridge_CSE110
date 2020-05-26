@@ -223,12 +223,12 @@ class Fridge extends Component{
                     </Link>
                      */}
                     <div className={classes.grow} />
-                    <Link to="/index">
+                    <Link to={{pathname: '/index', state: { userID: this.state.userid}}}>
                         <IconButton size='medium'>
                                     <img src={scoreboard_img} height='70vh' />
                         </IconButton>
                     </Link>
-                    <Link to="/index">
+                    <Link to={{pathname: '/friendlist', state: { userID: this.state.userid}}}>
                         <IconButton size='medium'>
                                     <img src={friend_img} height='70vh' />
                         </IconButton>
@@ -238,7 +238,7 @@ class Fridge extends Component{
                                     <img src={recipe_img} height='70vh' />
                         </IconButton>
                     </Link>
-                    <Link to="/profile">
+                    <Link to={{pathname: '/profile', state: { userID: this.state.userid}}}>
                         <IconButton size='medium'>
                                     <img src={profile_img} height='70vh' />
                         </IconButton>

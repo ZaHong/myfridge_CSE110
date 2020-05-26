@@ -9,6 +9,7 @@ import index from "./fridge/fridge";
 import profile from "./Profile/profile";
 import wasteboard from "./Wasteboard/wasteboard";
 import addfood from './fridge/addFood';
+import friendlist from './FriendList/friendlist';
 
 class App extends Component {
   constructor(props) {
@@ -39,6 +40,7 @@ class App extends Component {
             <Route path="/wasteboard" component={wasteboard} />
             <Route path="/profile" component={profile} />
             <Route path="/addfood" component={addfood} />
+            <Route path="/friendlist" component={friendlist} />
           </Switch>
         </div>
       </Router>

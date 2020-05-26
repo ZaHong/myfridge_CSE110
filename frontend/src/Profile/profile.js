@@ -154,7 +154,7 @@ class Profile extends Component {
     return (
       <Grid container xs={12} className={classes.background}>
         <div className={classes.header}>
-          <Link to="/index">
+          <Link to={{pathname: '/index', state: { userID: this.state.userid}}}>
             <img src={myfridge_logo} height="90vh" />
           </Link>
           <div className={classes.grow} />
