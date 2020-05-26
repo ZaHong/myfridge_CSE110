@@ -11,7 +11,9 @@ import Tabs from "./tabs";
 import { Link } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
+import Typography from '@material-ui/core/Typography';
 import { Redirect } from "react-router-dom";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 var contains = []
 /*
@@ -126,7 +128,8 @@ class Fridge extends Component{
                 PurchasedDate: '05/01/2020',
             }*/
       ],
-      nullUserID: null
+      nullUserID: null,
+      didRendered:false,
     };
     if (props.location.state == null) {
       this.state.nullUserID = true;
@@ -157,7 +160,7 @@ class Fridge extends Component{
             };
             resFood.push(obj);
           }
-          this.setState({ food: resFood });
+          this.setState({ food: resFood, didRendered: true });
         })
         .catch
         //this.setState({ userNotExist: true, emptyPassword: false })
@@ -168,7 +171,9 @@ class Fridge extends Component{
     render(){
         const { classes } = this.props;
         return (
-            <Grid container xs={12} className={classes.background}>
+          <div>
+            {this.state.didRendered?
+              <Grid container xs={12} className={classes.background}>
                 <div container xs={12} className={classes.header}>
                     <Link to={{pathname: '/index', state: { userID: this.state.userid}}}>
                         <img src={logo} height='90vh'/>
@@ -244,7 +249,65 @@ class Fridge extends Component{
                 
                 </div>
             </Grid>
-
+            : 
+            <Grid container xs={12} className={classes.background}>
+                <div container xs={12} className={classes.header}>
+                    <Link to={{pathname: '/index', state: { userID: this.state.userid}}}>
+                        <img src={logo} height='90vh'/>
+                    </Link>
+                    {(this.state.nullUserID) && (<Redirect to='/'/>)}
+                    {/**
+                     <Link to="http://google.com" variant="body2" className={classes.link}>
+                        <IconButton edge="end" size='small' color="inherit" aria-label="scoreboard">
+                        <img src={scoreboard_img} height='70vh'/>
+                        </IconButton>
+                    </Link>
+                    <Link to="http://google.com" variant="body2" className={classes.link}>
+                        <IconButton size='small' color="inherit" aria-label="scoreboard">
+                        <img src={friend_img} height='70vh'/>
+                        </IconButton>
+                    </Link>
+                    <Link to="http://google.com" variant="body2"className={classes.link}>
+                        <IconButton size='small' color="inherit" aria-label="scoreboard">
+                        <img src={recipe_img} height='70vh'/>
+                        </IconButton>
+                    </Link>
+                    <Link to="http://google.com" variant="body2" className={classes.link}>
+                        <IconButton size='small' color="inherit" aria-label="scoreboard">
+                        <img src={profile_img} height='70vh'/>
+                        </IconButton>
+                    </Link>
+                     */}
+                    <div className={classes.grow} />
+                    <Link to={{pathname: '/wasteboard', state: { userID: this.state.userid}}}>
+                        <IconButton size='medium'>
+                                    <img src={scoreboard_img} height='70vh' />
+                        </IconButton>
+                    </Link>
+                    <Link to={{pathname: '/friendlist', state: { userID: this.state.userid}}}>
+                        <IconButton size='medium'>
+                                    <img src={friend_img} height='70vh' />
+                        </IconButton>
+                    </Link>
+                    <Link to="/index">
+                        <IconButton size='medium'>
+                                    <img src={recipe_img} height='70vh' />
+                        </IconButton>
+                    </Link>
+                    <Link to={{pathname: '/profile', state: { userID: this.state.userid}}}>
+                        <IconButton size='medium'>
+                                    <img src={profile_img} height='70vh' />
+                        </IconButton>
+                    </Link>
+                </div>
+                <div className={classes.tabs} >
+                  <Typography variant="h3" gutterBottom={true}>
+                    Loading... 
+                  </Typography>
+                  <CircularProgress size='20vh' color='textPrimary'/>
+                </div>
+            </Grid>
+            }</div>
           );
     }
 }
