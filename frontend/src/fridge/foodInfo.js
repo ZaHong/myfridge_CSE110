@@ -48,7 +48,7 @@ class FoodInfo extends Component{
                 
                 <ul>
                 <br></br>
-                <div display="flex">
+                <div display="flex" >
                   <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
                         Food Item:
                   </label>

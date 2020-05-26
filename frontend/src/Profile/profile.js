@@ -158,12 +158,12 @@ class Profile extends Component {
             <img src={myfridge_logo} height="90vh" />
           </Link>
           <div className={classes.grow} />
-          <Link to="/index">
+          <Link to={{pathname: '/wasteboard', state: { userID: this.state.userid}}}>
             <IconButton size="medium">
               <img src={scoreboard_icon} height="70vh" />
             </IconButton>
           </Link>
-          <Link to="/index">
+          <Link to={{pathname: '/friendlist', state: { userID: this.state.userid}}}>
             <IconButton size="medium">
               <img src={friend_icon} height="70vh" />
             </IconButton>
@@ -173,7 +173,7 @@ class Profile extends Component {
               <img src={recipe_icon} height="70vh" />
             </IconButton>
           </Link>
-          <Link to="/index">
+          <Link to={{pathname: '/profile', state: { userID: this.state.userid}}}>
             <IconButton size="medium">
               <img src={profile_icon} height="70vh" />
             </IconButton>

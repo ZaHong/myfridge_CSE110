@@ -124,33 +124,6 @@ class Fridge extends Component{
                 Tag: 'fruit',
                 Quantity: '1',
                 PurchasedDate: '05/01/2020',
-            }
-            ,{
-                foodName: 'Watermelon',
-                ExpirationDate: '05/30/2020',
-                Tag: 'fruit',
-                Quantity: '1',
-                PurchasedDate: '05/01/2020',
-            },
-            {
-                foodName: 'strawberry',
-                ExpirationDate: '05/30/2020',
-                Tag: 'fruit',
-                Quantity: '1',
-                PurchasedDate: '05/01/2020',
-            },
-            {
-                foodName: 'egg',
-                ExpirationDate: '05/30/2020',
-                Tag: 'food',
-                Quantity: '10',
-                PurchasedDate: '05/01/2020',
-            },{
-                foodName: 'milk',
-                ExpirationDate: '05/30/2020',
-                Tag: 'milk',
-                Quantity: '2',
-                PurchasedDate: '05/01/2020',
             }*/
       ],
       nullUserID: null
@@ -196,7 +169,7 @@ class Fridge extends Component{
         return (
             <Grid container xs={12} className={classes.background}>
                 <div container xs={12} className={classes.header}>
-                    <Link to="/index">
+                    <Link to={{pathname: '/index', state: { userID: this.state.userid}}}>
                         <img src={logo} height='90vh'/>
                     </Link>
                     {(this.state.nullUserID) && (<Redirect to='/'/>)}
@@ -223,7 +196,7 @@ class Fridge extends Component{
                     </Link>
                      */}
                     <div className={classes.grow} />
-                    <Link to={{pathname: '/index', state: { userID: this.state.userid}}}>
+                    <Link to={{pathname: '/wasteboard', state: { userID: this.state.userid}}}>
                         <IconButton size='medium'>
                                     <img src={scoreboard_img} height='70vh' />
                         </IconButton>
