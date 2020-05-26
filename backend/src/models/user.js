@@ -190,6 +190,7 @@ async function addFood(food_info, user_id) {
 async function deleteFood(food_id, user_id) {
     await db.connectDB()
     const user = await User.findById(user_id)
+    console.log(user_id + '  ' + food_id)
     var fridge = user.fridge
     var idx = fridge.indexOf(food_id)
     fridge.splice(idx, 1)

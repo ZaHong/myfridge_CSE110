@@ -61,6 +61,7 @@ user_router.post('/:id/addFood', async (req, res) => {
 })
 
 user_router.post('/:id/deleteFood', async (req, res) => {         // need the food_id that will be deleted
+    console.log('hahah')
     result = await deleteFood(req.body.food_id, req.params.id) 
     res.send(result)
 })

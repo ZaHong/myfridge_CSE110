@@ -38,7 +38,7 @@ const style = theme => ({
     position: "fixed",
     overflow: "auto",
     display: "flex",
-    height: "6em",
+    height: "6.5em",
     borderBottom: "3px solid rgb(212, 212, 212)"
   },
   grow: {

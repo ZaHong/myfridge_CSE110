@@ -98,7 +98,7 @@ const style = theme => ({
         position: 'fixed',
         overflow: 'auto',
         display: 'flex',
-        height: '6em',
+        height: '6.5em',
         borderBottom: "3px solid rgb(212, 212, 212)"
       },
       grow:{
@@ -170,6 +170,7 @@ class Fridge extends Component{
         .then(json => {
           //alert(JSON.stringify(json.fridge))
           var resFood = [];
+          console.log(json.fridge)
           for (var i = 0; i < json.fridge.length; i++) {
             var temp = json.fridge[i];
             var obj = {
@@ -177,7 +178,8 @@ class Fridge extends Component{
               ExpirationDate: temp.expiration_date.substring(0, 10),
               Tag: "IN PROGRESS",
               Quantity: temp.quantity,
-              PurchasedDate: temp.date_purchased.substring(0, 10)
+              PurchasedDate: temp.date_purchased.substring(0, 10),
+              foodid : temp._id,
             };
             resFood.push(obj);
           }
@@ -195,7 +197,7 @@ class Fridge extends Component{
             <Grid container xs={12} className={classes.background}>
                 <div container xs={12} className={classes.header}>
                     <Link to="/index">
-                        <img src={logo} height='80vh'/>
+                        <img src={logo} height='90vh'/>
                     </Link>
                     {(this.state.nullUserID) && (<Redirect to='/'/>)}
                     {/**

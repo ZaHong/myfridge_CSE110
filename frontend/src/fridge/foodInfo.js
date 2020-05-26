@@ -9,6 +9,27 @@ class FoodInfo extends Component{
     constructor(props){
         super(props)
         this.state = this.props.information
+        this.state.currentID = this.props.id
+    }
+
+    
+    removeFood(event){
+        var payload={
+            'food_id':this.state.foodid
+        }
+        fetch("http://localhost:8000/user/" + this.state.currentID + "/deleteFood",{
+              method: "POST",
+              headers: {
+                'Content-Type': "application/json"
+              },
+              body: JSON.stringify(payload)
+            }).then(response => response.json()).then(json => {
+              if(json.status==true){
+                window.location.reload(false);
+              }
+            }).catch(
+              //this.setState({ userNotExist: true, emptyPassword: false })
+              )
     }
     render(){
         const number = this.props.number;
@@ -46,10 +67,17 @@ class FoodInfo extends Component{
                     width: '500px',
                     flexDirection: 'row',
                 }}>
-                <Button style={{height:'50px', width:'100px'}} variant="contained" color="white">
+                <Button 
+                    style={{height:'50px', width:'100px'}} 
+                    variant="contained" 
+                    color="white"
+                    >
                     Edit
                 </Button>
-                <Button style={{height:'50px', marginLeft: '200px', width:'100px'}}variant="contained" color="white">
+                <Button 
+                    style={{height:'50px', marginLeft: '200px', width:'100px'}}variant="contained" 
+                    color="white"
+                    onClick={event => this.removeFood(event)}>
                     Remove
                 </Button>
                 </Grid>

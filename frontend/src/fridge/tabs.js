@@ -369,7 +369,7 @@ export default function VerticalTabs(props) {
     resultInfo.push(
     <TabPanel value={activeTabIndex} index={i+1}>
       <Grid>
-        <FoodInfos information={list[i]} /> 
+        <FoodInfos information={list[i]} id={currentUserID}/> 
       </Grid>
     </TabPanel>)
     
