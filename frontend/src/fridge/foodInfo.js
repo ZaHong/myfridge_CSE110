@@ -49,46 +49,46 @@ class FoodInfo extends Component{
                 <ul>
                 <br></br>
                 <div display="flex">
-                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
                         Food Item:
                   </label>
-                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
                   {this.state.foodName}
                   </label>
                 </div>
                 <br></br>
                 <div display="flex">
-                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
                   Tag:
                   </label>
-                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
                   {this.state.Tag}
                   </label>
                 </div>
                 <br></br>
                 <div display="flex">
-                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
                   Quantity:
                   </label>
-                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
                   {this.state.Quantity}
                   </label>
                 </div>
                 <br></br>
                 <div display="flex">
-                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
                   Purchased Date:
                   </label>
-                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
                   {this.state.PurchasedDate}
                   </label>
                 </div>
                 <br></br>
                 <div display="flex">
-                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
                   Expected Expiration:
                   </label>
-                  <label style={{fontSize: "1.17em", marginLeft: "8vw"}}>
+                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
                   {this.state.ExpirationDate}
                   </label>
                 </div>

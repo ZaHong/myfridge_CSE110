@@ -170,7 +170,7 @@ class Fridge extends Component{
         .then(json => {
           //alert(JSON.stringify(json.fridge))
           var resFood = [];
-          console.log(json.fridge)
+          //console.log(json.fridge)
           for (var i = 0; i < json.fridge.length; i++) {
             var temp = json.fridge[i];
             var obj = {

@@ -48,11 +48,11 @@ async function getVocabs() {
     var namelist = []
     var infos = {}
     for(var vocab of all) {
-        namelist.push(vocab.name)
+        //namelist.push(vocab)
         infos[vocab.name] = vocab
     }
     return {
-        namelist: namelist,
+        //namelist: namelist,
         infos: infos
     }
 }
