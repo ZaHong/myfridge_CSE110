@@ -3,19 +3,29 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 import View from 'react';
 
 class FoodInfo extends Component{
     constructor(props){
         super(props)
-        this.state = this.props.information
-        this.state.currentID = this.props.id
+        this.state = {
+            foodinfo: this.props.information,
+            currentID: this.props.id,
+            edit: false
+        }
     }
+
+    handleChange = name => event => {
+        this.state.foodinfo[name]= event.target.value;
+    };
 
     
     removeFood(event){
         var payload={
-            'food_id':this.state.foodid
+            'food_id':this.state.foodinfo.foodid
         }
         fetch("http://localhost:8000/user/" + this.state.currentID + "/deleteFood",{
               method: "POST",
@@ -36,89 +46,99 @@ class FoodInfo extends Component{
         const list = []
         return (
             <div style={{
-                flexGrow: 1,
-                //backgroundColor: theme.palette.background.paper,
+                //flexGrow: 1,
                 display: 'flex',
                 height: '55vh',
+                alignItems: "center",
                 //marginLeft: '2vw',
                 //marginTop: '2vh',
                 background: '#cacbbc',
                 width: '45vw',
             }}>
-                
-                <ul>
-                <br></br>
-                <div display="flex" >
-                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
-                        Food Item:
-                  </label>
-                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
-                  {this.state.foodName}
-                  </label>
-                </div>
-                <br></br>
-                <div display="flex">
-                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
-                  Tag:
-                  </label>
-                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
-                  {this.state.Tag}
-                  </label>
-                </div>
-                <br></br>
-                <div display="flex">
-                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
-                  Quantity:
-                  </label>
-                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
-                  {this.state.Quantity}
-                  </label>
-                </div>
-                <br></br>
-                <div display="flex">
-                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
-                  Purchased Date:
-                  </label>
-                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
-                  {this.state.PurchasedDate}
-                  </label>
-                </div>
-                <br></br>
-                <div display="flex">
-                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
-                  Expected Expiration:
-                  </label>
-                  <label style={{fontSize: "1.17em", marginLeft: "7vw"}}>
-                  {this.state.ExpirationDate}
-                  </label>
-                </div>
-                
-                <br></br>
-                <Grid style = {{
-                    display: 'flex',
-                    height: 50,
-                    width: '200vw',
-                    flexDirection: 'row',
-                    marginLeft: "8vw",
-                }}>
-                <Button 
-                    style={{height:'50px', width:'100px'}} 
-                    variant="contained" 
-                    color="white"
-                    >
-                    Edit
-                </Button>
-                <Button 
-                    style={{height:'50px', marginLeft: '200px', width:'100px'}}variant="contained" 
-                    color="white"
-                    onClick={event => this.removeFood(event)}>
-                    Remove
-                </Button>
-                </Grid>
-                <Button style={{ height:'50px', width:'150px', marginTop: '3vh', marginLeft:"8vw"}} variant="contained" color="white">
-                    Put to Waste
-                </Button>
-                </ul>
+                <List style={{width: '35vw', margin:'auto'}}>
+                    <ListItem>
+                        {!this.state.edit && <ListItemText primary="Food Item:" />}
+                        {this.state.edit ? (
+                        <TextField
+                        variant="outlined"
+                        //margin="normal"
+                        required
+                        fullWidth
+                        label="Food Item:"
+                        name="foodName"
+                        autoFocus
+                        defaultValue={this.state.foodinfo.foodName}
+                        onChange={this.handleChange("foodName")}
+                        />
+                        ) : (<ListItemText primary={this.state.foodinfo.foodName} />)}
+                    </ListItem>
+                    <ListItem>
+                        {!this.state.edit && <ListItemText primary="Tag:" />}
+                        {this.state.edit ? (
+                        <TextField
+                        variant="outlined"
+                        //margin="normal"
+                        fullWidth
+                        label="Tag:"
+                        name="Tag"
+                        autoFocus
+                        defaultValue={this.state.foodinfo.Tag}
+                        onChange={this.handleChange("Tag")}
+                        />
+                        ) : (<ListItemText primary={this.state.foodinfo.Tag} />)}
+                    </ListItem>
+                    <ListItem>
+                        {!this.state.edit && <ListItemText primary="Quantity:" />}
+                        {this.state.edit ? (
+                        <TextField
+                        variant="outlined"
+                        //margin="normal"
+                        fullWidth
+                        label="Quantity:"
+                        name="Quantity"
+                        autoFocus
+                        defaultValue={this.state.foodinfo.Quantity}
+                        onChange={this.handleChange("Quantity")}
+                        />
+                        ) : (<ListItemText primary={this.state.foodinfo.Tag} />)}
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText primary="Purchased Date:" />
+                        <ListItemText primary={this.state.foodinfo.PurchasedDate} />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText primary="Expected Expiration:" />
+                        <ListItemText primary={this.state.foodinfo.ExpirationDate} />
+                    </ListItem>
+                    {!this.state.edit && 
+                    <ListItem>
+                        <ListItemText primary="" />
+                    </ListItem>}
+                    <ListItem>
+                    <Button 
+                        style={{height:'50px', width:'100px'}} 
+                        variant="contained" 
+                        color="white"
+                        onClick={e => (this.setState({ edit: !this.state.edit }))}
+                        >
+                        {this.state.edit ? "Save" : "Edit"}
+                    </Button>
+                    <Button 
+                        style={{height:'50px', marginLeft: '200px', width:'100px'}}variant="contained" 
+                        color="white"
+                        onClick={event => this.removeFood(event)}>
+                        Remove
+                    </Button>
+                    </ListItem>
+                    <ListItem>
+                    <Button 
+                        style={{ height:'50px', width:'150px'}} 
+                        variant="contained" 
+                        color="white">
+                        Put to Waste
+                    </Button>
+                    </ListItem>
+                </List>
             </div>
         )
     }

@@ -146,10 +146,11 @@ class Fridge extends Component{
           //console.log(json.fridge)
           for (var i = 0; i < json.fridge.length; i++) {
             var temp = json.fridge[i];
+            console.log(temp)
             var obj = {
               foodName: temp.name,
               ExpirationDate: temp.expiration_date.substring(0, 10),
-              Tag: "IN PROGRESS",
+              Tag: temp.tag==null ? "": temp.teg,
               Quantity: temp.quantity,
               PurchasedDate: temp.date_purchased.substring(0, 10),
               foodid : temp._id,
