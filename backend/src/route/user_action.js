@@ -87,12 +87,8 @@ user_router.post('/login', async(req, res) => {         // need the user email a
 })
 
 user_router.post('/:id/modifyFood', async (req, res) => {
-    input_date = new Date(req.body.date_purchased)
     const food_info = {
         name: req.body.name,
-        date_purchased: input_date,
-        duration: req.body.duration,
-        expiration_date: new Date(input_date.getTime() + req.body.duration * ONE_DAY),
         tag: req.body.tag,
         quantity: req.body.quantity
     }

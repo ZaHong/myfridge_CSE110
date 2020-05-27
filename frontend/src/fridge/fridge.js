@@ -153,7 +153,7 @@ class Fridge extends Component{
             var obj = {
               foodName: temp.name,
               ExpirationDate: temp.expiration_date.substring(0, 10),
-              Tag: temp.tag==null ? "": temp.teg,
+              Tag: temp.tag,
               Quantity: temp.quantity,
               PurchasedDate: temp.date_purchased.substring(0, 10),
               foodid : temp._id,

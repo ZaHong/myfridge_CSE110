@@ -22,6 +22,31 @@ class FoodInfo extends Component{
         this.state.foodinfo[name]= event.target.value;
     };
 
+    handleEdit = event => {
+        if(this.state.edit){
+            this.setState({ edit: false })
+            var payload ={
+                'name': this.state.foodinfo.foodName,
+                'tag': this.state.foodinfo.Tag,
+                'quantity': this.state.foodinfo.Quantity,
+                'food_id':this.state.foodinfo.foodid
+            }
+            fetch("http://localhost:8000/user/" + this.state.currentID + "/modifyFood",{
+              method: "POST",
+              headers: {
+                'Content-Type': "application/json"
+              },
+              body: JSON.stringify(payload)
+            }).then(response => response.json()).then(json => {
+                if(json.status==true){
+                  window.location.reload(false);
+            }})
+        }else{
+            this.setState({ edit: true })
+            
+        }
+        
+    }
     
     removeFood(event){
         var payload={
@@ -119,7 +144,7 @@ class FoodInfo extends Component{
                         style={{height:'50px', width:'100px'}} 
                         variant="contained" 
                         color="white"
-                        onClick={e => (this.setState({ edit: !this.state.edit }))}
+                        onClick={e => (this.handleEdit())}
                         >
                         {this.state.edit ? "Save" : "Edit"}
                     </Button>
