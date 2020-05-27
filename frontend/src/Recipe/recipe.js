@@ -3,6 +3,7 @@ import profile_icon from "../fridge/res/profile.png";
 import scoreboard_icon from "../fridge/res/scoreboard.png";
 import recipe_icon from "../fridge/res/recipe.png";
 import friend_icon from "../fridge/res/friend.png";
+import add_icon from "./res/Add_icon.png";
 // import background_img from "./res/homepage_background.png";
 // import RecipeTabs from "./recipeTab";
 
@@ -15,6 +16,13 @@ import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Tooltip from '@material-ui/core/Tooltip';
+import Divider from "@material-ui/core/Divider";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListSubheader from '@material-ui/core/ListSubheader';
+import Button from "../FriendList/friendlist";
 
 const style = theme => ({
     background:{
@@ -45,8 +53,38 @@ const style = theme => ({
     tabs: {
         marginTop: '20vh',
         backgroundColor: '#f7f6f0',
+    },
+    bodyContainer: {
+        marginTop: "20vh",
+        direction: "row",
+        justify: "space-around",
+        alignItems: "baseline",
+        spacing: 3
+    },
+    verticalBodyContainer: {
+        direction: "column",
+        justify: "center",
+        alignItems: "center",
+        alignContent:"center"
+    },
+    profile: {
+        backgroundColor: "#e5e8df",
+        backgroundSize: "cover",
+        border: "3px solid rgb(212, 212, 212)",
+        borderRadius: "10px",
+        marginLeft: "5vw",
+        marginRight: "5vw",
+        overflow: "auto",
+        maxHeight: "60vh",
     }
 });
+//
+// function listItemWrapper(props) {
+//     const index = props.index;
+//     return (
+//
+//     )
+// }
 
 class Recipe extends Component{
     constructor(props){
@@ -54,15 +92,17 @@ class Recipe extends Component{
         this.state = {
             userid: "",
             recipes: [],
+            recipe_items: [],
             // nullUserID: true,
-            didRendered:false,
+            didRendered: false,
         };
         if (props.location.state == null) {
             this.props.history.push({
                 pathname: '/',
             })
         } else {
-            this.state.userid= props.location.state.userID
+            this.state.userid= props.location.state.userID;
+
             fetch(`http://localhost:8000/user/${this.state.userid}/recipe`,{
                 method: "GET",
                 headers: {
@@ -71,27 +111,26 @@ class Recipe extends Component{
             })
                 .then(response => response.json())
                 .then(json => {
-                    alert(JSON.stringify(json.length));
-                    // var resFood = [];
-                    // //console.log(json.fridge)
-                    // for (var i = 0; i < json.fridge.length; i++) {
-                    //     var temp = json.fridge[i];
-                    //     console.log(temp)
-                    //     var obj = {
-                    //         foodName: temp.name,
-                    //         ExpirationDate: temp.expiration_date.substring(0, 10),
-                    //         Tag: temp.tag,
-                    //         Quantity: temp.quantity,
-                    //         PurchasedDate: temp.date_purchased.substring(0, 10),
-                    //         foodid : temp._id,
-                    //     };
-                    //     resFood.push(obj);
-                    // }
-                    // this.setState({ food: resFood, didRendered: true });
+                    // alert(JSON.stringify(json.length));
+                    // this.state.recipes = json;
+                    // this.state.didRendered = true;
+
+                    let temp = [];
+                    for ( var i =0; i<json.length; i++) {
+                        temp.push(
+                            <div >
+                                <ListItem>
+                                    <Link >
+                                        <ListItemText primary={json[i].recipe_info.name} />
+                                        <ListItemText primary=" " />
+                                    </Link>
+                                </ListItem>
+                                <Divider />
+                            </div>
+                        );
+                    }
+                    this.setState({recipes:json, didRendered:true, recipe_items: temp});
                 })
-                .catch
-                //this.setState({ userNotExist: true, emptyPassword: false })
-                ();
         }
     }
 
@@ -128,26 +167,60 @@ class Recipe extends Component{
                             </IconButton>
                         </Link>
                     </div>
+
                     {this.state.didRendered ?
-                    <div className={classes.tabs}>
-                        <Grid container
-                              style={{width:'100vw',
-                                  marginLeft:'15vw',
-                              }}
-                            //align="center"
-                            //justify="'flex-start'"
-                            //direction="column"
-                        >
-                            {/*<RecipeTabs foodInfos={this.state.food} id={this.state.userid}/>*/}
+                        <Grid container xs={12} className={classes.bodyContainer}>
+                            <Grid container xs={4}>
+                                <List className={classes.profile}>
+                                    <ListItem>
+                                        <h3 style={{ marginLeft: "15%" }}>Recommend Recipe</h3>
+                                    </ListItem>
+
+                                    <Divider />
+                                    <Divider />
+                                    <Divider />
+                                    <Divider />
+                                    <Divider />
+                                    <Divider />
+                                    <Divider />
+
+                                    {this.state.recipe_items}
+                                    <ListItem>
+                                        <ListItemText primary="" />
+                                    </ListItem>
+                                </List>
+                            </Grid>
+                            <Grid container xs={1} className={classes.verticalBodyContainer}>
+                                <Tooltip title="Customize Your Recipe" aria-label="add">
+                                    <IconButton aria-label="customize recipe">
+                                        <img src={add_icon} height='90vh'/>
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Customize Your Recipe" aria-label="add">
+                                    <IconButton aria-label="customize recipe">
+                                        My<br/>Recipe
+                                    </IconButton>
+                                </Tooltip>
+                            </Grid>
+                            <Grid container xs={7} md={6}>
+                                <List className={classes.profile}>
+                                    <ListItem style={{ paddingInline: "30px" }}>
+                                        <h3 style={{ justify: "center" }}>Recommend Recipe</h3>
+                                    </ListItem>
+                                    <ListItem>
+                                        <ListItemText primary="" />
+                                    </ListItem>
+                                </List>
+                            </Grid>
+
                         </Grid>
-                    </div>
-                    :
-                    <div className={classes.tabs} >
-                        <Typography variant="h3" gutterBottom={true} color='#ddddd6'>
-                            Loading...
-                        </Typography>
-                        <CircularProgress size='20vh' color='#ddddd6' thickness='2'/>
-                    </div>
+                        :
+                        <div className={classes.tabs} alignItems='center'>
+                            <Typography variant="h3" gutterBottom={true} color='#ddddd6'>
+                                Loading Recipes...
+                            </Typography>
+                            <CircularProgress size='20vh' color='#ddddd6' thickness='2'/>
+                        </div>
                     }
                 </Grid>
             </div>

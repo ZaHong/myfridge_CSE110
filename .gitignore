@@ -116,3 +116,6 @@ dist
 
 # backend unused file
 backend/src/unused
+
+# mac system folder attributes
+.DS_Store
