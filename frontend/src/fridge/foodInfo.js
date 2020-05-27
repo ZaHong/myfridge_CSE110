@@ -66,6 +66,39 @@ class FoodInfo extends Component{
               //this.setState({ userNotExist: true, emptyPassword: false })
             )
     }
+
+    putToWaste(event){
+        var payload={
+            'amount':this.state.foodinfo.Quantity
+        }
+        fetch("http://localhost:8000/user/" + this.state.currentID + "/add_waste",{
+              method: "POST",
+              headers: {
+                'Content-Type': "application/json"
+              },
+              body: JSON.stringify(payload)
+            }).then(response => response.json()).then(json => {
+              if(json.status==true){
+                var payload2={
+                    'food_id':this.state.foodinfo.foodid
+                }
+                fetch("http://localhost:8000/user/" + this.state.currentID + "/deleteFood",{
+                      method: "POST",
+                      headers: {
+                        'Content-Type': "application/json"
+                      },
+                      body: JSON.stringify(payload2)
+                    }).then(response => response.json()).then(json => {
+                      if(json.status==true){
+                        window.location.reload(false);
+                      }
+                    })
+              }
+            }).catch(
+              //this.setState({ userNotExist: true, emptyPassword: false })
+        )
+    }
+
     render(){
         const number = this.props.number;
         const list = []
@@ -161,7 +194,9 @@ class FoodInfo extends Component{
                         <Button 
                             style={{ height:'50px', width:'150px'}} 
                             variant="contained" 
-                            color="white">
+                            color="white"
+                            onClick={event => this.putToWaste(event)}
+                            >
                             Put to Waste
                         </Button>
                         </ListItem>}
