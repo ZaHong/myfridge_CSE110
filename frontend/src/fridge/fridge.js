@@ -82,7 +82,7 @@ const style = theme => ({
         flexDirection: 'row',
         alignItems: 'center',
         */
-       backgroundColor: '#f7f6f0',
+        backgroundColor: '#f7f6f0',
         backgroundSize: 'cover',
         height: '100%',
         position: 'fixed',
@@ -301,10 +301,10 @@ class Fridge extends Component{
                     </Link>
                 </div>
                 <div className={classes.tabs} >
-                  <Typography variant="h3" gutterBottom={true}>
+                  <Typography variant="h3" gutterBottom={true} color='#ddddd6'>
                     Loading... 
                   </Typography>
-                  <CircularProgress size='20vh' color='textPrimary'/>
+                  <CircularProgress size='20vh' color='#ddddd6' thickness='2'/>
                 </div>
             </Grid>
             }</div>

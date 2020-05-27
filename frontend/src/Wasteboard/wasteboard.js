@@ -70,7 +70,7 @@ class Wasteboard extends Component{
         super(props)
 
         this.state={
-            userid: '123456',
+            userid: '',
             stats:{
                 money:'200',
                 nickname:'Gary(Me)'

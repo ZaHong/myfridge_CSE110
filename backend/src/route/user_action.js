@@ -116,6 +116,7 @@ user_router.get(`/:id/recipe`, async (req, res) => {
 });
 
 user_router.get('/:id/profile', async (req, res) => {
+    
     await db.connectDB()
     var result = await getProfile(req.params.id)
     await db.disconnectDB()

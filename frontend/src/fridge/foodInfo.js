@@ -100,7 +100,7 @@ class FoodInfo extends Component{
                         defaultValue={this.state.foodinfo.Quantity}
                         onChange={this.handleChange("Quantity")}
                         />
-                        ) : (<ListItemText primary={this.state.foodinfo.Tag} />)}
+                        ) : (<ListItemText primary={this.state.foodinfo.Quantity} />)}
                     </ListItem>
                     <ListItem>
                         <ListItemText primary="Purchased Date:" />
@@ -123,21 +123,24 @@ class FoodInfo extends Component{
                         >
                         {this.state.edit ? "Save" : "Edit"}
                     </Button>
+                    {this.state.edit ? <br></br> : 
                     <Button 
                         style={{height:'50px', marginLeft: '200px', width:'100px'}}variant="contained" 
                         color="white"
                         onClick={event => this.removeFood(event)}>
                         Remove
-                    </Button>
+                    </Button>}
                     </ListItem>
+                    {this.state.edit ? <br></br> :
                     <ListItem>
-                    <Button 
-                        style={{ height:'50px', width:'150px'}} 
-                        variant="contained" 
-                        color="white">
-                        Put to Waste
-                    </Button>
-                    </ListItem>
+                        <Button 
+                            style={{ height:'50px', width:'150px'}} 
+                            variant="contained" 
+                            color="white">
+                            Put to Waste
+                        </Button>
+                        </ListItem>}
+                    
                 </List>
             </div>
         )

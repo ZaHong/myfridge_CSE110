@@ -14,6 +14,7 @@ import {
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import Alert from "@material-ui/lab/Alert";
 
 const style = theme => ({
   body:{
@@ -46,6 +47,7 @@ class AddFood extends Component {
         foodDuration:"",
         comboBoxFoodList: [],
         foodInfos: [],
+        invalidQuantity: false,
       };
 
       fetch("http://localhost:8000/user/foodvocab",{
@@ -73,36 +75,29 @@ class AddFood extends Component {
 
     handleClick = (event) => {
 
-      const food = {
-        name : this.state.foodName,
-        date_purchased : ((this.state.selectedDate.getMonth() + 1) + ' ' + this.state.selectedDate.getDate() + " " + this.state.selectedDate.getFullYear()),
-        duration: this.state.foodDuration,
-        tag:this.state.foodTag,
-        quantity:this.state.foodQuantity,
-      };
-      //alert(JSON.stringify(food))
-      if(food.name != null && food.name!= ''){
-        fetch("http://localhost:8000/user/" + this.state.currentUserID + "/addFood",{
-          method: "POST",
-          headers: {
-            'Content-Type': "application/json"
-          },
-          body: JSON.stringify(food)
-        }).finally(function(){
-          window.location.reload(false);
-        }
-        )
-
-        /*.then(response => response.json()).then(json => {
-          if(json.status!=null && json.status==true){
-           this.setState({userID: json.body._id, successLogin:true})
-          }else{
-            //alert('Wrong Password')
-            this.setState({ userNotExist: true, emptyPassword: false })
+      if(isNaN(this.state.foodQuantity)){
+        this.setState({invalidQuantity: true})
+      }else{
+        const food = {
+          name : this.state.foodName,
+          date_purchased : ((this.state.selectedDate.getMonth() + 1) + ' ' + this.state.selectedDate.getDate() + " " + this.state.selectedDate.getFullYear()),
+          duration: this.state.foodDuration,
+          tag:this.state.foodTag,
+          quantity:this.state.foodQuantity,
+        };
+        //alert(JSON.stringify(food))
+        if(food.name != null && food.name!= ''){
+          fetch("http://localhost:8000/user/" + this.state.currentUserID + "/addFood",{
+            method: "POST",
+            headers: {
+              'Content-Type': "application/json"
+            },
+            body: JSON.stringify(food)
+          }).finally(function(){
+            window.location.reload(false);
           }
-        }).catch(
-          //this.setState({ userNotExist: true, emptyPassword: false })
-          )*/
+          )
+        }
       }
       };
       
@@ -185,6 +180,15 @@ class AddFood extends Component {
                   >
                       Save
                   </Button>
+                  {(this.state.invalidQuantity) && (
+                    <div>
+                      <br></br>
+                      <Alert severity="error">
+                        <strong>Please Enter Numerical Quantity</strong>
+                      </Alert>
+                    </div>
+                    
+                  )}
                   </div>
   
                   
