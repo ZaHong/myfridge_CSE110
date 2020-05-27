@@ -29,15 +29,19 @@ var userSchema = mongoose.Schema({
     },
     friend_list: {
         type: [mongoose.Schema.Types.ObjectId],
-    }
+    },
     // waste_food: [Schema.Types.ObjectId],
     // waste_food_weekly: [Schema.Types.ObjectId],
-    // food_waste_score: [Schema.Types.ObjectId],
+    score: Number,
     // custom_recipe: [Schema.Types.ObjectId],
     // allow_email_notification: Boolean,
-    // grocery_list: [Schema.Types.ObjectId]
+    grocery_list: {
+        type: [String]
+    },
+    nickname: {
+        type: String
+    }
 })
-
 
 /*
  * This model is unique to our db (MyFridge). Any operation directly acts onto our database.
@@ -95,6 +99,11 @@ async function registerUser(user_info) {
         }
     }
     else{
+        var idx = user_info.email.indexOf('@')
+        var nickname = user_info.email.substring(0, idx)
+        user_info.nickname = nickname
+        console.log(user_info)
+        user_info.score = 0
         var new_user = new User(user_info)
         await new_user.save()
         result = {
@@ -151,7 +160,8 @@ async function getFriends(id) {
         friend = await User.findOne(friend_list[i])
         friend_list[i] = {
             id: friend.id,
-            email: friend.email
+            email: friend.email,
+            nickname: friend.nickname
         }
     }
     await db.disconnectDB()
@@ -283,5 +293,50 @@ async function suggestRecipe(user_id) {
     return await suggest(fridge)
 }
 
+async function getProfile(user_id) {
+    var profile = await User.findById(user_id)
+    return {
+            "email": profile.email,
+            "nickname": profile.nickname,
+            "grocery_list": profile.grocery_list
+        }
+    }
+
+async function change_nickname(user_id, new_name) {
+    db.connectDB()
+    await User.updateOne({_id:user_id}, {$set:{"nickname": new_name}})
+    db.disconnectDB()
+    return {
+        status: true,
+        message: "successfully modify nickname"
+    }
+}
+
+async function add_waste(user_id, amount) {
+    db.connectDB()
+    user = await User.findById(user_id)
+    await User.updateOne({_id: user_id}, {$set:{"score": user.score + amount}})
+    db.disconnectDB()
+}
+
+async function scoreboard(user_id) {
+    db.connectDB()
+    user = await User.findById(user_id)
+    friends = user.friend_list
+    friends.push(user_id)
+    for(let i = 0; i < friends.length; i++) {
+        friend = await User.findById(friends[i])
+        console.log(friend)
+        friends[i] = {
+            "nickname": friend.nickname,
+            "email": friend.email,
+            "score": friend.score
+        }
+    }
+    friends.sort((a, b) => a.score - b.score)
+    return friends
+}
+
 module.exports = {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, 
-    addFood, deleteFood, showUser, login, modify_food, displayByTag, getFoodNames, suggestRecipe}
+    addFood, deleteFood, showUser, login, modify_food, displayByTag, getFoodNames, suggestRecipe, getProfile,
+    change_nickname, add_waste, scoreboard}

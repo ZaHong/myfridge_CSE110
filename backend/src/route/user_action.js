@@ -2,7 +2,8 @@ const express = require('express')
 const user_router = express.Router()
 const db = require('../models/db')
 const {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, addFood,
-       deleteFood, showUser, login, modify_food, displayByTag, getFoodNames, suggestRecipe} = require('../models/user')
+       deleteFood, showUser, login, modify_food, displayByTag, getFoodNames, suggestRecipe, getProfile,
+       change_nickname, add_waste, scoreboard} = require('../models/user')
 const {Food, findFood} = require('../models/food')
 const {getVocabs} = require('../models/food_vocab')
 
@@ -61,7 +62,6 @@ user_router.post('/:id/addFood', async (req, res) => {
 })
 
 user_router.post('/:id/deleteFood', async (req, res) => {         // need the food_id that will be deleted
-    console.log('hahah')
     result = await deleteFood(req.body.food_id, req.params.id) 
     res.send(result)
 })
@@ -114,5 +114,29 @@ user_router.get(`/:id/recipe`, async (req, res) => {
     await db.disconnectDB()
     res.send(result)
 });
+
+user_router.get('/:id/profile', async (req, res) => {
+    await db.connectDB()
+    var result = await getProfile(req.params.id)
+    await db.disconnectDB()
+    res.send(result)
+})
+
+user_router.post('/:id/change_name', async(req, res) => {
+    result = await change_nickname(req.params.id, req.body.new_name)
+    res.send(result)
+})
+
+user_router.post('/:id/add_waste', async(req, res) => {
+    add_waste(req.params.id, req.body.amount)
+    res.send({
+        status: true
+    })
+})
+
+user_router.get('/:id/scoreboard', async(req, res) => {
+    result = await scoreboard(req.params.id)
+    res.send(result)
+})
 
 module.exports = user_router;
