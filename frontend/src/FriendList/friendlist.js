@@ -218,7 +218,7 @@ class Friendlist extends Component {
                 < img src={friend_icon} height="70vh" />
               </IconButton>
             </Link>
-            <Link to="/index">
+            <Link to={{pathname: '/recipe', state: { userID: this.state.userid}}}>
               <IconButton size="medium">
                 < img src={recipe_icon} height="70vh" />
               </IconButton>

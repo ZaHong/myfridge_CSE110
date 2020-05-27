@@ -178,29 +178,8 @@ class Fridge extends Component{
                     <Link to={{pathname: '/index', state: { userID: this.state.userid}}}>
                         <img src={logo} height='90vh'/>
                     </Link>
-                    {(this.state.nullUserID) && (<Redirect to='/'/>)}
-                    {/**
-                     <Link to="http://google.com" variant="body2" className={classes.link}>
-                        <IconButton edge="end" size='small' color="inherit" aria-label="scoreboard">
-                        <img src={scoreboard_img} height='70vh'/>
-                        </IconButton>
-                    </Link>
-                    <Link to="http://google.com" variant="body2" className={classes.link}>
-                        <IconButton size='small' color="inherit" aria-label="scoreboard">
-                        <img src={friend_img} height='70vh'/>
-                        </IconButton>
-                    </Link>
-                    <Link to="http://google.com" variant="body2"className={classes.link}>
-                        <IconButton size='small' color="inherit" aria-label="scoreboard">
-                        <img src={recipe_img} height='70vh'/>
-                        </IconButton>
-                    </Link>
-                    <Link to="http://google.com" variant="body2" className={classes.link}>
-                        <IconButton size='small' color="inherit" aria-label="scoreboard">
-                        <img src={profile_img} height='70vh'/>
-                        </IconButton>
-                    </Link>
-                     */}
+                    {(this.state.nullUserID) && (<Redirect push to='/'/>)}
+
                     <div className={classes.grow} />
                     <Link to={{pathname: '/wasteboard', state: { userID: this.state.userid}}}>
                         <IconButton size='medium'>
@@ -212,7 +191,7 @@ class Fridge extends Component{
                                     <img src={friend_img} height='70vh' />
                         </IconButton>
                     </Link>
-                    <Link to="/index">
+                    <Link to={{pathname: '/recipe', state: { userID: this.state.userid}}}>
                         <IconButton size='medium'>
                                     <img src={recipe_img} height='70vh' />
                         </IconButton>
@@ -255,7 +234,7 @@ class Fridge extends Component{
                     <Link to={{pathname: '/index', state: { userID: this.state.userid}}}>
                         <img src={logo} height='90vh'/>
                     </Link>
-                    {(this.state.nullUserID) && (<Redirect to='/'/>)}
+                    {(this.state.nullUserID) && (<Redirect push to='/'/>)}
                     {/**
                      <Link to="http://google.com" variant="body2" className={classes.link}>
                         <IconButton edge="end" size='small' color="inherit" aria-label="scoreboard">
@@ -289,7 +268,7 @@ class Fridge extends Component{
                                     <img src={friend_img} height='70vh' />
                         </IconButton>
                     </Link>
-                    <Link to="/index">
+                    <Link to={{pathname: '/recipe', state: { userID: this.state.userid}}}>
                         <IconButton size='medium'>
                                     <img src={recipe_img} height='70vh' />
                         </IconButton>

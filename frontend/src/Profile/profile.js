@@ -206,7 +206,7 @@ class Profile extends Component {
               <img src={friend_icon} height="70vh" />
             </IconButton>
           </Link>
-          <Link to="/index">
+          <Link to={{pathname: '/recipe', state: { userID: this.state.userid}}}>
             <IconButton size="medium">
               <img src={recipe_icon} height="70vh" />
             </IconButton>
@@ -217,7 +217,7 @@ class Profile extends Component {
             </IconButton>
           </Link>
         </div>
-        {(this.state.nullUserID) && (<Redirect to='/'/>)}
+        {(this.state.nullUserID) && (<Redirect push to='/'/>)}
 
         <Grid container className={classes.bodyContainer}>
           <Grid item xs={4} style={{ marginLeft: "10%" }}>
