@@ -318,6 +318,23 @@ async function clearGroceryList(user_id) {
     await user1.save()
 }
 
+async function getGroceryList(user_id) {
+    var user1 = await User.findById(user_id)
+    console.log(user1.grocery_list)
+    return user1.grocery_list
+}
+
+async function removeGrocery(user_id, item_names) {
+    var user1 = await User.findById(user_id)
+    for(let item_name of item_names) {
+        var idx = user1.grocery_list.indexOf(item_name)
+        if (idx > -1) {
+            user1.grocery_list.splice(idx, 1);
+        }
+    }
+    await user1.save()
+}
+
 async function getProfile(user_id) {
     var profile = await User.findById(user_id)
     return {
@@ -364,4 +381,4 @@ async function scoreboard(user_id) {
 
 module.exports = {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, 
     addFood, deleteFood, showUser, login, modify_food, displayByTag, getFoodNames, suggestRecipe, getProfile,
-    change_nickname, add_waste, scoreboard, updateGroceryList, clearGroceryList}
+    change_nickname, add_waste, scoreboard, updateGroceryList, clearGroceryList, getGroceryList, removeGrocery}
