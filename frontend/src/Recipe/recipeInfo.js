@@ -29,6 +29,7 @@ const style = theme => ({
         // display: 'flex',
     },
     image: {
+        border: "0.4em solid #fff",
         borderRadius: "8px",
         display: "block",
         marginLeft: "auto",
