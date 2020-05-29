@@ -17,6 +17,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import TextField from "@material-ui/core/TextField";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import { Redirect } from "react-router-dom";
 
 const style = theme => ({
   background: {
@@ -84,25 +85,42 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userid: "123456",
-      email: "random@ucsd.edu",
-      tempemail: "",
-      nickname: "Gary",
+      userid: '',
+      email: '',
+      //tempemail: "",
+      nickname: "",
       tempnickname: "",
       Password: "*******",
       emailNotification: false,
       edit: false,
-      stats: {
-        money: "200",
-        nickname: "Gary(Me)"
-      },
       grocery: {
         apple: true,
         banana: false,
         chicken: false,
         onion: false
       },
-      grocerylist: []
+      grocerylist: [],
+      nullUserID: false,
+    };
+
+    if (props.location.state == null) {
+      this.setState({ nullUserID: true});
+    } else {
+      //this.setState({ userid: props.location.state.userID });
+      this.state.userid= props.location.state.userID
+      console.log(this.state.userid)
+      fetch("http://localhost:8000/user/" + this.state.userid +'/profile', {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(response => response.json())
+        .then(json => {
+          this.setState({email : json.email, nickname:json.nickname})
+        })
+        .catch
+        //this.setState({ userNotExist: true, emptyPassword: false })
+        ();
     };
 
     for (var key in this.state.grocery) {
@@ -113,9 +131,9 @@ class Profile extends Component {
 
             <ListItemText primary=" " />
             <Checkbox
-              checked={event => {
+              /*checked={event => {
                 console.log(this.event.target.id);
-              }}
+              }}*/
               color="default"
               id="{key}"
               onChange={event => {
@@ -129,18 +147,38 @@ class Profile extends Component {
               }}
               inputProps={{ "aria-label": "primary checkbox" }}
             >
-              {console.log([props.id])}
+              {/*console.log([props.id])*/}
             </Checkbox>
           </ListItem>
           <Divider />
         </div>
       );
+
+      
     }
   }
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
   };
+
+  handleLogout = event =>{
+    this.setState({ nullUserID: true});
+  }
+
+  handleSave =event => {
+    this.setState({ edit: !this.state.edit, nickname: this.state.tempnickname })
+    var payload={
+      new_name:this.state.tempnickname
+    }
+    fetch("http://localhost:8000/user/" + this.state.userid +'/change_name', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body:JSON.stringify(payload)
+    })
+  }
 
   render() {
     const { classes } = this.props;
@@ -168,7 +206,7 @@ class Profile extends Component {
               <img src={friend_icon} height="70vh" />
             </IconButton>
           </Link>
-          <Link to="/index">
+          <Link to={{pathname: '/recipe', state: { userID: this.state.userid}}}>
             <IconButton size="medium">
               <img src={recipe_icon} height="70vh" />
             </IconButton>
@@ -179,6 +217,7 @@ class Profile extends Component {
             </IconButton>
           </Link>
         </div>
+        {(this.state.nullUserID) && (<Redirect push to='/'/>)}
 
         <Grid container className={classes.bodyContainer}>
           <Grid item xs={4} style={{ marginLeft: "10%" }}>
@@ -214,7 +253,6 @@ class Profile extends Component {
                   color={this.state.edit ? "secondary" : "white"}
                   onClick={e => (
                     this.setState({ edit: !this.state.edit }),
-                    this.setState({ tempemail: this.state.email }),
                     this.setState({ tempnickname: this.state.nickname })
                   )}
                 >
@@ -231,7 +269,7 @@ class Profile extends Component {
               <ListItem>
                 <h3 style={{ marginLeft: "15%" }}>
                   Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  {this.state.edit ? (
+                  {/*this.state.edit ? (
                     <TextField
                       variant="outlined"
                       margin="normal"
@@ -241,17 +279,13 @@ class Profile extends Component {
                       label="Email Address"
                       name="email"
                       autoFocus
-                      // InputProps={{
-                      //   classes: {
-                      //     notchedOutline: classes.notchedOutline
-                      //   }
-                      // }}
                       defaultValue={this.state.email}
                       onChange={this.handleChange("tempemail")}
                     />
                   ) : (
                     this.state.email
-                  )}
+                  )*/}
+                  {this.state.email}
                 </h3>
               </ListItem>
 
@@ -318,10 +352,8 @@ class Profile extends Component {
                   className={classes.logout}
                   onClick={e =>
                     this.state.edit
-                      ? (this.setState({ edit: !this.state.edit }),
-                        this.setState({ email: this.state.tempemail }),
-                        this.setState({ nickname: this.state.tempnickname }))
-                      : console.log("log out")
+                      ? this.handleSave()
+                      : this.handleLogout()
                   }
                 >
                   {this.state.edit ? "Save" : "Log Out"}

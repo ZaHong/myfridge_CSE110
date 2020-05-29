@@ -22,6 +22,31 @@ class FoodInfo extends Component{
         this.state.foodinfo[name]= event.target.value;
     };
 
+    handleEdit = event => {
+        if(this.state.edit){
+            this.setState({ edit: false })
+            var payload ={
+                'name': this.state.foodinfo.foodName,
+                'tag': this.state.foodinfo.Tag,
+                'quantity': this.state.foodinfo.Quantity,
+                'food_id':this.state.foodinfo.foodid
+            }
+            fetch("http://localhost:8000/user/" + this.state.currentID + "/modifyFood",{
+              method: "POST",
+              headers: {
+                'Content-Type': "application/json"
+              },
+              body: JSON.stringify(payload)
+            }).then(response => response.json()).then(json => {
+                if(json.status==true){
+                  window.location.reload(false);
+            }})
+        }else{
+            this.setState({ edit: true })
+            
+        }
+        
+    }
     
     removeFood(event){
         var payload={
@@ -41,6 +66,39 @@ class FoodInfo extends Component{
               //this.setState({ userNotExist: true, emptyPassword: false })
             )
     }
+
+    putToWaste(event){
+        var payload={
+            'amount':this.state.foodinfo.Quantity
+        }
+        fetch("http://localhost:8000/user/" + this.state.currentID + "/add_waste",{
+              method: "POST",
+              headers: {
+                'Content-Type': "application/json"
+              },
+              body: JSON.stringify(payload)
+            }).then(response => response.json()).then(json => {
+              if(json.status==true){
+                var payload2={
+                    'food_id':this.state.foodinfo.foodid
+                }
+                fetch("http://localhost:8000/user/" + this.state.currentID + "/deleteFood",{
+                      method: "POST",
+                      headers: {
+                        'Content-Type': "application/json"
+                      },
+                      body: JSON.stringify(payload2)
+                    }).then(response => response.json()).then(json => {
+                      if(json.status==true){
+                        window.location.reload(false);
+                      }
+                    })
+              }
+            }).catch(
+              //this.setState({ userNotExist: true, emptyPassword: false })
+        )
+    }
+
     render(){
         const number = this.props.number;
         const list = []
@@ -100,7 +158,7 @@ class FoodInfo extends Component{
                         defaultValue={this.state.foodinfo.Quantity}
                         onChange={this.handleChange("Quantity")}
                         />
-                        ) : (<ListItemText primary={this.state.foodinfo.Tag} />)}
+                        ) : (<ListItemText primary={this.state.foodinfo.Quantity} />)}
                     </ListItem>
                     <ListItem>
                         <ListItemText primary="Purchased Date:" />
@@ -119,25 +177,30 @@ class FoodInfo extends Component{
                         style={{height:'50px', width:'100px'}} 
                         variant="contained" 
                         color="white"
-                        onClick={e => (this.setState({ edit: !this.state.edit }))}
+                        onClick={e => (this.handleEdit())}
                         >
                         {this.state.edit ? "Save" : "Edit"}
                     </Button>
+                    {this.state.edit ? <br></br> : 
                     <Button 
                         style={{height:'50px', marginLeft: '200px', width:'100px'}}variant="contained" 
                         color="white"
                         onClick={event => this.removeFood(event)}>
                         Remove
-                    </Button>
+                    </Button>}
                     </ListItem>
+                    {this.state.edit ? <br></br> :
                     <ListItem>
-                    <Button 
-                        style={{ height:'50px', width:'150px'}} 
-                        variant="contained" 
-                        color="white">
-                        Put to Waste
-                    </Button>
-                    </ListItem>
+                        <Button 
+                            style={{ height:'50px', width:'150px'}} 
+                            variant="contained" 
+                            color="white"
+                            onClick={event => this.putToWaste(event)}
+                            >
+                            Put to Waste
+                        </Button>
+                        </ListItem>}
+                    
                 </List>
             </div>
         )

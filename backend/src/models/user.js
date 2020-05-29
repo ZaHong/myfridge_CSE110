@@ -285,9 +285,54 @@ async function getFoodNames(user_id) {
     return unique
 }
 
+function compareRecipe(r1, r2) {
+    // a < b -> -1 means ascending
+    if (r1.missing_num < r2.missing_num) {
+        return -1
+    } else if (r1.missing_num > r2.missing_num) {
+        return 1
+    } else {
+        return 0
+    }
+}
+
 async function suggestRecipe(user_id) {
     var fridge = await getFoodNames(user_id)
-    return await suggest(fridge)
+    var recipes = await suggest(fridge)
+    return recipes.sort(compareRecipe)
+}
+
+async function updateGroceryList(user_id, food_names) {
+    var user1 = await User.findById(user_id)
+    for(let name of food_names) {
+        if(!user1.grocery_list.includes(name)) {
+            user1.grocery_list.push(name)
+        }
+    }
+    await user1.save()
+}
+
+async function clearGroceryList(user_id) {
+    var user1 = await User.findById(user_id)
+    user1.grocery_list = []
+    await user1.save()
+}
+
+async function getGroceryList(user_id) {
+    var user1 = await User.findById(user_id)
+    console.log(user1.grocery_list)
+    return user1.grocery_list
+}
+
+async function removeGrocery(user_id, item_names) {
+    var user1 = await User.findById(user_id)
+    for(let item_name of item_names) {
+        var idx = user1.grocery_list.indexOf(item_name)
+        if (idx > -1) {
+            user1.grocery_list.splice(idx, 1);
+        }
+    }
+    await user1.save()
 }
 
 async function getProfile(user_id) {
@@ -297,7 +342,7 @@ async function getProfile(user_id) {
             "nickname": profile.nickname,
             "grocery_list": profile.grocery_list
         }
-    }
+}
 
 async function change_nickname(user_id, new_name) {
     db.connectDB()
@@ -336,4 +381,4 @@ async function scoreboard(user_id) {
 
 module.exports = {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, 
     addFood, deleteFood, showUser, login, modify_food, displayByTag, getFoodNames, suggestRecipe, getProfile,
-    change_nickname, add_waste, scoreboard}
+    change_nickname, add_waste, scoreboard, updateGroceryList, clearGroceryList, getGroceryList, removeGrocery}

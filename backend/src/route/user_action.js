@@ -3,7 +3,8 @@ const user_router = express.Router()
 const db = require('../models/db')
 const {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, addFood,
        deleteFood, showUser, login, modify_food, displayByTag, getFoodNames, suggestRecipe, getProfile,
-       change_nickname, add_waste, scoreboard} = require('../models/user')
+       change_nickname, add_waste, scoreboard, updateGroceryList, clearGroceryList, getGroceryList,
+       removeGrocery} = require('../models/user')
 const {Food, findFood} = require('../models/food')
 const {getVocabs} = require('../models/food_vocab')
 
@@ -111,7 +112,57 @@ user_router.get(`/:id/recipe`, async (req, res) => {
     res.send(result)
 });
 
+/*
+ * Add recipe to grocery list
+ */
+user_router.post(`/:id/addrecipe`, async (req, res) => {
+    await db.connectDB()
+    await updateGroceryList(req.params.id, req.body.recipefoods)
+    await db.disconnectDB()
+    res.send({
+        status: "success"
+    })
+})
+
+/*
+ * Clear grocery list
+ */
+user_router.get(`/:id/cleargrocery`, async (req, res) => {
+    await db.connectDB()
+    await clearGroceryList(req.params.id)
+    await db.disconnectDB()
+    res.send({
+        status: "success"
+    })
+})
+
+/*
+ * Display grocery list
+ */
+user_router.get(`/:id/grocery_list`, async (req, res) => {
+    await db.connectDB()
+    var list = await getGroceryList(req.params.id)
+    await db.disconnectDB()
+    res.send({
+        status: "sucess",
+        grocery_list: list
+    })
+})
+
+/*
+ * Remove on grocery from list.
+ */
+user_router.post(`/:id/remove_grocery`, async (req, res) => {
+    await db.connectDB()
+    await removeGrocery(req.params.id, req.body.item_names)
+    await db.disconnectDB()
+    res.send({
+        status: "sucess"
+    })
+})
+
 user_router.get('/:id/profile', async (req, res) => {
+    
     await db.connectDB()
     var result = await getProfile(req.params.id)
     await db.disconnectDB()

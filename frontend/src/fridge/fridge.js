@@ -82,7 +82,7 @@ const style = theme => ({
         flexDirection: 'row',
         alignItems: 'center',
         */
-       backgroundColor: '#f7f6f0',
+        backgroundColor: '#f7f6f0',
         backgroundSize: 'cover',
         height: '100%',
         position: 'fixed',
@@ -153,7 +153,7 @@ class Fridge extends Component{
             var obj = {
               foodName: temp.name,
               ExpirationDate: temp.expiration_date.substring(0, 10),
-              Tag: temp.tag==null ? "": temp.teg,
+              Tag: temp.tag,
               Quantity: temp.quantity,
               PurchasedDate: temp.date_purchased.substring(0, 10),
               foodid : temp._id,
@@ -178,29 +178,8 @@ class Fridge extends Component{
                     <Link to={{pathname: '/index', state: { userID: this.state.userid}}}>
                         <img src={logo} height='90vh'/>
                     </Link>
-                    {(this.state.nullUserID) && (<Redirect to='/'/>)}
-                    {/**
-                     <Link to="http://google.com" variant="body2" className={classes.link}>
-                        <IconButton edge="end" size='small' color="inherit" aria-label="scoreboard">
-                        <img src={scoreboard_img} height='70vh'/>
-                        </IconButton>
-                    </Link>
-                    <Link to="http://google.com" variant="body2" className={classes.link}>
-                        <IconButton size='small' color="inherit" aria-label="scoreboard">
-                        <img src={friend_img} height='70vh'/>
-                        </IconButton>
-                    </Link>
-                    <Link to="http://google.com" variant="body2"className={classes.link}>
-                        <IconButton size='small' color="inherit" aria-label="scoreboard">
-                        <img src={recipe_img} height='70vh'/>
-                        </IconButton>
-                    </Link>
-                    <Link to="http://google.com" variant="body2" className={classes.link}>
-                        <IconButton size='small' color="inherit" aria-label="scoreboard">
-                        <img src={profile_img} height='70vh'/>
-                        </IconButton>
-                    </Link>
-                     */}
+                    {(this.state.nullUserID) && (<Redirect push to='/'/>)}
+
                     <div className={classes.grow} />
                     <Link to={{pathname: '/wasteboard', state: { userID: this.state.userid}}}>
                         <IconButton size='medium'>
@@ -212,7 +191,7 @@ class Fridge extends Component{
                                     <img src={friend_img} height='70vh' />
                         </IconButton>
                     </Link>
-                    <Link to="/index">
+                    <Link to={{pathname: '/recipe', state: { userID: this.state.userid}}}>
                         <IconButton size='medium'>
                                     <img src={recipe_img} height='70vh' />
                         </IconButton>
@@ -255,7 +234,7 @@ class Fridge extends Component{
                     <Link to={{pathname: '/index', state: { userID: this.state.userid}}}>
                         <img src={logo} height='90vh'/>
                     </Link>
-                    {(this.state.nullUserID) && (<Redirect to='/'/>)}
+                    {(this.state.nullUserID) && (<Redirect push to='/'/>)}
                     {/**
                      <Link to="http://google.com" variant="body2" className={classes.link}>
                         <IconButton edge="end" size='small' color="inherit" aria-label="scoreboard">
@@ -289,7 +268,7 @@ class Fridge extends Component{
                                     <img src={friend_img} height='70vh' />
                         </IconButton>
                     </Link>
-                    <Link to="/index">
+                    <Link to={{pathname: '/recipe', state: { userID: this.state.userid}}}>
                         <IconButton size='medium'>
                                     <img src={recipe_img} height='70vh' />
                         </IconButton>
@@ -301,10 +280,10 @@ class Fridge extends Component{
                     </Link>
                 </div>
                 <div className={classes.tabs} >
-                  <Typography variant="h3" gutterBottom={true}>
+                  <Typography variant="h3" gutterBottom={true} color='#ddddd6'>
                     Loading... 
                   </Typography>
-                  <CircularProgress size='20vh' color='textPrimary'/>
+                  <CircularProgress size='20vh' color='#ddddd6' thickness='2'/>
                 </div>
             </Grid>
             }</div>

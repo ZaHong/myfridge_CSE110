@@ -134,7 +134,7 @@ class Login extends Component {
     const { classes } = this.props;
     return (
       <Grid container xs={12} className={classes.background}>
-        {(this.state.successLogin) && (<Redirect to={{pathname: '/index', state: { userID: this.state.userID}}}/>)}
+        {(this.state.successLogin) && (<Redirect push to={{pathname: '/index', state: { userID: this.state.userID}}}/>)}
       <img src={logo} marginTop='20px' height='100vh'/>
       <Grid container xs={10} sm={6} md={4} className={classes.outerpaper}>
       <Container component="main" maxWidth="xs">
