@@ -6,13 +6,15 @@ import Button from '@material-ui/core/Button';
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import View from 'react';
 import withStyles from "@material-ui/core/styles/withStyles";
 import add_icon from "./res/Add_icon.png";
+import Divider from "@material-ui/core/Divider";
+import Typography from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
 
 const style = theme => ({
     info: {
-        backgroundColor: "#cacbbc",
+        backgroundColor: "#e5e8df",
         backgroundSize: "cover",
         border: "1px solid rgb(212, 212, 212)",
         borderRadius: "10px",
@@ -23,114 +25,168 @@ const style = theme => ({
 
         alignItems: "center",
         minHeight: "30vh",
-        // width: "10vh",
+        minWidth: "40vw",
         // display: 'flex',
-
+    },
+    image: {
+        borderRadius: "8px",
+        display: "block",
+        marginLeft: "auto",
+        marginRight: "auto",
+        marginBottom: "0.5em",
+        height: "30vh",
+        width: "50%",
+    },
+    button: {
+        marginLeft: "auto",
+        marginRight: "auto",
+        backgroundColor: "#f1f2ed",
+    },
+    title: {
+        color: "#5b5d56",
+        textAlign: "center",
+        margin: "auto",
+        fontSize: "2.3em",
+        marginTop: "0.3em",
+        marginBottom: "0.2em",
+    },
+    description: {
+        color: "#5e6059",
+        marginLeft: "1em",
+        fontSize: "1.5em",
+    },
+    subDescription: {
+        color: "#5e6059",
+        marginLeft: "2.2em",
+        fontSize: "1.3em",
+    },
+    subStepDescription: {
+        color: "#5e6059",
+        marginLeft: "2.4em",
+        marginBottom: "0.5em",
+        fontSize: "1.2em",
+    },
+    default: {
+        color: "#5b5d56",
+        marginLeft: "0.5em",
     }
 });
 
 class RecipeInfo extends Component{
     constructor(props){
         super(props);
-        this.state = {
-            //missing_num: this.props.recipeInfo !== undefined? this.props.recipeInfo.missing_num : undefined,
-            missing_num:this.props.index,
-            recipeInfo: this.props.recipeInfo !== undefined? this.props.recipeInfo.recipe_info : undefined,
-        }
-        alert(JSON.stringify(this.props))
-        // alert(props.toString())
+        this.onClearClick = this.onClearClick.bind(this);
+        this.onGroceryClick = this.onGroceryClick.bind(this);
     }
 
-    handleChange = name => event => {
-        this.state.foodinfo[name]= event.target.value;
-    };
-
-    handleEdit = event => {
-        if(this.state.edit){
-            this.setState({ edit: false })
-            var payload ={
-                'name': this.state.foodinfo.foodName,
-                'tag': this.state.foodinfo.Tag,
-                'quantity': this.state.foodinfo.Quantity,
-                'food_id':this.state.foodinfo.foodid
-            }
-            fetch("http://localhost:8000/user/" + this.state.currentID + "/modifyFood",{
-                method: "POST",
-                headers: {
-                    'Content-Type': "application/json"
-                },
-                body: JSON.stringify(payload)
-            }).then(response => response.json()).then(json => {
-                if(json.status==true){
-                    window.location.reload(false);
-                }})
-        }else{
-            this.setState({ edit: true })
-
-        }
-
+    onClearClick(event){
+        fetch(`http://localhost:8000/user/${this.props.userid}/cleargrocery`,{
+            method: "GET"
+        });
     }
 
-    removeFood(event){
-        var payload={
-            'food_id':this.state.foodinfo.foodid
-        }
-        fetch("http://localhost:8000/user/" + this.state.currentID + "/deleteFood",{
+    onGroceryClick(event){
+        // alert(this.props.userid);
+        fetch(`http://localhost:8000/user/${this.props.userid}/addrecipe`,{
             method: "POST",
             headers: {
-                'Content-Type': "application/json"
+                "Content-Type" : "application/json"
             },
-            body: JSON.stringify(payload)
-        }).then(response => response.json()).then(json => {
-            if(json.status==true){
-                window.location.reload(false);
-            }
-        }).catch(
-            //this.setState({ userNotExist: true, emptyPassword: false })
-        )
+            body: JSON.stringify({
+                "recipefoods" : this.props.recipeInfo.recipe_info.ingredients
+            })
+        });
     }
 
     render(){
         const { classes } = this.props;
-        const list = []
+        let recipeDetail, ingredients = [], steps = [];
+
+        if (this.props.recipeInfo !== undefined){
+            recipeDetail = this.props.recipeInfo.recipe_info;
+            for (let ingredient of recipeDetail.ingredients){
+                ingredients.push(
+                    <Typography  vairant="h4" className={classes.subDescription} >
+                        {` - ${ingredient}`}
+                    </Typography>
+                )
+            }
+            for (let step of recipeDetail.steps.split("\n\n")){
+                steps.push(
+                    <Typography gutterBottom={true} vairant="h5" className={classes.subDescription} >
+                        {` - ${step.split("\n")[0]}: ${step.split("\n")[1]}`}
+                    </Typography>
+                )
+            }
+        }
+
         return (
             <List className={classes.info}>
+                {/*{(this.props.recipeInfo) ?<h2>{this.props.recipeInfo.recipe_info.name}</h2> :  (<h2>sadad</h2>)}*/}
                 {this.props.recipeInfo ?
                     <>
                         <ListItem>
-                            <ListItemText primary={`Missing item number: ${this.props.index}`} />
-                            <ListItemText primary={new Date().toString()} />
+                            <Typography vairant="h2" className={classes.title} >{`${recipeDetail.name}`}</Typography>
+                        </ListItem>
+                        {/*<Divider />*/}
+                        <img className={classes.image} alt="Food Image" src={recipeDetail.url} />
+                        <ListItem>
+                            {/*<ListItemText primary={`Missing item number: ${this.state.missing_num}`} />*/}
+                            {/*<h4 className={classes.description} ></h4>*/}
+                            <Typography  vairant="h4" className={classes.description} >
+                                {`Main ingredients Missing: ${this.props.recipeInfo.missing_num} `}
+                            </Typography>
                         </ListItem>
 
-                        {/*<Button*/}
-                        {/*style={{ height:'50px', width:'150px'}}*/}
-                        {/*variant="contained"*/}
-                        {/*color="white"*/}
-                        {/*// onClick={event => this.putToWaste(event)}*/}
-                        {/*>*/}
-                        {/*Put to Waste*/}
-                        {/*</Button>*/}
+                        <ListItem>
+                            <Typography  vairant="h4" className={classes.description} >
+                                {`Ingredients: `}
+                            </Typography>
+                        </ListItem>
+                        {ingredients}
+
+                        <ListItem>
+                            <Typography  vairant="h4" className={classes.description} >
+                                {`Steps: `}
+                            </Typography>
+                        </ListItem>
+                        {steps}
+
+                        <ListItem >
+                            <Button variant="contained" className={classes.button} onClick={this.onClearClick} >
+                                Clear Grocery List
+                            </Button>
+
+                            <Button variant="contained" className={classes.button} onClick={this.onGroceryClick}>
+                            Add to Grocery List
+                            </Button>
+                        </ListItem>
                     </>
                     :
                     <>
                         <ListItem>
-                            <ListItemText primaryTypographyProps={{variant: "h4", color:"initial"}}
-                                primary="MyFridge recommends recipes based on the ingredients you have in your fridge" />
                             {/*<h1>MyFridge recommends recipes based on the ingredients you have in your fridge</h1>*/}
+                            <Typography gutterBottom variant="h4" className={classes.default} >
+                                MyFridge recommends recipes based on the ingredients you have in your fridge
+                            </Typography>
                         </ListItem>
+                        <br/>
                         <ListItem>
-                            {/*<ListItemText primary="Click a recipe to see its ingredients" />*/}
-                            <ListItemText primaryTypographyProps={{variant: "h4", color:"initial"}}
-                                          primary="Click a recipe to see its ingredients" />
+                            {/*<ListItemText primaryTypographyProps={{variant: "h4", color:"initial"}}*/}
+                                          {/*primary="Click a recipe to see its ingredients" />*/}
+                            <Typography gutterBottom variant="h4" className={classes.default} >
+                                Click a recipe to see its ingredients
+                            </Typography>
                         </ListItem>
-                        <ListItem alignItems="center">
-                            {/*<ListItemText primary="Click a recipe to see its ingredients" />*/}
-                            <ListItemText primaryTypographyProps={{variant: "h4", color:"initial"}}
-                                          primary="Press" />
-                            <img src={add_icon} height='90vh'/>
-                            <ListItemText primaryTypographyProps={{variant: "h4", color:"initial"}}
-                                          primary=" to add your own recipe" />
-                        </ListItem>
+
+                        {/*<ListItem alignItems="center">*/}
+                            {/*/!*<ListItemText primary="Click a recipe to see its ingredients" />*!/*/}
+                            {/*<ListItemText primaryTypographyProps={{variant: "h4", color:"initial"}}*/}
+                                          {/*primary="Press " />*/}
+                            {/*<img src={add_icon} height='80vh'/>*/}
+                            {/*<ListItemText primaryTypographyProps={{variant: "h4", color:"initial"}}*/}
+                                          {/*primary=" to add your own recipe" />*/}
+                        {/*</ListItem>*/}
                     </>
                 }
             </List>
