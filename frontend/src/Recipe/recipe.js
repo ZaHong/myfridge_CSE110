@@ -54,10 +54,10 @@ const style = theme => ({
         backgroundColor: '#f7f6f0',
     },
     bodyContainer: {
-        marginTop: "20vh",
+        marginTop: "25vh",
         direction: "row",
         justify: "space-around",
-        alignItems: "baseline",
+        // alignItems: "baseline",
         spacing: 3
     },
     verticalBodyContainer: {
@@ -87,8 +87,8 @@ class Recipe extends Component{
             recipes: [],      // the raw recipe list from backend
             recipe_items: [], // the html recipe list items
             recipeIndexUsed: -1, // the index of the recipe clicked; -1 means none
-            // nullUserID: true,
             didRendered: false,
+            // nullUserID: true,
         };
         if (props.location.state == null) {
             this.props.history.push({
@@ -111,7 +111,7 @@ class Recipe extends Component{
                         temp.push(
                             <div >
                                 <ListItem button={true} onClick={this.handleRecipeClick(i)}>
-                                    <ListItemText primary={json[i].recipe_info.name + " " + json[i].missing_num} />
+                                    <ListItemText primary={json[i].recipe_info.name + " "} />
                                     <ListItemText primary=" " />
                                 </ListItem>
                                 <Divider />
@@ -128,8 +128,6 @@ class Recipe extends Component{
 
     handleRecipeClick = index => event => {
         this.setState({recipeIndexUsed: index});
-        //alert(this.state.recipeIndexUsed)
-        //console.log(this.state.recipes[this.state.recipeIndexUsed])
         // alert("after" + this.state.recipeIndexUsed);
     };
 
@@ -171,10 +169,10 @@ class Recipe extends Component{
                     <Grid container xs={12} className={classes.bodyContainer}>
                         <Grid container xs={1} md={1}>
                         </Grid>
-                        <Grid container xs={4}>
+                        <Grid container xs={5} md={4}>
                             <List className={classes.profile} subheader={
-                                <ListSubheader component={"div"} disableSticky={false}>
-                                    <h2>Recommend Recipe</h2>
+                                <ListSubheader component={"div"} disableSticky={false} wordWrap="break-word">
+                                    <h2 >Recommend Recipe</h2>
                                     <Divider />
                                     <Divider />
                                     <Divider />
@@ -192,32 +190,23 @@ class Recipe extends Component{
                             </List>
                         </Grid>
 
-                        <Grid container xs={1} className={classes.verticalBodyContainer}>
-                            <div>
-                                <Tooltip title="Customize Your Recipe" aria-label="add">
-                                    <IconButton aria-label="customize recipe">
-                                        <img src={add_icon} height='90vh'/>
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Customize Your Recipe" aria-label="add">
-                                    <IconButton aria-label="customize recipe" style={{marginLeft: "6%"}}>
-                                        My<br/>Recipe
-                                    </IconButton>
-                                </Tooltip>
-                            </div>
-                        </Grid>
+                        {/*<Grid container xs={1} className={classes.verticalBodyContainer}>*/}
+                            {/*<div>*/}
+                                {/*<Tooltip title="Customize Your Recipe" aria-label="add">*/}
+                                    {/*<IconButton aria-label="customize recipe">*/}
+                                        {/*<img src={add_icon} height='90vh'/>*/}
+                                    {/*</IconButton>*/}
+                                {/*</Tooltip>*/}
+                                {/*<Tooltip title="Customize Your Recipe" aria-label="add">*/}
+                                    {/*<IconButton aria-label="customize recipe" style={{marginLeft: "6%"}}>*/}
+                                        {/*My<br/>Recipe*/}
+                                    {/*</IconButton>*/}
+                                {/*</Tooltip>*/}
+                            {/*</div>*/}
+                        {/*</Grid>*/}
 
                         <Grid container xs={6} md={6}>
-                            {/*<List className={classes.profile}>*/}
-                                {/*<ListItem style={{ paddingInline: "30px" }}>*/}
-                                    {/*<h3 style={{ justify: "center" }}>Recommend Recipe</h3>*/}
-                                {/*</ListItem>*/}
-                                {/*<ListItem>*/}
-                                    {/*<ListItemText primary="" />*/}
-                                {/*</ListItem>*/}
-                            {/*</List>*/}
-                            <RecipeInfo recipeInfo={this.state.recipes} index={this.state.recipeIndexUsed}/>
-                            <h1>{JSON.stringify(this.state.recipes[this.state.recipeIndexUsed])}</h1>
+                            <RecipeInfo recipeInfo={this.state.recipes[this.state.recipeIndexUsed]} userid={this.state.userid}/>
                         </Grid>
                     </Grid>
 
@@ -237,7 +226,3 @@ class Recipe extends Component{
 }
 
 export default withStyles(style)(Recipe);
-//
-// export function getFoodInfo() {
-//     return this.state.food;
-// }
