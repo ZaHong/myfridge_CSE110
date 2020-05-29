@@ -121,7 +121,7 @@ class Recipe extends Component{
                             <div >
                                 <ListItem>
                                     <Link >
-                                        <ListItemText primary={json[i].recipe_info.name} />
+                                        <ListItemText primary={json[i].recipe_info.name + " " + json[i].missing_num} />
                                         <ListItemText primary=" " />
                                     </Link>
                                 </ListItem>

@@ -285,9 +285,21 @@ async function getFoodNames(user_id) {
     return unique
 }
 
+function compareRecipe(r1, r2) {
+    // a < b -> -1 means ascending
+    if (r1.missing_num < r2.missing_num) {
+        return -1
+    } else if (r1.missing_num > r2.missing_num) {
+        return 1
+    } else {
+        return 0
+    }
+}
+
 async function suggestRecipe(user_id) {
     var fridge = await getFoodNames(user_id)
-    return await suggest(fridge)
+    var recipes = await suggest(fridge)
+    return recipes.sort(compareRecipe)
 }
 
 async function getProfile(user_id) {
