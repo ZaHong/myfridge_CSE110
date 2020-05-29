@@ -110,11 +110,9 @@ class Recipe extends Component{
                     for ( var i =0; i<json.length; i++) {
                         temp.push(
                             <div >
-                                <ListItem>
-                                    <Link >
-                                        <ListItemText primary={json[i].recipe_info.name + " " + json[i].missing_num} />
-                                        <ListItemText primary=" " />
-                                    </Link>
+                                <ListItem button={true} onClick={this.handleRecipeClick(i)}>
+                                    <ListItemText primary={json[i].recipe_info.name + " " + json[i].missing_num} />
+                                    <ListItemText primary=" " />
                                 </ListItem>
                                 <Divider />
                             </div>
@@ -126,13 +124,11 @@ class Recipe extends Component{
                     // this.state.recipe_items = temp;
                 })
         }
-
-        // this.handleRecipeClick = this.handleRecipeClick.bind(this)
     }
 
     handleRecipeClick = index => event => {
         this.setState({recipeIndexUsed: index});
-        // alert("after" + this.state.recipeIndexUsed);
+        alert("after" + this.state.recipeIndexUsed);
     };
 
     render(){
@@ -169,8 +165,8 @@ class Recipe extends Component{
                         </Link>
                     </div>
 
+                    {this.state.didRendered ?
                     <Grid container xs={12} className={classes.bodyContainer}>
-                        {this.state.didRendered ? <>
                         <Grid container xs={1} md={1}>
                         </Grid>
                         <Grid container xs={4}>
@@ -220,17 +216,17 @@ class Recipe extends Component{
                             {/*</List>*/}
                             <RecipeInfo recipeInfo={this.state.recipes[this.state.recipeIndexUsed]}/>
                         </Grid>
-                        </>
+                    </Grid>
 
                         :
                         <div className={classes.tabs} alignItems='center'>
                             <Typography variant="h3" gutterBottom={true} color='#ddddd6'>
                             Loading Recipes...
                             </Typography>
-                            <CircularProgress size='20vh' color='#ddddd6' thickness='2'/>
+                            <CircularProgress size='20vh' color='#ddddd6' thickness='2' style={{marginLeft: "20%"}} />
                         </div>
                         }
-                    </Grid>
+
                 </Grid>
             </div>
         );

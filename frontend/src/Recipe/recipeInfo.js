@@ -31,11 +31,12 @@ const style = theme => ({
 
 class RecipeInfo extends Component{
     constructor(props){
-        super(props)
+        super(props);
         this.state = {
-            missing_num: props.recipeInfo? props.recipeInfo.missing_num : undefined,
-            recipeInfo: props.recipeInfo? props.recipeInfo.recipe_info : undefined,
+            missing_num: props.recipeInfo !== undefined? props.recipeInfo.missing_num : undefined,
+            recipeInfo: props.recipeInfo !== undefined? props.recipeInfo.recipe_info : undefined,
         }
+        // alert(props.toString())
     }
 
     handleChange = name => event => {
@@ -93,9 +94,9 @@ class RecipeInfo extends Component{
         return (
             <List className={classes.info}>
                 {this.props.recipeInfo ?
-                    <div>
+                    <>
                         <ListItem>
-                            <ListItemText primary="Missing item number: " />
+                            <ListItemText primary={`Missing item number: ${this.state.missing_num}`} />
                         </ListItem>
 
                         {/*<Button*/}
@@ -106,9 +107,9 @@ class RecipeInfo extends Component{
                         {/*>*/}
                         {/*Put to Waste*/}
                         {/*</Button>*/}
-                    </div>
+                    </>
                     :
-                    <div>
+                    <>
                         <ListItem>
                             <ListItemText primaryTypographyProps={{variant: "h4", color:"initial"}}
                                 primary="MyFridge recommends recipes based on the ingredients you have in your fridge" />
@@ -127,7 +128,7 @@ class RecipeInfo extends Component{
                             <ListItemText primaryTypographyProps={{variant: "h4", color:"initial"}}
                                           primary=" to add your own recipe" />
                         </ListItem>
-                    </div>
+                    </>
                 }
             </List>
         )
