@@ -4,8 +4,7 @@ import scoreboard_icon from "../fridge/res/scoreboard.png";
 import recipe_icon from "../fridge/res/recipe.png";
 import friend_icon from "../fridge/res/friend.png";
 import add_icon from "./res/Add_icon.png";
-// import background_img from "./res/homepage_background.png";
-// import RecipeTabs from "./recipeTab";
+import RecipeInfo from "./recipeInfo";
 
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
@@ -78,21 +77,16 @@ const style = theme => ({
         maxHeight: "60vh",
     }
 });
-//
-// function listItemWrapper(props) {
-//     const index = props.index;
-//     return (
-//
-//     )
-// }
+
 
 class Recipe extends Component{
     constructor(props){
         super(props);
         this.state = {
             userid: "",
-            recipes: [],
-            recipe_items: [],
+            recipes: [],      // the raw recipe list from backend
+            recipe_items: [], // the html recipe list items
+            recipeIndexUsed: -1, // the index of the recipe clicked; -1 means none
             // nullUserID: true,
             didRendered: false,
         };
@@ -112,9 +106,6 @@ class Recipe extends Component{
                 .then(response => response.json())
                 .then(json => {
                     // alert(JSON.stringify(json.length));
-                    // this.state.recipes = json;
-                    // this.state.didRendered = true;
-
                     let temp = [];
                     for ( var i =0; i<json.length; i++) {
                         temp.push(
@@ -130,9 +121,19 @@ class Recipe extends Component{
                         );
                     }
                     this.setState({recipes:json, didRendered:true, recipe_items: temp});
+                    // this.state.recipes = json;
+                    // this.state.didRendered = true;
+                    // this.state.recipe_items = temp;
                 })
         }
+
+        // this.handleRecipeClick = this.handleRecipeClick.bind(this)
     }
+
+    handleRecipeClick = index => event => {
+        this.setState({recipeIndexUsed: index});
+        // alert("after" + this.state.recipeIndexUsed);
+    };
 
     render(){
         const { classes } = this.props;
@@ -168,60 +169,68 @@ class Recipe extends Component{
                         </Link>
                     </div>
 
-                    {this.state.didRendered ?
-                        <Grid container xs={12} className={classes.bodyContainer}>
-                            <Grid container xs={4}>
-                                <List className={classes.profile}>
-                                    <ListItem>
-                                        <h3 style={{ marginLeft: "15%" }}>Recommend Recipe</h3>
-                                    </ListItem>
+                    <Grid container xs={12} className={classes.bodyContainer}>
+                        {this.state.didRendered ? <>
+                        <Grid container xs={1} md={1}>
+                        </Grid>
+                        <Grid container xs={4}>
+                            <List className={classes.profile} subheader={
+                                <ListSubheader component={"div"} disableSticky={false}>
+                                    <h2>Recommend Recipe</h2>
+                                    <Divider />
+                                    <Divider />
+                                    <Divider />
+                                    <Divider />
+                                    <Divider />
+                                    <Divider />
+                                    <Divider />
+                                </ListSubheader>
+                            }>
 
-                                    <Divider />
-                                    <Divider />
-                                    <Divider />
-                                    <Divider />
-                                    <Divider />
-                                    <Divider />
-                                    <Divider />
+                                {this.state.recipe_items}
+                                <ListItem>
+                                    <ListItemText primary=" " />
+                                </ListItem>
+                            </List>
+                        </Grid>
 
-                                    {this.state.recipe_items}
-                                    <ListItem>
-                                        <ListItemText primary="" />
-                                    </ListItem>
-                                </List>
-                            </Grid>
-                            <Grid container xs={1} className={classes.verticalBodyContainer}>
+                        <Grid container xs={1} className={classes.verticalBodyContainer}>
+                            <div>
                                 <Tooltip title="Customize Your Recipe" aria-label="add">
                                     <IconButton aria-label="customize recipe">
                                         <img src={add_icon} height='90vh'/>
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title="Customize Your Recipe" aria-label="add">
-                                    <IconButton aria-label="customize recipe">
+                                    <IconButton aria-label="customize recipe" style={{marginLeft: "6%"}}>
                                         My<br/>Recipe
                                     </IconButton>
                                 </Tooltip>
-                            </Grid>
-                            <Grid container xs={7} md={6}>
-                                <List className={classes.profile}>
-                                    <ListItem style={{ paddingInline: "30px" }}>
-                                        <h3 style={{ justify: "center" }}>Recommend Recipe</h3>
-                                    </ListItem>
-                                    <ListItem>
-                                        <ListItemText primary="" />
-                                    </ListItem>
-                                </List>
-                            </Grid>
-
+                            </div>
                         </Grid>
+
+                        <Grid container xs={6} md={6}>
+                            {/*<List className={classes.profile}>*/}
+                                {/*<ListItem style={{ paddingInline: "30px" }}>*/}
+                                    {/*<h3 style={{ justify: "center" }}>Recommend Recipe</h3>*/}
+                                {/*</ListItem>*/}
+                                {/*<ListItem>*/}
+                                    {/*<ListItemText primary="" />*/}
+                                {/*</ListItem>*/}
+                            {/*</List>*/}
+                            <RecipeInfo recipeInfo={this.state.recipes[this.state.recipeIndexUsed]}/>
+                        </Grid>
+                        </>
+
                         :
                         <div className={classes.tabs} alignItems='center'>
                             <Typography variant="h3" gutterBottom={true} color='#ddddd6'>
-                                Loading Recipes...
+                            Loading Recipes...
                             </Typography>
                             <CircularProgress size='20vh' color='#ddddd6' thickness='2'/>
                         </div>
-                    }
+                        }
+                    </Grid>
                 </Grid>
             </div>
         );
