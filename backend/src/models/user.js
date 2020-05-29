@@ -243,9 +243,6 @@ async function modify_food(food_info, food_id) {
     await db.connectDB()
     await Food.updateOne({_id: food_id}, {$set: {
         "name": food_info.name,
-        "date_purchased": food_info.date_purchased,
-        "duration": food_info.duration,
-        "expiration_date": food_info.expiration_date,
         "tag": food_info.tag,
         "quantity": food_info.quantity
     }})
