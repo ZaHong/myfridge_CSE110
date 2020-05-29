@@ -38,8 +38,12 @@ var foodvocabSchema = mongoose.Schema({
  */
 const FoodVocab = new mongoose.model('FoodVocab', foodvocabSchema)
 
-async function addFoodVocab(food_info) {
-    var new_food = new FoodVocab(food_info)
+async function addFoodVocab(name, category, duration) {
+    var new_food = new FoodVocab({
+        name: name,
+        category: category,
+        duration: duration
+    })
     return await new_food.save()
 }
 

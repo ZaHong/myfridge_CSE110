@@ -302,6 +302,22 @@ async function suggestRecipe(user_id) {
     return recipes.sort(compareRecipe)
 }
 
+async function updateGroceryList(user_id, food_names) {
+    var user1 = await User.findById(user_id)
+    for(let name of food_names) {
+        if(!user1.grocery_list.includes(name)) {
+            user1.grocery_list.push(name)
+        }
+    }
+    await user1.save()
+}
+
+async function clearGroceryList(user_id) {
+    var user1 = await User.findById(user_id)
+    user1.grocery_list = []
+    await user1.save()
+}
+
 async function getProfile(user_id) {
     var profile = await User.findById(user_id)
     return {
@@ -309,7 +325,7 @@ async function getProfile(user_id) {
             "nickname": profile.nickname,
             "grocery_list": profile.grocery_list
         }
-    }
+}
 
 async function change_nickname(user_id, new_name) {
     db.connectDB()
@@ -348,4 +364,4 @@ async function scoreboard(user_id) {
 
 module.exports = {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, 
     addFood, deleteFood, showUser, login, modify_food, displayByTag, getFoodNames, suggestRecipe, getProfile,
-    change_nickname, add_waste, scoreboard}
+    change_nickname, add_waste, scoreboard, updateGroceryList, clearGroceryList}
