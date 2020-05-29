@@ -304,8 +304,9 @@ async function suggestRecipe(user_id) {
 
 async function updateGroceryList(user_id, food_names) {
     var user1 = await User.findById(user_id)
+    var fridge = await getFoodNames(user_id)
     for(let name of food_names) {
-        if(!user1.grocery_list.includes(name)) {
+        if(!user1.grocery_list.includes(name) && !fridge.includes(name)) {
             user1.grocery_list.push(name)
         }
     }
