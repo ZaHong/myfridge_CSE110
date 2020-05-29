@@ -33,9 +33,11 @@ class RecipeInfo extends Component{
     constructor(props){
         super(props);
         this.state = {
-            missing_num: props.recipeInfo !== undefined? props.recipeInfo.missing_num : undefined,
-            recipeInfo: props.recipeInfo !== undefined? props.recipeInfo.recipe_info : undefined,
+            //missing_num: this.props.recipeInfo !== undefined? this.props.recipeInfo.missing_num : undefined,
+            missing_num:this.props.index,
+            recipeInfo: this.props.recipeInfo !== undefined? this.props.recipeInfo.recipe_info : undefined,
         }
+        alert(JSON.stringify(this.props))
         // alert(props.toString())
     }
 
@@ -96,7 +98,8 @@ class RecipeInfo extends Component{
                 {this.props.recipeInfo ?
                     <>
                         <ListItem>
-                            <ListItemText primary={`Missing item number: ${this.state.missing_num}`} />
+                            <ListItemText primary={`Missing item number: ${this.props.index}`} />
+                            <ListItemText primary={new Date().toString()} />
                         </ListItem>
 
                         {/*<Button*/}

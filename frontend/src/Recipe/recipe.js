@@ -128,7 +128,9 @@ class Recipe extends Component{
 
     handleRecipeClick = index => event => {
         this.setState({recipeIndexUsed: index});
-        alert("after" + this.state.recipeIndexUsed);
+        //alert(this.state.recipeIndexUsed)
+        //console.log(this.state.recipes[this.state.recipeIndexUsed])
+        // alert("after" + this.state.recipeIndexUsed);
     };
 
     render(){
@@ -214,7 +216,8 @@ class Recipe extends Component{
                                     {/*<ListItemText primary="" />*/}
                                 {/*</ListItem>*/}
                             {/*</List>*/}
-                            <RecipeInfo recipeInfo={this.state.recipes[this.state.recipeIndexUsed]}/>
+                            <RecipeInfo recipeInfo={this.state.recipes} index={this.state.recipeIndexUsed}/>
+                            <h1>{JSON.stringify(this.state.recipes[this.state.recipeIndexUsed])}</h1>
                         </Grid>
                     </Grid>
 
