@@ -42,7 +42,7 @@ var userSchema = mongoose.Schema({
         type: String
     },
     waste_list: {
-        type: [mongoose.Schema.Types.ObjectId]
+        type: []
     }
 })
 
@@ -358,11 +358,14 @@ async function change_nickname(user_id, new_name) {
     }
 }
 
-async function add_waste(user_id, amount, food_id) {
+async function add_waste(user_id, amount, name, date) {
     db.connectDB()
     user = await User.findById(user_id)
     waste_list = user.waste_list
-    waste_list.push(food_id)
+    waste_list.push({
+        "name": name,
+        "date": date
+    })
     await User.updateOne({_id: user_id}, {$set:{"score": user.score + amount, "waste_list": waste_list}})
     db.disconnectDB()
 }

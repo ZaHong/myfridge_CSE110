@@ -175,7 +175,7 @@ user_router.post('/:id/change_name', async(req, res) => {
 })
 
 user_router.post('/:id/add_waste', async(req, res) => {
-    add_waste(req.params.id, req.body.amount)
+    add_waste(req.params.id, req.body.amount, req.body.name, req.body.date)
     res.send({
         status: true
     })
