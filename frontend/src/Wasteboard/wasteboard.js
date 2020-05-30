@@ -12,6 +12,8 @@ import profile_icon from "../fridge/res/profile.png";
 import scoreboard_icon from "../fridge/res/scoreboard.png";
 import recipe_icon from "../fridge/res/recipe.png";
 import friend_icon from "../fridge/res/friend.png";
+import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const style = theme => ({
@@ -61,6 +63,10 @@ const style = theme => ({
         borderRadius: '10px',
         marginLeft: '5vw',
         marginRight: '5vw',
+      },
+      tabs: {
+        marginTop: '20vh',
+        backgroundColor: '#f7f6f0',
       }
 })
 
@@ -72,14 +78,15 @@ class Wasteboard extends Component{
         this.state={
             userid: '',
             stats:{
-                money:'200',
-                nickname:'Gary(Me)'
+                score:'',
+                name:''
             },
-            wastes:{
-                'Apple':'05/30/2020',
-                'Milk':'05/29/2020',
-                'Eggs':'05/01/2020',
-            },
+            wastes:[
+                /*
+                {name:'Apple', date:'05/30/2020'},
+                {name:'Milk', date:'05/29/2020'},
+                {name:'Egg', date:'05/27/2020'},*/
+            ],
             scores:[
                 /*
                 {name:'Dad', score:1000},
@@ -87,7 +94,8 @@ class Wasteboard extends Component{
                 {name:'Gary(Me)', score:200},*/
             ],
             scoreboardlist:[],
-            wastefoodlist:[]
+            wastefoodlist:[],
+            didRendered:false,
         };
 
         if (props.location.state == null) {
@@ -106,40 +114,64 @@ class Wasteboard extends Component{
                 .then(response => response.json())
                 .then(json => {
                     console.log(json)
+                    var friendlist=[]
+                    for(var item of json.rank){
+                        if(item.self == true){
+                           var temp_str = item.nickname + ' (Me)'
+                           var temp_info={
+                               score:item.score,
+                               name:temp_str,
+                           }
+                           friendlist.push(temp_info)
+                           this.setState({stats:temp_info})
+                        }else{
+                            var temp_info={
+                                score:item.score,
+                                name:item.nickname,
+                            }
+                            friendlist.push(temp_info)
+                        }
+                    }
+                    this.setState({scores:friendlist})
+                    this.setState({wastes: json.waste_list})
+                    for(var entry of this.state.scores){
+                        this.state.scoreboardlist.push(
+                            <div>
+                            <ListItem >
+                                <ListItemText primary={entry.name +": "}/>
+                                <ListItemText primary=' ' />
+                                <ListItemText primary={'Waste Quantity: ' + entry.score}/>
+                            </ListItem>
+                            <Divider />
+                            </div>
+                        )
+                    }
+            
+                    for(var entry of this.state.wastes){
+                        this.state.wastefoodlist.push(
+                            <div>
+                            <ListItem>
+                                <ListItemText primary={entry.name +": "}/>
+                                <ListItemText primary=' ' />
+                                <ListItemText primary={entry.date}/>
+                            </ListItem>
+                            <Divider />
+                            </div>
+                        )
+                    }
+                    this.setState({didRendered:true})
                 })
             
         }
 
-        for(var entry of this.state.scores){
-            this.state.scoreboardlist.push(
-                <div>
-                <ListItem >
-                    <ListItemText primary={entry.name +": "}/>
-                    <ListItemText primary=' ' />
-                    <ListItemText primary={'Waste Quantity: ' + entry.score}/>
-                </ListItem>
-                <Divider />
-                </div>
-            )
-        }
-
-        for(var key in this.state.wastes){
-            this.state.wastefoodlist.push(
-                <div>
-                <ListItem>
-                    <ListItemText primary={key +": "}/>
-                    <ListItemText primary=' ' />
-                    <ListItemText primary={this.state.wastes[key]}/>
-                </ListItem>
-                <Divider />
-                </div>
-            )
-        }
+        
     }
 
     render(){
         const {classes } = this.props;
         return(
+            <div>
+            {this.state.didRendered ? 
             <Grid container xs={12} className={classes.background}>
                 <div className={classes.header}>
                     <Link to={{pathname: '/index', state: { userID: this.state.userid}}}>
@@ -182,9 +214,9 @@ class Wasteboard extends Component{
                         <Divider />
                         <Divider />
                         <ListItem>
-                            <ListItemText primary={this.state.stats.nickname} />
+                            <ListItemText primary={this.state.stats.name} />
                             <ListItemText primary=' ' />
-                            <ListItemText primary={'Waste Quantity: ' + this.state.stats.money}/>
+                            <ListItemText primary={'Waste Quantity: ' + this.state.stats.score}/>
                         </ListItem>
                         <Divider />
                         <Divider />
@@ -215,6 +247,42 @@ class Wasteboard extends Component{
                 </Grid>
                 </Grid>
             </Grid>
+            :
+            <Grid container xs={12} className={classes.background}>
+                <div container xs={12} className={classes.header}>
+                    <Link to={{pathname: '/index', state: { userID: this.state.userid}}}>
+                        <img src={myfridge_logo} height='90vh'/>
+                    </Link>
+                    <div className={classes.grow} />
+                    <Link to={{pathname: '/wasteboard', state: { userID: this.state.userid}}}>
+                        <IconButton size='medium'>
+                                    <img src={scoreboard_icon} height='70vh' />
+                        </IconButton>
+                    </Link>
+                    <Link to={{pathname: '/friendlist', state: { userID: this.state.userid}}}>
+                        <IconButton size='medium'>
+                                    <img src={friend_icon} height='70vh' />
+                        </IconButton>
+                    </Link>
+                    <Link to={{pathname: '/recipe', state: { userID: this.state.userid}}}>
+                        <IconButton size='medium'>
+                                    <img src={recipe_icon} height='70vh' />
+                        </IconButton>
+                    </Link>
+                    <Link to={{pathname: '/profile', state: { userID: this.state.userid}}}>
+                        <IconButton size='medium'>
+                                    <img src={profile_icon} height='70vh' />
+                        </IconButton>
+                    </Link>
+                </div>
+                <div className={classes.tabs} >
+                  <Typography variant="h3" gutterBottom={true} color='#ddddd6'>
+                    Loading... 
+                  </Typography>
+                  <CircularProgress size='20vh' color='#ddddd6' thickness='2'/>
+                </div>
+            </Grid>}
+            </div>
         )
     }
 }
