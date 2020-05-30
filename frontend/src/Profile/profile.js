@@ -124,26 +124,24 @@ class Profile extends Component {
         .catch
         //this.setState({ userNotExist: true, emptyPassword: false })
         ();
+
+          fetch("http://localhost:8000/user/" + this.state.userid + "/grocery_list", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+          .then(response => response.json())
+          .then(json => {
+            this.setState({ grocery: json.grocery_list }, () => {});
+          })
+          .then(json => {
+            this.setState({ rendered: true });
+          })
+          .catch();
     }
   }
 
-  componentDidMount() {
-    fetch("http://localhost:8000/user/" + this.state.userid + "/grocery_list", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(response => response.json())
-      .then(json => {
-        // console.log(json.grocery_list);
-        this.setState({ grocery: json.grocery_list }, () => {});
-      })
-      .then(json => {
-        this.setState({ rendered: true });
-      })
-      .catch();
-  }
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
