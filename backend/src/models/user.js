@@ -376,7 +376,6 @@ async function scoreboard(user_id) {
     user = await User.findById(user_id)
     friends = user.friend_list
     var new_list = []
-    console.log(user.score)
     for(let i = 0; i < friends.length; i++) {
         friend = await User.findById(friends[i])
         new_list.push({
@@ -387,7 +386,6 @@ async function scoreboard(user_id) {
         })
     }
     await db.disconnectDB()
-    console.log(friends)
     new_list.push({
         "nickname": user.nickname,
         "email": user.email,
@@ -395,7 +393,10 @@ async function scoreboard(user_id) {
         "self": true
     })
     new_list.sort((a, b) => a.score - b.score)
-    return new_list
+    return {
+        "rank": new_list,
+        "waste_list": user.waste_list
+    }
 }
 
 module.exports = {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, 
