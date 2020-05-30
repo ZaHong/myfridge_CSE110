@@ -40,6 +40,9 @@ var userSchema = mongoose.Schema({
     },
     nickname: {
         type: String
+    },
+    waste_list: {
+        type: [mongoose.Schema.Types.ObjectId]
     }
 })
 
@@ -102,8 +105,8 @@ async function registerUser(user_info) {
         var idx = user_info.email.indexOf('@')
         var nickname = user_info.email.substring(0, idx)
         user_info.nickname = nickname
-        console.log(user_info)
         user_info.score = 0
+        user_info.waste_list = []
         var new_user = new User(user_info)
         await new_user.save()
         result = {
@@ -355,10 +358,12 @@ async function change_nickname(user_id, new_name) {
     }
 }
 
-async function add_waste(user_id, amount) {
+async function add_waste(user_id, amount, food_id) {
     db.connectDB()
     user = await User.findById(user_id)
-    await User.updateOne({_id: user_id}, {$set:{"score": user.score + amount}})
+    waste_list = user.waste_list
+    waste_list.push(food_id)
+    await User.updateOne({_id: user_id}, {$set:{"score": user.score + amount, "waste_list": waste_list}})
     db.disconnectDB()
 }
 
@@ -366,18 +371,26 @@ async function scoreboard(user_id) {
     db.connectDB()
     user = await User.findById(user_id)
     friends = user.friend_list
-    friends.push(user_id)
+    var new_list = []
+    console.log(user.score)
     for(let i = 0; i < friends.length; i++) {
         friend = await User.findById(friends[i])
-        console.log(friend)
-        friends[i] = {
+        new_list.push({
             "nickname": friend.nickname,
             "email": friend.email,
-            "score": friend.score
-        }
+            "score": friend.score,
+            "self": false
+        })
     }
-    friends.sort((a, b) => a.score - b.score)
-    return friends
+    console.log(friends)
+    new_list.push({
+        "nickname": user.nickname,
+        "email": user.email,
+        "score": user.score,
+        "self": true
+    })
+    new_list.sort((a, b) => a.score - b.score)
+    return new_list
 }
 
 module.exports = {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, 
