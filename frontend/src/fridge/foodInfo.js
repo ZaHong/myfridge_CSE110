@@ -69,8 +69,11 @@ class FoodInfo extends Component{
 
     putToWaste(event){
         var payload={
-            'amount':this.state.foodinfo.Quantity
+            'amount':this.state.foodinfo.Quantity,
+            'name':this.state.foodinfo.foodName,
+            'date':this.state.foodinfo.ExpirationDate,
         }
+        
         fetch("http://localhost:8000/user/" + this.state.currentID + "/add_waste",{
               method: "POST",
               headers: {

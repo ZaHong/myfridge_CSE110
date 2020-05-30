@@ -80,22 +80,43 @@ class Wasteboard extends Component{
                 'Milk':'05/29/2020',
                 'Eggs':'05/01/2020',
             },
-            scores:{
-                'Dad':1000,
-                'Spongebob':500,
-                'Gary(Me)':200,
-            },
+            scores:[
+                /*
+                {name:'Dad', score:1000},
+                {name:'Spongebob', score:500},
+                {name:'Gary(Me)', score:200},*/
+            ],
             scoreboardlist:[],
             wastefoodlist:[]
+        };
+
+        if (props.location.state == null) {
+            this.props.history.push({
+                pathname: '/',
+            })
+        } else {
+            this.state.userid= props.location.state.userID;
+
+            fetch(`http://localhost:8000/user/${this.state.userid}/scoreboard`,{
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(response => response.json())
+                .then(json => {
+                    console.log(json)
+                })
+            
         }
 
-        for(var key in this.state.scores){
+        for(var entry of this.state.scores){
             this.state.scoreboardlist.push(
                 <div>
                 <ListItem >
-                    <ListItemText primary={key +": "}/>
+                    <ListItemText primary={entry.name +": "}/>
                     <ListItemText primary=' ' />
-                    <ListItemText primary={'$ ' + this.state.scores[key]}/>
+                    <ListItemText primary={'Waste Quantity: ' + entry.score}/>
                 </ListItem>
                 <Divider />
                 </div>
@@ -163,7 +184,7 @@ class Wasteboard extends Component{
                         <ListItem>
                             <ListItemText primary={this.state.stats.nickname} />
                             <ListItemText primary=' ' />
-                            <ListItemText primary={'$ ' + this.state.stats.money}/>
+                            <ListItemText primary={'Waste Quantity: ' + this.state.stats.money}/>
                         </ListItem>
                         <Divider />
                         <Divider />
