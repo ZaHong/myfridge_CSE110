@@ -11,11 +11,11 @@ import Tabs from "./tabs";
 import { Link } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
-import Typography from '@material-ui/core/Typography';
+import Typography from "@material-ui/core/Typography";
 import { Redirect } from "react-router-dom";
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-var contains = []
+var contains = [];
 /*
 const style = theme => ({
     background:{
@@ -68,11 +68,10 @@ const style = theme => ({
 })
 */
 
-
 const style = theme => ({
-    background:{
-        //backgroundImage: 'url('+ background_img +')',
-        /*
+  background: {
+    //backgroundImage: 'url('+ background_img +')',
+    /*
         backgroundColor: '#f7f6f0',
         backgroundSize: 'cover',
         padding: '1vh',
@@ -82,41 +81,39 @@ const style = theme => ({
         flexDirection: 'row',
         alignItems: 'center',
         */
-        backgroundColor: '#f7f6f0',
-        backgroundSize: 'cover',
-        height: '100%',
-        position: 'fixed',
-        overflow: 'auto',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      },
-      header:{
-        backgroundColor: '#ddddd6',
-        backgroundSize: 'cover',
-        paddingLeft: '10vw',
-        paddingTop: '1vh',
-        width: '100%',
-        position: 'fixed',
-        overflow: 'auto',
-        display: 'flex',
-        height: '6.5em',
-        borderBottom: "3px solid rgb(212, 212, 212)"
-      },
-      grow:{
-        flexGrow: 0.8,
-      },
-      tabs: {
-        marginTop: '20vh',
-        backgroundColor: '#f7f6f0',
-      }
-})
+    backgroundColor: "#f7f6f0",
+    backgroundSize: "cover",
+    height: "100%",
+    position: "fixed",
+    overflow: "auto",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  },
+  header: {
+    backgroundColor: "#ddddd6",
+    backgroundSize: "cover",
+    paddingLeft: "10vw",
+    paddingTop: "1vh",
+    width: "100%",
+    position: "fixed",
+    overflow: "auto",
+    display: "flex",
+    height: "6.5em",
+    borderBottom: "3px solid rgb(212, 212, 212)"
+  },
+  grow: {
+    flexGrow: 0.8
+  },
+  tabs: {
+    marginTop: "20vh",
+    backgroundColor: "#f7f6f0"
+  }
+});
 
-class Fridge extends Component{
-
-  constructor(props){
-
-    super(props)
+class Fridge extends Component {
+  constructor(props) {
+    super(props);
     this.state = {
       userid: "",
       food: [
@@ -129,13 +126,13 @@ class Fridge extends Component{
             }*/
       ],
       nullUserID: null,
-      didRendered:false,
+      didRendered: false
     };
     if (props.location.state == null) {
       this.state.nullUserID = true;
     } else {
       //this.setState({ userid: props.location.state.userID });
-      this.state.userid= props.location.state.userID
+      this.state.userid = props.location.state.userID;
       fetch("http://localhost:8000/user/" + this.state.userid, {
         method: "GET",
         headers: {
@@ -149,14 +146,14 @@ class Fridge extends Component{
           //console.log(json.fridge)
           for (var i = 0; i < json.fridge.length; i++) {
             var temp = json.fridge[i];
-            console.log(temp)
+            console.log(temp);
             var obj = {
               foodName: temp.name,
               ExpirationDate: temp.expiration_date.substring(0, 10),
               Tag: temp.tag,
               Quantity: temp.quantity,
               PurchasedDate: temp.date_purchased.substring(0, 10),
-              foodid : temp._id,
+              foodid: temp._id
             };
             resFood.push(obj);
           }
@@ -168,43 +165,67 @@ class Fridge extends Component{
     }
   }
 
-    render(){
-        const { classes } = this.props;
-        return (
-          <div>
-            {this.state.didRendered?
-              <Grid container xs={12} className={classes.background}>
-                <div container xs={12} className={classes.header}>
-                    <Link to={{pathname: '/index', state: { userID: this.state.userid}}}>
-                        <img src={logo} height='90vh'/>
-                    </Link>
-                    {(this.state.nullUserID) && (<Redirect push to='/'/>)}
+  render() {
+    const { classes } = this.props;
+    return (
+      <div>
+        {this.state.didRendered ? (
+          <Grid container xs={12} className={classes.background}>
+            <div container xs={12} className={classes.header}>
+              <Link
+                to={{
+                  pathname: "/index",
+                  state: { userID: this.state.userid }
+                }}
+              >
+                <img src={logo} height="90vh" />
+              </Link>
+              {this.state.nullUserID && <Redirect push to="/" />}
 
-                    <div className={classes.grow} />
-                    <Link to={{pathname: '/wasteboard', state: { userID: this.state.userid}}}>
-                        <IconButton size='medium'>
-                                    <img src={scoreboard_img} height='70vh' />
-                        </IconButton>
-                    </Link>
-                    <Link to={{pathname: '/friendlist', state: { userID: this.state.userid}}}>
-                        <IconButton size='medium'>
-                                    <img src={friend_img} height='70vh' />
-                        </IconButton>
-                    </Link>
-                    <Link to={{pathname: '/recipe', state: { userID: this.state.userid}}}>
-                        <IconButton size='medium'>
-                                    <img src={recipe_img} height='70vh' />
-                        </IconButton>
-                    </Link>
-                    <Link to={{pathname: '/profile', state: { userID: this.state.userid}}}>
-                        <IconButton size='medium'>
-                                    <img src={profile_img} height='70vh' />
-                        </IconButton>
-                    </Link>
-                </div>
-                <div className={classes.tabs} >
-                    
-                    {/*<Grid
+              <div className={classes.grow} />
+              <Link
+                to={{
+                  pathname: "/wasteboard",
+                  state: { userID: this.state.userid }
+                }}
+              >
+                <IconButton size="medium">
+                  <img src={scoreboard_img} height="70vh" />
+                </IconButton>
+              </Link>
+              <Link
+                to={{
+                  pathname: "/friendlist",
+                  state: { userID: this.state.userid }
+                }}
+              >
+                <IconButton size="medium">
+                  <img src={friend_img} height="70vh" />
+                </IconButton>
+              </Link>
+              <Link
+                to={{
+                  pathname: "/recipe",
+                  state: { userID: this.state.userid }
+                }}
+              >
+                <IconButton size="medium">
+                  <img src={recipe_img} height="70vh" />
+                </IconButton>
+              </Link>
+              <Link
+                to={{
+                  pathname: "/profile",
+                  state: { userID: this.state.userid }
+                }}
+              >
+                <IconButton size="medium">
+                  <img src={profile_img} height="70vh" />
+                </IconButton>
+              </Link>
+            </div>
+            <div className={classes.tabs}>
+              {/*<Grid
                         container
                         style={{
                                 marginLeft:'375px',
@@ -215,27 +236,30 @@ class Fridge extends Component{
                     </IconButton>
                     </Link>
                   </Grid>*/}
-                    <Grid container 
-                        style={{width:'100vw',
-                               marginLeft:'15vw',
-                        }}
-                        //align="center"
-                        //justify="'flex-start'"
-                        //direction="column"
-                    >
-                        <Tabs foodInfos={this.state.food} id={this.state.userid}/>
-                    </Grid>
-                
-                </div>
-            </Grid>
-            : 
-            <Grid container xs={12} className={classes.background}>
-                <div container xs={12} className={classes.header}>
-                    <Link to={{pathname: '/index', state: { userID: this.state.userid}}}>
-                        <img src={logo} height='90vh'/>
-                    </Link>
-                    {(this.state.nullUserID) && (<Redirect push to='/'/>)}
-                    {/**
+              <Grid
+                container
+                style={{ width: "100vw", marginLeft: "15vw" }}
+                //align="center"
+                //justify="'flex-start'"
+                //direction="column"
+              >
+                <Tabs foodInfos={this.state.food} id={this.state.userid} />
+              </Grid>
+            </div>
+          </Grid>
+        ) : (
+          <Grid container xs={12} className={classes.background}>
+            <div container xs={12} className={classes.header}>
+              <Link
+                to={{
+                  pathname: "/index",
+                  state: { userID: this.state.userid }
+                }}
+              >
+                <img src={logo} height="90vh" />
+              </Link>
+              {this.state.nullUserID && <Redirect push to="/" />}
+              {/**
                      <Link to="http://google.com" variant="body2" className={classes.link}>
                         <IconButton edge="end" size='small' color="inherit" aria-label="scoreboard">
                         <img src={scoreboard_img} height='70vh'/>
@@ -257,38 +281,59 @@ class Fridge extends Component{
                         </IconButton>
                     </Link>
                      */}
-                    <div className={classes.grow} />
-                    <Link to={{pathname: '/wasteboard', state: { userID: this.state.userid}}}>
-                        <IconButton size='medium'>
-                                    <img src={scoreboard_img} height='70vh' />
-                        </IconButton>
-                    </Link>
-                    <Link to={{pathname: '/friendlist', state: { userID: this.state.userid}}}>
-                        <IconButton size='medium'>
-                                    <img src={friend_img} height='70vh' />
-                        </IconButton>
-                    </Link>
-                    <Link to={{pathname: '/recipe', state: { userID: this.state.userid}}}>
-                        <IconButton size='medium'>
-                                    <img src={recipe_img} height='70vh' />
-                        </IconButton>
-                    </Link>
-                    <Link to={{pathname: '/profile', state: { userID: this.state.userid}}}>
-                        <IconButton size='medium'>
-                                    <img src={profile_img} height='70vh' />
-                        </IconButton>
-                    </Link>
-                </div>
-                <div className={classes.tabs} >
-                  <Typography variant="h3" gutterBottom={true} color='#ddddd6'>
-                    Loading... 
-                  </Typography>
-                  <CircularProgress size='20vh' color='#ddddd6' thickness='2'/>
-                </div>
-            </Grid>
-            }</div>
-          );
-    }
+              <div className={classes.grow} />
+              <Link
+                to={{
+                  pathname: "/wasteboard",
+                  state: { userID: this.state.userid }
+                }}
+              >
+                <IconButton size="medium">
+                  <img src={scoreboard_img} height="70vh" />
+                </IconButton>
+              </Link>
+              <Link
+                to={{
+                  pathname: "/friendlist",
+                  state: { userID: this.state.userid }
+                }}
+              >
+                <IconButton size="medium">
+                  <img src={friend_img} height="70vh" />
+                </IconButton>
+              </Link>
+              <Link
+                to={{
+                  pathname: "/recipe",
+                  state: { userID: this.state.userid }
+                }}
+              >
+                <IconButton size="medium">
+                  <img src={recipe_img} height="70vh" />
+                </IconButton>
+              </Link>
+              <Link
+                to={{
+                  pathname: "/profile",
+                  state: { userID: this.state.userid }
+                }}
+              >
+                <IconButton size="medium">
+                  <img src={profile_img} height="70vh" />
+                </IconButton>
+              </Link>
+            </div>
+            <div className={classes.tabs}>
+              <Typography variant="h3" gutterBottom={true} color="#ddddd6">
+                Loading...
+              </Typography>
+              <CircularProgress size="20vh" color="#ddddd6" thickness="2" />
+            </div>
+          </Grid>
+        )}
+      </div>
+    );
+  }
 }
 
 export default withStyles(style)(Fridge);
