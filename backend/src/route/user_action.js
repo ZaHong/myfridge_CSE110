@@ -27,24 +27,32 @@ user_router.post('/register', async (req, res) => {         // need user email a
         email: req.body.email,
         password: req.body.password
     }
+    await db.connectDB()
     result = await registerUser(user_info)
+    await db.disconnectDB()
     res.send(result)
 })
 
 user_router.post('/:id/addFriend', async(req, res) => {
     const email = req.body.email
     const id = req.params.id
+    await db.connectDB()
     var result = await addFriend(email, id)
+    await db.disconnectDB()
     res.send(result)
 })
 
 user_router.get("/:id/friends", async (req, res) => {
+    await db.connectDB()
     var friend_list = await getFriends(req.params.id)
+    await db.disconnectDB()
     res.send(friend_list)
 })
 
 user_router.post("/:id/deleteFriend", async (req, res) => {
+    await db.connectDB()
     result = await deleteFriend(req.body.friend_id, req.params.id)
+    await db.disconnectDB()
     res.send(result)
 })
 
@@ -58,7 +66,9 @@ user_router.post('/:id/addFood', async (req, res) => {
         tag: req.body.tag,
         quantity: req.body.quantity
     }
+    await db.connectDB()
     var result = await addFood(food_info, req.params.id)
+    await db.disconnectDB()
     res.send(result)
 })
 
@@ -70,12 +80,16 @@ user_router.post('/:id/deleteFood', async (req, res) => {         // need the fo
 })
 
 user_router.get(`/:id`, async (req, res) => {
+    await db.connectDB()
     result = await showUser(req.params.id)
+    await db.disconnectDB()
     res.send(result)
 })
 
 user_router.post('/login', async(req, res) => {         // need the user email and user password
+    await db.connectDB()
     query = await login(req.body.email, req.body.password)
+    await db.disconnectDB()
     if (query != null) {
         //res.redirect(`/user/${query._id}`)
         res.send({
@@ -95,12 +109,16 @@ user_router.post('/:id/modifyFood', async (req, res) => {
         tag: req.body.tag,
         quantity: req.body.quantity
     }
+    await db.connectDB()
     var result = await modify_food(food_info, req.body.food_id)
+    await db.disconnectDB()
     res.send(result)
 })
 
 user_router.get('/:id/byTag', async (req, res) => {
+    await db.connectDB()
     var result = await displayByTag(req.params.id)
+    await db.disconnectDB()
     res.send(result)
 })
 
@@ -164,7 +182,6 @@ user_router.post(`/:id/remove_grocery`, async (req, res) => {
 })
 
 user_router.get('/:id/profile', async (req, res) => {
-    
     await db.connectDB()
     var result = await getProfile(req.params.id)
     await db.disconnectDB()
@@ -172,19 +189,25 @@ user_router.get('/:id/profile', async (req, res) => {
 })
 
 user_router.post('/:id/change_name', async(req, res) => {
+    await db.connectDB()
     result = await change_nickname(req.params.id, req.body.new_name)
+    await db.disconnectDB()
     res.send(result)
 })
 
 user_router.post('/:id/add_waste', async(req, res) => {
-    add_waste(req.params.id, req.body.amount, req.body.name, req.body.date, req.body.food_id)
+    await db.connectDB()
+    await add_waste(req.params.id, req.body.amount, req.body.name, req.body.date, req.body.food_id)
+    await db.disconnectDB()
     res.send({
         status: true
     })
 })
 
 user_router.get('/:id/scoreboard', async(req, res) => {
+    await db.connectDB()
     result = await scoreboard(req.params.id)
+    await db.disconnectDB()
     res.send(result)
 })
 
