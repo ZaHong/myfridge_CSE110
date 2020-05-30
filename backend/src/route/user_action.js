@@ -63,7 +63,9 @@ user_router.post('/:id/addFood', async (req, res) => {
 })
 
 user_router.post('/:id/deleteFood', async (req, res) => {         // need the food_id that will be deleted
+    await db.connectDB()
     result = await deleteFood(req.body.food_id, req.params.id) 
+    await db.disconnectDB()
     res.send(result)
 })
 
@@ -175,7 +177,7 @@ user_router.post('/:id/change_name', async(req, res) => {
 })
 
 user_router.post('/:id/add_waste', async(req, res) => {
-    add_waste(req.params.id, req.body.amount, req.body.name, req.body.date)
+    add_waste(req.params.id, req.body.amount, req.body.name, req.body.date, req.body.food_id)
     res.send({
         status: true
     })
