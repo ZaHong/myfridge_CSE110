@@ -23,6 +23,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const style = theme => ({
   background: {
@@ -83,6 +85,10 @@ const style = theme => ({
     display: "flex",
     flexDirection: "row",
     alignItems: "center"
+  },
+  tabs: {
+    marginTop: '20vh',
+    backgroundColor: '#f7f6f0',
   }
 });
 
@@ -100,14 +106,14 @@ class Friendlist extends Component {
       list: [],
       dialogOpen: false,
       newFriend: "",
+      didRendered:false,
     };
 
     if (props.location.state == null) {
       this.state.nullUserID = true;
     } else {
-      //this.setState({ userid: props.location.state.userID });
       this.state.userid= props.location.state.userID
-      /*fetch("http://localhost:8000/user/" + this.state.userid, {
+      fetch("http://localhost:8000/user/" + this.state.userid + '/friends', {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
@@ -115,46 +121,60 @@ class Friendlist extends Component {
       })
         .then(response => response.json())
         .then(json => {
-          //alert(JSON.stringify(json.fridge))
-          var resFood = [];
-          console.log(json.fridge)
-          for (var i = 0; i < json.fridge.length; i++) {
-            var temp = json.fridge[i];
-            var obj = {
-              foodName: temp.name,
-              ExpirationDate: temp.expiration_date.substring(0, 10),
-              Tag: "IN PROGRESS",
-              Quantity: temp.quantity,
-              PurchasedDate: temp.date_purchased.substring(0, 10),
-              foodid : temp._id,
-            };
-            resFood.push(obj);
+          console.log(json)
+          var tempfriendlist =[]
+          for(var entry of json){
+            var temp_friend={
+              name:entry.nickname,
+              email:entry.email,
+              id:entry.id,
+            }
+            tempfriendlist.push(temp_friend)
           }
-          this.setState({ food: resFood });
-        })
-        .catch
-        //this.setState({ userNotExist: true, emptyPassword: false })
-        ();*/
-    }
+          console.log(tempfriendlist)
+          this.setState({friends:tempfriendlist})
 
-    for ( var each of this.state.friends) {
-      this.state.list.push(
-          <div value={each.email}>
-            <ListItem>
-              <ListItemText primary={each.name + ": " + each.email} />
-              <ListItemText primary=" " />
-              <IconButton size="medium">
-                <CancelIcon style={{ fontSize: 40 }}/>
-              </IconButton>
-            </ListItem>
-            <Divider />
-          </div>
-      );
+          for ( var each of this.state.friends) {
+            this.state.list.push(
+                <div value={each.email}>
+                  <ListItem>
+                    <ListItemText primary={each.name + ": " + each.email} />
+                    <ListItemText primary=" " />
+                      <Button size="medium" onClick={() => this.handleDelete(each.id)}>
+                        <CancelIcon style={{ fontSize: 40 }}/>
+                      </Button>
+                  </ListItem>
+                  <Divider />
+                </div>);
+          }
+          this.setState({didRendered:true})
+        })
+        .catch();
     }
   }
 
 
   // const [open, setOpen] = React.useState(false);
+
+  handleDelete = id =>{
+    var payload = {
+      "friend_id": id
+    }
+    fetch("http://localhost:8000/user/" + this.state.userid + "/deleteFriend",{
+      method: "POST",
+      headers: {'Content-Type': "application/json"},
+      body: JSON.stringify(payload)
+      }).then(response => response.json()).then(json => {
+        if(json.status==true){
+          window.location.reload(false);
+        }else{
+          //handle wrong email
+          alert("Please Try Again")
+        }
+      }).catch(
+        //handle wrong email
+      )
+  }
 
   handleClickOpen = () => {
     this.setState({ dialogOpen: true })
@@ -185,7 +205,6 @@ class Friendlist extends Component {
         }
       }).catch(
         //handle wrong email
-        alert("Please Check your email")
       )
 
   }
@@ -202,6 +221,8 @@ class Friendlist extends Component {
     };*/
 
     return (
+      <div>
+            {this.state.didRendered ? 
         <Grid container xs={12} className={classes.background}>
           <div className={classes.header}>
             <Link to={{pathname: '/index', state: { userID: this.state.userid}}}>
@@ -290,6 +311,42 @@ class Friendlist extends Component {
 
           </Grid>
         </Grid>
+        :
+        <Grid container xs={12} className={classes.background}>
+        <div container xs={12} className={classes.header}>
+            <Link to={{pathname: '/index', state: { userID: this.state.userid}}}>
+                <img src={myfridge_logo} height='90vh'/>
+            </Link>
+            <div className={classes.grow} />
+            <Link to={{pathname: '/wasteboard', state: { userID: this.state.userid}}}>
+                <IconButton size='medium'>
+                            <img src={scoreboard_icon} height='70vh' />
+                </IconButton>
+            </Link>
+            <Link to={{pathname: '/friendlist', state: { userID: this.state.userid}}}>
+                <IconButton size='medium'>
+                            <img src={friend_icon} height='70vh' />
+                </IconButton>
+            </Link>
+            <Link to={{pathname: '/recipe', state: { userID: this.state.userid}}}>
+                <IconButton size='medium'>
+                            <img src={recipe_icon} height='70vh' />
+                </IconButton>
+            </Link>
+            <Link to={{pathname: '/profile', state: { userID: this.state.userid}}}>
+                <IconButton size='medium'>
+                            <img src={profile_icon} height='70vh' />
+                </IconButton>
+            </Link>
+        </div>
+        <div className={classes.tabs} >
+          <Typography variant="h3" gutterBottom={true} color='#ddddd6'>
+            Loading... 
+          </Typography>
+          <CircularProgress size='20vh' color='#ddddd6' thickness='2'/>
+        </div>
+    </Grid>}
+        </div>
     );
   }
 }

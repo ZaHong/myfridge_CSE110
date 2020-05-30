@@ -40,6 +40,9 @@ var userSchema = mongoose.Schema({
     },
     nickname: {
         type: String
+    },
+    waste_list: {
+        type: []
     }
 })
 
@@ -102,8 +105,8 @@ async function registerUser(user_info) {
         var idx = user_info.email.indexOf('@')
         var nickname = user_info.email.substring(0, idx)
         user_info.nickname = nickname
-        console.log(user_info)
         user_info.score = 0
+        user_info.waste_list = []
         var new_user = new User(user_info)
         await new_user.save()
         result = {
@@ -198,7 +201,7 @@ async function addFood(food_info, user_id) {
 }
 
 async function deleteFood(food_id, user_id) {
-    await db.connectDB()
+    
     const user = await User.findById(user_id)
     console.log(user_id + '  ' + food_id)
     var fridge = user.fridge
@@ -206,7 +209,7 @@ async function deleteFood(food_id, user_id) {
     fridge.splice(idx, 1)
     await User.updateOne({_id: user_id}, {$set: {"fridge": fridge}})
     await Food.deleteOne({ "_id" : food_id });
-    await db.disconnectDB()
+    
     return {
         status: true,
         message: "delete food successfully"
@@ -346,38 +349,54 @@ async function getProfile(user_id) {
 }
 
 async function change_nickname(user_id, new_name) {
-    db.connectDB()
+    await db.connectDB()
     await User.updateOne({_id:user_id}, {$set:{"nickname": new_name}})
-    db.disconnectDB()
+    await db.disconnectDB()
     return {
         status: true,
         message: "successfully modify nickname"
     }
 }
 
-async function add_waste(user_id, amount) {
-    db.connectDB()
+async function add_waste(user_id, amount, name, date, food_id) {
+    await db.connectDB()
     user = await User.findById(user_id)
-    await User.updateOne({_id: user_id}, {$set:{"score": user.score + amount}})
-    db.disconnectDB()
+    waste_list = user.waste_list
+    waste_list.push({
+        "name": name,
+        "date": date
+    })
+    await User.updateOne({_id: user_id}, {$set:{"score": user.score + amount, "waste_list": waste_list}})
+    await deleteFood(food_id, user_id)
+    await db.disconnectDB()
 }
 
 async function scoreboard(user_id) {
-    db.connectDB()
+    await db.connectDB()
     user = await User.findById(user_id)
     friends = user.friend_list
-    friends.push(user_id)
+    var new_list = []
     for(let i = 0; i < friends.length; i++) {
         friend = await User.findById(friends[i])
-        console.log(friend)
-        friends[i] = {
+        new_list.push({
             "nickname": friend.nickname,
             "email": friend.email,
-            "score": friend.score
-        }
+            "score": friend.score,
+            "self": false
+        })
     }
-    friends.sort((a, b) => a.score - b.score)
-    return friends
+    await db.disconnectDB()
+    new_list.push({
+        "nickname": user.nickname,
+        "email": user.email,
+        "score": user.score,
+        "self": true
+    })
+    new_list.sort((a, b) => a.score - b.score)
+    return {
+        "rank": new_list,
+        "waste_list": user.waste_list
+    }
 }
 
 module.exports = {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, 

@@ -69,8 +69,12 @@ class FoodInfo extends Component{
 
     putToWaste(event){
         var payload={
-            'amount':this.state.foodinfo.Quantity
+            'amount':this.state.foodinfo.Quantity,
+            'name':this.state.foodinfo.foodName,
+            'date':this.state.foodinfo.ExpirationDate,
+            'food_id':this.state.foodinfo.foodid,
         }
+
         fetch("http://localhost:8000/user/" + this.state.currentID + "/add_waste",{
               method: "POST",
               headers: {
@@ -79,20 +83,7 @@ class FoodInfo extends Component{
               body: JSON.stringify(payload)
             }).then(response => response.json()).then(json => {
               if(json.status==true){
-                var payload2={
-                    'food_id':this.state.foodinfo.foodid
-                }
-                fetch("http://localhost:8000/user/" + this.state.currentID + "/deleteFood",{
-                      method: "POST",
-                      headers: {
-                        'Content-Type': "application/json"
-                      },
-                      body: JSON.stringify(payload2)
-                    }).then(response => response.json()).then(json => {
-                      if(json.status==true){
-                        window.location.reload(false);
-                      }
-                    })
+                window.location.reload(false);
               }
             }).catch(
               //this.setState({ userNotExist: true, emptyPassword: false })

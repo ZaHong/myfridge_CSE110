@@ -75,7 +75,7 @@ class AddFood extends Component {
 
     handleClick = (event) => {
 
-      if(isNaN(this.state.foodQuantity)){
+      if(isNaN(this.state.foodQuantity) || this.state.foodQuantity==''){
         this.setState({invalidQuantity: true})
       }else{
         const food = {
