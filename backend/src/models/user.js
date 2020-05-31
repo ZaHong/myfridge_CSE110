@@ -373,6 +373,13 @@ async function scoreboard(user_id) {
     }
 }
 
+async function changePassword(user_id, newpassword) {
+    user1 = await User.findById(user_id)
+    user1.password = newpassword
+    await user1.save()
+}
+
 module.exports = {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, 
     addFood, deleteFood, showUser, login, modify_food, displayByTag, getFoodNames, suggestRecipe, getProfile,
-    change_nickname, add_waste, scoreboard, updateGroceryList, clearGroceryList, getGroceryList, removeGrocery}
+    change_nickname, add_waste, scoreboard, updateGroceryList, clearGroceryList, getGroceryList, removeGrocery,
+    changePassword}

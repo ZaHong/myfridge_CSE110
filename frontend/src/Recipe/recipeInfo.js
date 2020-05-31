@@ -112,12 +112,32 @@ class RecipeInfo extends Component{
                     </Typography>
                 )
             }
-            for (let step of recipeDetail.steps.split("\n\n")){
+            // for (let step of recipeDetail.steps.split("\n\n")){
+            //     steps.push(
+            //         <Typography gutterBottom={true} vairant="h5" className={classes.subDescription} >
+            //             {` - ${step.split("\n")[0]}: ${step.split("\n")[1]}`}
+            //         </Typography>
+            //     )
+            // }
+            const re = /step/i;
+            const stepsList = recipeDetail.steps.split(re);
+            if (stepsList.length === 1){
+                let step = stepsList[0].trim();
                 steps.push(
                     <Typography gutterBottom={true} vairant="h5" className={classes.subDescription} >
-                        {` - ${step.split("\n")[0]}: ${step.split("\n")[1]}`}
+                        {` - Step 1: ${step}`}
                     </Typography>
                 )
+            }
+            else{
+                for (let i = 1; i<stepsList.length; i++){
+                    let step = stepsList[i].trim();
+                    steps.push(
+                        <Typography gutterBottom={true} vairant="h5" className={classes.subDescription} >
+                            {` - Step ${step.substring(0,1)}:${step.substring(1)}`}
+                        </Typography>
+                    )
+                }
             }
         }
 

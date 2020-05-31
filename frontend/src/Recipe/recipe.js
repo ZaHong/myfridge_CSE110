@@ -75,6 +75,7 @@ const style = theme => ({
         marginRight: "5vw",
         overflow: "auto",
         maxHeight: "60vh",
+        minWidth: "22vw"
     }
 });
 
