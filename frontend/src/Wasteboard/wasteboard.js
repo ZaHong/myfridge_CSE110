@@ -279,7 +279,7 @@ class Wasteboard extends Component{
                   <Typography variant="h3" gutterBottom={true} color='#ddddd6'>
                     Loading... 
                   </Typography>
-                  <CircularProgress size='20vh' color='#ddddd6' thickness='2'/>
+                  <CircularProgress size='20vh' color='#ddddd6' thickness='2' style={{marginLeft: "5%"}}/>
                 </div>
             </Grid>}
             </div>
