@@ -179,7 +179,7 @@ class RecipeInfo extends Component{
                             </Button>
 
                             <Button variant="contained" className={classes.button} onClick={this.onGroceryClick}>
-                            Add to Grocery List
+                                Add to Grocery List
                             </Button>
                         </ListItem>
                     </>

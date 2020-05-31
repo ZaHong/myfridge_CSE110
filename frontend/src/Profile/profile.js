@@ -125,20 +125,23 @@ class Profile extends Component {
         //this.setState({ userNotExist: true, emptyPassword: false })
         ();
 
-          fetch("http://localhost:8000/user/" + this.state.userid + "/grocery_list", {
+      fetch(
+        "http://localhost:8000/user/" + this.state.userid + "/grocery_list",
+        {
           method: "GET",
           headers: {
             "Content-Type": "application/json"
           }
+        }
+      )
+        .then(response => response.json())
+        .then(json => {
+          this.setState({ grocery: json.grocery_list }, () => {});
         })
-          .then(response => response.json())
-          .then(json => {
-            this.setState({ grocery: json.grocery_list }, () => {});
-          })
-          .then(json => {
-            this.setState({ rendered: true });
-          })
-          .catch();
+        .then(json => {
+          this.setState({ rendered: true });
+        })
+        .catch();
     }
   }
 
@@ -332,7 +335,13 @@ class Profile extends Component {
                       Password:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       {this.state.Password}
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <Link to="/resetpassword" className={classes.link}>
+                      <Link
+                        to={{
+                          pathname: "/resetpassword",
+                          state: { userID: this.state.userid }
+                        }}
+                        className={classes.link}
+                      >
                         Reset Password
                       </Link>
                     </h3>
@@ -445,7 +454,7 @@ class Profile extends Component {
               <Typography variant="h3" gutterBottom={true} color="#ddddd6">
                 Loading...
               </Typography>
-              <CircularProgress size="20vh" color="#ddddd6" thickness="2" />
+              <CircularProgress size="20vh" color="#ddddd6" thickness="2" style={{marginLeft: "5%"}}/>
             </div>
           </Grid>
         )}

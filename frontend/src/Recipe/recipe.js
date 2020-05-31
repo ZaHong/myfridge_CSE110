@@ -8,7 +8,6 @@ import RecipeInfo from "./recipeInfo";
 
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Redirect } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
@@ -214,9 +213,11 @@ class Recipe extends Component{
                         :
                         <div className={classes.tabs} alignItems='center'>
                             <Typography variant="h3" gutterBottom={true} color='#ddddd6'>
-                            Loading Recipes...
+                            {/*Loading Recipes...*/}
+                                Loading...
                             </Typography>
-                            <CircularProgress size='20vh' color='#ddddd6' thickness='2' style={{marginLeft: "20%"}} />
+                            {/*<CircularProgress size='20vh' color='#ddddd6' thickness='2' style={{marginLeft: "20%"}} />*/}
+                            <CircularProgress size='20vh' color='#ddddd6' thickness='2' style={{marginLeft: "5%"}} />
                         </div>
                         }
 

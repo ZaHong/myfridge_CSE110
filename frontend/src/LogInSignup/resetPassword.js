@@ -13,7 +13,7 @@ import logo from "./res/MyFridge_Logo_Small.png";
 import Alert from "@material-ui/lab/Alert";
 import AlertTitle from "@material-ui/lab/Alert";
 import background_color from "./res/background_color.png";
-
+import { Redirect } from "react-router-dom";
 const styles = theme => ({
   background: {
     //backgroundImage: 'url('+ background_color +')',
@@ -78,74 +78,93 @@ class ResetPassword extends Component {
     super(props);
     document.title = "Reset Password";
 
-    this.checkaccount = this.checkaccount.bind(this);
     this.handleClick = this.handleClick.bind(this);
-
     this.state = {
       email: "",
       password: "",
       newPassword: "",
       confirmNewPassword: "",
-      useNotExist: false,
-      consistentPassword: false
+      userNotExist: true,
+      consistentPassword: false,
+      successLogin: false,
+      userid: ""
     };
-  }
 
-  async checkaccount() {
-    const user = {
-      email: this.state.email,
-      password: this.state.password
-    };
-    try {
-      let response = await fetch("http://localhost:8000/user/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(user)
-      });
-      return response.status;
-    } catch {
-      return "true;";
+    if (props.location.state == null) {
+      this.setState({ nullUserID: true });
+      console.log("null user");
+    } else {
+      // this.setState({ userid: props.state.userID });
+
+      // this.state.userid = props.state.userID;
+      this.state.userid = props.location.state.userID;
+      console.log(this.state.userid);
     }
   }
 
   handleClick(event) {
-    if (this.state.confirmNewPassword != this.state.newPassword) {
+    //console.log(this.state.userid);
+    if (
+      this.state.newPassword === "" ||
+      this.state.confirmNewPassword != this.state.newPassword
+    ) {
       this.setState({ consistentPassword: true });
       console.log(this.state.confirmNewPassword);
       console.log(this.state.newPassword);
-      event.preventDefault();
       return false;
     } else {
       this.setState({ consistentPassword: false });
-    }
-    var accountExist = "asdf";
-    console.log(accountExist);
+      var newpassword = { newpassword: this.state.newPassword };
 
-    (async () => {
-      let status = await this.checkaccount();
-      if (status === 404) {
-        this.setState({ userNotExist: true });
-        //alert(status);
-        event.preventDefault();
+      const user = {
+        email: this.state.email,
+        password: this.state.password
+      };
+
+      // check whether account is valid
+      if (user.password != null && user.password != "") {
+        fetch("http://localhost:8000/user/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(user)
+        })
+          .then(response => response.json())
+          .then(json => {
+            if (json.status != null && json.status == true) {
+              this.setState({
+                userID: json.body._id,
+                successLogin: true,
+                userNotExist: false
+              });
+
+              // if valid, change the password
+              fetch(
+                "http://localhost:8000/user/" +
+                  this.state.userid +
+                  "/change_password",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify(newpassword)
+                }
+              ).catch();
+            } else {
+              this.setState({ userNotExist: true, emptyPassword: false });
+            }
+          })
+          .catch
+          //this.setState({ userNotExist: true, emptyPassword: false })
+          ();
       } else {
-        //alert(status);
-        this.setState({ userNotExist: false });
-        event.preventDefault();
+        this.setState({ userNotExist: false, emptyPassword: true });
       }
-    })();
 
-    event.preventDefault();
-
-    //For create new user
-    // fetch("http://localhost:8000/user/register", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   },
-    //   body: JSON.stringify(user)
-    // });
+      console.log(this.state.successLogin);
+    }
   }
 
   handleChange = name => event => {
@@ -156,6 +175,12 @@ class ResetPassword extends Component {
     const { classes } = this.props;
     return (
       <Grid container xs={12} className={classes.background}>
+        {this.state.successLogin && (
+          <Redirect
+            push
+            to={{ pathname: "/profile", state: { userID: this.state.userid } }}
+          />
+        )}
         <img src={logo} marginTop="20px" height="100vh" />
         <Grid container xs={10} sm={6} md={4} className={classes.outerpaper}>
           <Container component="main" maxWidth="xs">
@@ -237,7 +262,7 @@ class ResetPassword extends Component {
                   onChange={this.handleChange("confirmNewPassword")}
                 />
                 <Button
-                  type="submit"
+                  type="button"
                   fullWidth
                   variant="contained"
                   color="#5f5f5d"
@@ -251,9 +276,9 @@ class ResetPassword extends Component {
                     this.state.userNotExist) && (
                     <Alert severity="error">
                       <strong>
-                      {this.state.consistentPassword
-                        ? "The password does not match"
-                        : "The user does not exist"}
+                        {this.state.consistentPassword
+                          ? "The password does not match"
+                          : "The user does not exist"}
                       </strong>
                     </Alert>
                   )}
