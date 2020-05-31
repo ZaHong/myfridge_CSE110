@@ -70,7 +70,8 @@ class AddFood extends Component {
     };
 
     handleDateChange = (date) => {
-      this.state.selectedDate = date
+      this.setState({selectedDate: date})
+      //alert(this.state.selectedDate)
     };
 
     handleClick = (event) => {
