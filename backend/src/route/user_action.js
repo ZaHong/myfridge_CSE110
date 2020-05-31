@@ -4,7 +4,7 @@ const db = require('../models/db')
 const {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, addFood,
        deleteFood, showUser, login, modify_food, displayByTag, getFoodNames, suggestRecipe, getProfile,
        change_nickname, add_waste, scoreboard, updateGroceryList, clearGroceryList, getGroceryList,
-       removeGrocery} = require('../models/user')
+       removeGrocery, changePassword} = require('../models/user')
 const {Food, findFood} = require('../models/food')
 const {getVocabs} = require('../models/food_vocab')
 
@@ -193,6 +193,15 @@ user_router.post('/:id/change_name', async(req, res) => {
     result = await change_nickname(req.params.id, req.body.new_name)
     await db.disconnectDB()
     res.send(result)
+})
+
+user_router.post(`/:id/change_password`, async(req, res) => {
+    await db.connectDB()
+    await changePassword(req.params.id, req.body.newpassword)
+    await db.disconnectDB()
+    res.send({
+        status: "Success"
+    })
 })
 
 user_router.post('/:id/add_waste', async(req, res) => {
