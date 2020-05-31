@@ -125,23 +125,25 @@ class Profile extends Component {
         //this.setState({ userNotExist: true, emptyPassword: false })
         ();
 
-          fetch("http://localhost:8000/user/" + this.state.userid + "/grocery_list", {
+      fetch(
+        "http://localhost:8000/user/" + this.state.userid + "/grocery_list",
+        {
           method: "GET",
           headers: {
             "Content-Type": "application/json"
           }
+        }
+      )
+        .then(response => response.json())
+        .then(json => {
+          this.setState({ grocery: json.grocery_list }, () => {});
         })
-          .then(response => response.json())
-          .then(json => {
-            this.setState({ grocery: json.grocery_list }, () => {});
-          })
-          .then(json => {
-            this.setState({ rendered: true });
-          })
-          .catch();
+        .then(json => {
+          this.setState({ rendered: true });
+        })
+        .catch();
     }
   }
-
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
@@ -333,7 +335,13 @@ class Profile extends Component {
                       Password:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       {this.state.Password}
                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <Link to="/resetpassword" className={classes.link}>
+                      <Link
+                        to={{
+                          pathname: "/resetpassword",
+                          state: { userID: this.state.userid }
+                        }}
+                        className={classes.link}
+                      >
                         Reset Password
                       </Link>
                     </h3>
