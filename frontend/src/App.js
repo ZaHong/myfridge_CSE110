@@ -19,7 +19,7 @@ class App extends Component {
   }
 
   /*callBackend(){
-    fetch("http://localhost:8000")
+    fetch("http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000")
     .then(res => res.text())
     .then(res => this.setState({response : res}))
     .catch(err => err);

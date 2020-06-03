@@ -123,7 +123,7 @@ class ResetPassword extends Component {
 
       // check whether account is valid
       if (user.password != null && user.password != "") {
-        fetch("http://localhost:8000/user/login", {
+        fetch("http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -141,7 +141,7 @@ class ResetPassword extends Component {
 
               // if valid, change the password
               fetch(
-                "http://localhost:8000/user/" +
+                "http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/" +
                   this.state.userid +
                   "/change_password",
                 {

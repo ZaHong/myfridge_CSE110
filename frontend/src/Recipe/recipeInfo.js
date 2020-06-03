@@ -81,14 +81,14 @@ class RecipeInfo extends Component{
     }
 
     onClearClick(event){
-        fetch(`http://localhost:8000/user/${this.props.userid}/cleargrocery`,{
+        fetch(`http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/${this.props.userid}/cleargrocery`,{
             method: "GET"
         });
     }
 
     onGroceryClick(event){
         // alert(this.props.userid);
-        fetch(`http://localhost:8000/user/${this.props.userid}/addrecipe`,{
+        fetch(`http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/${this.props.userid}/addrecipe`,{
             method: "POST",
             headers: {
                 "Content-Type" : "application/json"

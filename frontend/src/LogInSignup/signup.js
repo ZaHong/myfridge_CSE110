@@ -109,7 +109,7 @@ class SignUp extends Component {
             this.setState({diffPassword: false, emptyPassword: false, invalidEmail: true})
         }else{
             //For create new user
-            fetch("http://localhost:8000/user/register",{
+            fetch("http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/register",{
                 method: "POST",
                 headers: {
                     'Content-Type': "application/json"
