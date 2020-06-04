@@ -4,7 +4,7 @@ const db = require('../models/db')
 const {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, addFood,
        deleteFood, showUser, login, modify_food, displayByTag, getFoodNames, suggestRecipe, getProfile,
        change_nickname, add_waste, scoreboard, updateGroceryList, clearGroceryList, getGroceryList,
-       removeGrocery, changePassword} = require('../controller/user-controller.js')
+       removeGrocery, changePassword} = require('../models/user')
 const {Food, findFood} = require('../models/food')
 const {getVocabs} = require('../models/food_vocab')
 
