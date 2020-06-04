@@ -31,7 +31,7 @@ class FoodInfo extends Component{
                 'quantity': this.state.foodinfo.Quantity,
                 'food_id':this.state.foodinfo.foodid
             }
-            fetch("http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/" + this.state.currentID + "/modifyFood",{
+            fetch("http://localhost:8000/user/" + this.state.currentID + "/modifyFood",{
               method: "POST",
               headers: {
                 'Content-Type': "application/json"
@@ -52,7 +52,7 @@ class FoodInfo extends Component{
         var payload={
             'food_id':this.state.foodinfo.foodid
         }
-        fetch("http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/" + this.state.currentID + "/deleteFood",{
+        fetch("http://localhost:8000/user/" + this.state.currentID + "/deleteFood",{
               method: "POST",
               headers: {
                 'Content-Type': "application/json"
@@ -75,7 +75,7 @@ class FoodInfo extends Component{
             'food_id':this.state.foodinfo.foodid,
         }
 
-        fetch("http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/" + this.state.currentID + "/add_waste",{
+        fetch("http://localhost:8000/user/" + this.state.currentID + "/add_waste",{
               method: "POST",
               headers: {
                 'Content-Type': "application/json"

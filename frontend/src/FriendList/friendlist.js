@@ -113,7 +113,7 @@ class Friendlist extends Component {
       this.state.nullUserID = true;
     } else {
       this.state.userid= props.location.state.userID
-      fetch("http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/" + this.state.userid + '/friends', {
+      fetch("http://localhost:8000/user/" + this.state.userid + '/friends', {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
@@ -160,7 +160,7 @@ class Friendlist extends Component {
     var payload = {
       "friend_id": id
     }
-    fetch("http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/" + this.state.userid + "/deleteFriend",{
+    fetch("http://localhost:8000/user/" + this.state.userid + "/deleteFriend",{
       method: "POST",
       headers: {'Content-Type': "application/json"},
       body: JSON.stringify(payload)
@@ -192,7 +192,7 @@ class Friendlist extends Component {
     var payload = {
       "email": this.state.newFriend
     }
-    fetch("http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/" + this.state.userid + "/addFriend",{
+    fetch("http://localhost:8000/user/" + this.state.userid + "/addFriend",{
       method: "POST",
       headers: {'Content-Type': "application/json"},
       body: JSON.stringify(payload)

@@ -111,7 +111,7 @@ class Profile extends Component {
       //this.setState({ userid: props.location.state.userID });
       this.state.userid = props.location.state.userID;
       console.log(this.state.userid);
-      fetch("http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/" + this.state.userid + "/profile", {
+      fetch("http://localhost:8000/user/" + this.state.userid + "/profile", {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
@@ -126,7 +126,7 @@ class Profile extends Component {
         ();
 
       fetch(
-        "http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/" + this.state.userid + "/grocery_list",
+        "http://localhost:8000/user/" + this.state.userid + "/grocery_list",
         {
           method: "GET",
           headers: {
@@ -161,7 +161,7 @@ class Profile extends Component {
     var payload = {
       new_name: this.state.tempnickname
     };
-    fetch("http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/" + this.state.userid + "/change_name", {
+    fetch("http://localhost:8000/user/" + this.state.userid + "/change_name", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

@@ -96,7 +96,7 @@ class Groceryinfo extends Component {
     var removelist = { item_names: this.state.groceryselected };
     console.log("remove");
     fetch(
-      "http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/" + this.props.userid + "/remove_grocery",
+      "http://localhost:8000/user/" + this.props.userid + "/remove_grocery",
       {
         method: "POST",
         headers: {

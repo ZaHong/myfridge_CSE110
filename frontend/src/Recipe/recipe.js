@@ -97,7 +97,7 @@ class Recipe extends Component{
         } else {
             this.state.userid= props.location.state.userID;
 
-            fetch(`http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/${this.state.userid}/recipe`,{
+            fetch(`http://localhost:8000/user/${this.state.userid}/recipe`,{
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"

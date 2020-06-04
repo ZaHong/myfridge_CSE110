@@ -102,7 +102,7 @@ class Login extends Component {
     //alert(JSON.stringify(user));
     //For create new user
     if (user.password != null && user.password != "") {
-      fetch("http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/login", {
+      fetch("http://localhost:8000/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

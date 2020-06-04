@@ -133,7 +133,7 @@ class Fridge extends Component {
     } else {
       //this.setState({ userid: props.location.state.userID });
       this.state.userid = props.location.state.userID;
-      fetch("http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/" + this.state.userid, {
+      fetch("http://localhost:8000/user/" + this.state.userid, {
         method: "GET",
         headers: {
           "Content-Type": "application/json"

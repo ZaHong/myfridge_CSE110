@@ -50,7 +50,7 @@ class AddFood extends Component {
         invalidQuantity: false,
       };
 
-      fetch("http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/foodvocab",{
+      fetch("http://localhost:8000/user/foodvocab",{
         method: "GET",
         headers: {
           'Content-Type': "application/json"
@@ -88,7 +88,7 @@ class AddFood extends Component {
         };
         //alert(JSON.stringify(food))
         if(food.name != null && food.name!= ''){
-          fetch("http://ec2-52-32-150-175.us-west-2.compute.amazonaws.com:8000/user/" + this.state.currentUserID + "/addFood",{
+          fetch("http://localhost:8000/user/" + this.state.currentUserID + "/addFood",{
             method: "POST",
             headers: {
               'Content-Type': "application/json"
