@@ -65,8 +65,51 @@ class LoginPageTest(unittest.TestCase):
             except:
                 buttonnum = buttonnum
         driver.find_element(By.XPATH, " /html/body/div/div/div/div/div[2]/div/div/div[1]/div[2]/div/button[" + str(buttonnum) +"]")
-        driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[2]/div/div/div[7]/div/p/div/div/table/div/div[1]/div/div/input").send_keys("apple")
-        assert "New Food Item" in driver.page_source
+        time.sleep(1)
+        #Added name
+        driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[2]/div/div/div["+ str(buttonnum + 2) +"]/div/p/div/div/table/div/div[1]/div/div/input").send_keys("appletest")
+        time.sleep(1)
+        #Added Tag
+        driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[2]/div/div/div["+ str(buttonnum + 2) +"]/div/p/div/div/table/div/div[2]/div/input").send_keys("fruittest")
+        time.sleep(1)
+        #Add Quantity
+        driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[2]/div/div/div["+ str(buttonnum + 2) +"]/div/p/div/div/table/div/div[3]/div/input").send_keys("6")
+        time.sleep(1)
+        #Add Duration
+        driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[2]/div/div/div["+ str(buttonnum + 2) +"]/div/p/div/div/table/div/div[5]/div/input").send_keys("10")
+        time.sleep(1)
+        #Click Save button
+        driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[2]/div/div/div["+ str(buttonnum + 2) +"]/div/p/div/div/table/div/button").click()
+        time.sleep(10)
+        assert "Welcome to" in driver.page_source
+        assert "appletest" in driver.page_source 
+    
+    def test_addFood_no_quantity_exception(self):
+        driver = self.driver
+        buttonnum = 0
+        for i in range(1,20):
+            try:
+                temp = " /html/body/div/div/div/div/div[2]/div/div/div[1]/div[2]/div/button[" + str(i) +"]"
+                button = driver.find_element(By.XPATH, temp)
+                button.click()
+                buttonnum = i
+            except:
+                buttonnum = buttonnum
+        driver.find_element(By.XPATH, " /html/body/div/div/div/div/div[2]/div/div/div[1]/div[2]/div/button[" + str(buttonnum) +"]")
+        time.sleep(1)
+        #Added name
+        driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[2]/div/div/div["+ str(buttonnum + 2) +"]/div/p/div/div/table/div/div[1]/div/div/input").send_keys("appletest")
+        time.sleep(1)
+        #Added Tag
+        driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[2]/div/div/div["+ str(buttonnum + 2) +"]/div/p/div/div/table/div/div[2]/div/input").send_keys("fruittest")
+        time.sleep(1)
+        #Add Duration
+        driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[2]/div/div/div["+ str(buttonnum + 2) +"]/div/p/div/div/table/div/div[5]/div/input").send_keys("10")
+        time.sleep(1)
+        #Click Save button
+        driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[2]/div/div/div["+ str(buttonnum + 2) +"]/div/p/div/div/table/div/button").click()
+        time.sleep(5)
+        assert "Please Enter Numerical Quantity" in driver.page_source
         
 
     def tearDown(self):
