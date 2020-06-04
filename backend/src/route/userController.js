@@ -1,14 +1,11 @@
 const express = require('express')
 const user_router = express.Router()
 const db = require('../models/db')
-const {User, addUser, verifyUser, findUser, registerUser, addFriend, getFriends, deleteFriend, addFood,
-       deleteFood, showUser, login, modify_food, displayByTag, getFoodNames, suggestRecipe, getProfile,
+const {registerUser, addFriend, getFriends, deleteFriend, addFood,
+       deleteFood, showUser, login, modify_food, displayByTag, suggestRecipe, getProfile,
        change_nickname, add_waste, scoreboard, updateGroceryList, clearGroceryList, getGroceryList,
-       removeGrocery, changePassword} = require('../models/user')
-const {Food, findFood} = require('../models/food')
-const {getVocabs} = require('../models/food_vocab')
-
-
+       removeGrocery, changePassword} = require('../models/userModel')
+const {getVocabs} = require('../models/foodVocabModel')
 const ONE_DAY = 86400000
 
 

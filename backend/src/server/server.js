@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
 const apiPort = 8000
-const user_router = require('../route/user_action')
+const user_router = require('../route/userController')
 
 // const {client, addUser} = require('./mongo.js')
 

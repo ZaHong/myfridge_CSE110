@@ -6,9 +6,8 @@
  * 
  */
 var mongoose = require('mongoose')
-const {Food, findFood} = require('./food.js')
-const {suggest} = require('./recipe.js')
-const db = require('./db')
+const {Food} = require('./foodModel.js')
+const {suggest} = require('./recipeModel.js')
 
 /*
  * A User schema is a "database-less" class. It only structures data.
