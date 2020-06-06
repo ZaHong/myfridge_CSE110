@@ -110,7 +110,50 @@ class LoginPageTest(unittest.TestCase):
         driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[2]/div/div/div["+ str(buttonnum + 2) +"]/div/p/div/div/table/div/button").click()
         time.sleep(5)
         assert "Please Enter Numerical Quantity" in driver.page_source
-        
+
+        #Add Quantity
+        driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[2]/div/div/div["+ str(buttonnum + 2) +"]/div/p/div/div/table/div/div[3]/div/input").send_keys("This is Invalid")
+        time.sleep(1)
+        assert "Please Enter Numerical Quantity" in driver.page_source
+
+    def test_addFood_remove_food(self):
+        driver = self.driver
+        buttonnum = 0
+        for i in range(1,20):
+            try:
+                temp = " /html/body/div/div/div/div/div[2]/div/div/div[1]/div[2]/div/button[" + str(i) +"]"
+                button = driver.find_element(By.XPATH, temp)
+                button.click()
+                buttonnum = i
+            except:
+                buttonnum = buttonnum
+        driver.find_element(By.XPATH, " /html/body/div/div/div/div/div[2]/div/div/div[1]/div[2]/div/button[" + str(buttonnum) +"]")
+        time.sleep(1)
+        #Added name
+        driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[2]/div/div/div["+ str(buttonnum + 2) +"]/div/p/div/div/table/div/div[1]/div/div/input").send_keys("zremovetest")
+        time.sleep(1)
+        #Added Tag
+        driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[2]/div/div/div["+ str(buttonnum + 2) +"]/div/p/div/div/table/div/div[2]/div/input").send_keys("test")
+        time.sleep(1)
+        #Add Quantity
+        driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[2]/div/div/div["+ str(buttonnum + 2) +"]/div/p/div/div/table/div/div[3]/div/input").send_keys("6")
+        time.sleep(1)
+        #Add Duration
+        driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[2]/div/div/div["+ str(buttonnum + 2) +"]/div/p/div/div/table/div/div[5]/div/input").send_keys("10000")
+        time.sleep(1)
+        #Click Save button
+        driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[2]/div/div/div["+ str(buttonnum + 2) +"]/div/p/div/div/table/div/button").click()
+        time.sleep(5)
+        #Assert for succesfully add the food that is about to be removed
+        assert "zremovetest" in driver.page_source
+
+        time.sleep(1)
+        driver.find_element(By.XPATH, " /html/body/div/div/div/div/div[2]/div/div/div[1]/div[2]/div/button[" + str(buttonnum) +"]").click()
+        time.sleep(1)
+        driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[2]/div/div/div[" + str(buttonnum+2) +"]/div/p/div/div/ul/li[7]/button[2]").click()
+        time.sleep(5)
+        #Assert for succesfully remove the food
+        assert "zremovetest" not in driver.page_source
 
     def tearDown(self):
         self.driver.close()
