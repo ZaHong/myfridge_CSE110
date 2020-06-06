@@ -72,3 +72,10 @@ npm start
 ```
 
 Now, the default website should opened automatically and connect to localhost:3000 for this application
+
+### Known Issue:
+#### Issue:
+Except from login and sign up screen, other screens do not perform well enough on mobile display size. Also, frequent clicking a single button before the page be able to process the request would result in poll draining on our Mongo Atlas database. 
+
+#### Solution:
+Tries to refresh the page first, if the problem persists, please go back to the sign in screen on localhost:3000 and sign in with account again.
