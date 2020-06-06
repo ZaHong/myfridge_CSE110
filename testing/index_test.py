@@ -154,6 +154,27 @@ class LoginPageTest(unittest.TestCase):
         time.sleep(5)
         #Assert for succesfully remove the food
         assert "zremovetest" not in driver.page_source
+    
+    def test_addFood_autocomplete(self):
+        driver = self.driver
+        buttonnum = 0
+        for i in range(1,20):
+            try:
+                temp = " /html/body/div/div/div/div/div[2]/div/div/div[1]/div[2]/div/button[" + str(i) +"]"
+                button = driver.find_element(By.XPATH, temp)
+                button.click()
+                buttonnum = i
+            except:
+                buttonnum = buttonnum
+        driver.find_element(By.XPATH, " /html/body/div/div/div/div/div[2]/div/div/div[1]/div[2]/div/button[" + str(buttonnum) +"]")
+        #wait for food list to be loaded
+        time.sleep(5)
+
+        #Added name
+        driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[2]/div/div/div["+ str(buttonnum + 2) +"]/div/p/div/div/table/div/div[1]/div/div/input").send_keys("watermelon")
+        time.sleep(1)
+        
+        assert "fruits" in driver.page_source
 
     def tearDown(self):
         self.driver.close()
