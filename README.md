@@ -38,11 +38,10 @@
 Our application allows user to create new Account or log in to existed account,
 our team provides two account for testing.
 
-| Account          | Password | Description                                                                                                                                                                |   |   |
-|------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---|---|
-| tester1@ucsd.edu | 12345    | Account with several food in the fridge,  tester could check for recipe recommendation, food-waste score board, friend list,  and grocery list directly.                   |   |   |
-| tester2@ucsd.edu | 8888     | Empty account, tester are allow to customize the food they want to put into the fridge.  Tester should check recipe recommendation  after they added food into the fridge. |   |   |
-|                  |          |                                                                                                                                                                            |   |   |
+|      Account     | Password |                                                                                 Description                                                                                |
+|:----------------:|:--------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| tester1@ucsd.edu |   12345  | Account with several food in the fridge,  tester could check for recipe recommendation, food-waste score board, friend list,  and grocery list directly.                   |
+| tester2@ucsd.edu |   8888   | Empty account, tester are allow to customize the food they want to put into the fridge.  Tester should check recipe recommendation  after they added food into the fridge. |
 
 ### Installation and How to Run
 This app can be installed by either with this url:
