@@ -2,7 +2,10 @@
 
 ![Alt text](MyFridge_Logo.jpg?raw=true "Title")
 
-### by Team: SESO
+## by Team: SESO
+
+### Introduction:
+MyFridge is an application which provides a user-friendly management system to organize stored food, an intelligent recipe recommendation system to help utilize left-over food, and a smart reminder to help users to reduce food waste.
 
 
 
@@ -34,7 +37,7 @@
 - Python
 - Selenium with Python
 
-#### Login Credentials:
+### Login Credentials:
 Our application allows user to create new Account or log in to existed account,
 our team provides two account for testing.
 
