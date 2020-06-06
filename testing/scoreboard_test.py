@@ -35,7 +35,7 @@ class LoginPageTest(unittest.TestCase):
 
         time.sleep(10)
     
-    def test_recipe_display(self):
+    def test_scoreboard_display(self):
         driver = self.driver
         driver.find_element(By.XPATH, "/html/body/div/div/div/div/div[1]/a[2]/button").click()
         #Wait for scoreboard page to load
