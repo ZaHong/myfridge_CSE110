@@ -6,8 +6,8 @@
 
 var mongoose = require('mongoose')
 // Connecting to Database MyFridge
-const uri = "mongodb+srv://zhdeng:0quxTw2a7eHfngRC@myfridge-xcyfm.mongodb.net/MyFridge?retryWrites=true&w=majority"
-// mongoose.connect(uri, { useNewUrlParser: true, keepAlive: true, keepAliveInitialDelay: 300000 });
+const uri = "XXXXXXXXXX"
+// Contact the developers to get the mongoDB credential.
 
 module.exports.connectDB = async() => {
     try {
